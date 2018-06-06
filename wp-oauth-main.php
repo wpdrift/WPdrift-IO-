@@ -91,7 +91,7 @@ class WO_Server {
 			return (int) $user_id;
 		}
 
-		require_once( dirname( WPOAUTH_FILE ) . '/library/OAuth2/Autoloader.php' );
+		require_once( dirname( WPDRIFT_HELPER_FILE ) . '/library/OAuth2/Autoloader.php' );
 		OAuth2\Autoloader::register();
 		$server  = new OAuth2\Server( new OAuth2\Storage\Wordpressdb() );
 		$request = OAuth2\Request::createFromGlobals();
@@ -291,14 +291,14 @@ class WO_Server {
 				'private_key_type' => OPENSSL_KEYTYPE_RSA,
 			) );
 			openssl_pkey_export( $res, $privKey );
-			file_put_contents( dirname( WPOAUTH_FILE ) . '/library/keys/private_key.pem', $privKey );
+			file_put_contents( dirname( WPDRIFT_HELPER_FILE ) . '/library/keys/private_key.pem', $privKey );
 
 			$pubKey = openssl_pkey_get_details( $res );
 			$pubKey = $pubKey['key'];
-			file_put_contents( dirname( WPOAUTH_FILE ) . '/library/keys/public_key.pem', $pubKey );
+			file_put_contents( dirname( WPDRIFT_HELPER_FILE ) . '/library/keys/public_key.pem', $pubKey );
 
 			// Update plugin version
-			$plugin_data    = get_plugin_data( WPOAUTH_FILE );
+			$plugin_data    = get_plugin_data( WPDRIFT_HELPER_FILE );
 			$plugin_version = $plugin_data['Version'];
 			update_option( 'wpdrift_helper_version', $plugin_version );
 		}

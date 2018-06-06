@@ -14,8 +14,8 @@
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-if ( ! defined( 'WPOAUTH_FILE' ) ) {
-	define( 'WPOAUTH_FILE', __FILE__ );
+if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
+	define( 'WPDRIFT_HELPER_FILE', __FILE__ );
 }
 
 if ( ! defined( 'WPDRIFT_HELPER_VERSION' ) ) {
