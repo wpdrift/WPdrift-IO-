@@ -22,7 +22,7 @@ class WO_Server {
 
 	/** Default Settings */
 	public $defualt_settings = array(
-		'enabled'                    => 0,
+		'enabled'                    => 1,
 		'client_id_length'           => 30,
 		'auth_code_enabled'          => 0,
 		'client_creds_enabled'       => 0,
