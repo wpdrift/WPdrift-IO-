@@ -34,7 +34,6 @@ class WPOAuth_Admin {
 		require_once( dirname( __FILE__ ) . "/admin/pages/edit-client.php" );
 
 		require_once( dirname( __FILE__ ) . "/admin/page-server-options.php" );
-		require_once( dirname( __FILE__ ) . "/admin/page-server-status.php" );
 	}
 
 	/**
@@ -44,7 +43,6 @@ class WPOAuth_Admin {
 		add_menu_page( 'OAuth Server', 'OAuth Server', 'manage_options', 'wo_manage_clients', "wo_admin_manage_clients_page", 'dashicons-groups' );
 		add_submenu_page( 'wo_manage_clients', 'Clients', __( 'Clients', 'wp-oauth' ), 'manage_options', 'wo_manage_clients', 'wo_admin_manage_clients_page' );
 		add_submenu_page( 'wo_manage_clients', 'Settings', __( 'Settings', 'wp-oauth' ), 'manage_options', 'wo_settings', "wo_server_options_page" );
-		add_submenu_page( 'wo_manage_clients', 'Status', __( 'Status', 'wp-oauth' ), 'manage_options', 'wo_server_status', 'wo_server_status_page' );
 		add_submenu_page( null, 'Add Client', 'Add Client', 'manage_options', 'wo_add_client', 'wo_add_client_page' );
 		add_submenu_page( null, 'Edit Client', 'Edit Clients', 'manage_options', 'wo_edit_client', 'wo_admin_edit_client_page' );
 	}

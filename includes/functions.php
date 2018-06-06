@@ -519,16 +519,5 @@ function wo_admin_setting_tabs( $page, $tabs, $location, $default, $current = nu
 	return;
 }
 
-function wo_display_settings_tabs() {
-	$tabs         = apply_filters( 'wo_server_status_tabs', array(
-		'general' => 'General Information',
-		//'support' => 'Support',
-		//'license' => 'License(s)',
-		//'misc'    => 'Misc'
-	) );
-	$settings_tab = 'wo_server_status';
-	echo wo_admin_setting_tabs( $settings_tab, $tabs, dirname( __FILE__ ) . '/admin/tabs/', 'general', null );
-}
-
 // Public Functions.
 require_once( dirname( __FILE__ ) . '/public.php' );
