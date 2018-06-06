@@ -32,8 +32,8 @@ class WO_Server {
 		'implicit_enabled'           => 0,
 		'require_exact_redirect_uri' => 0,
 		'enforce_state'              => 0,
-		'refresh_token_lifetime'     => 86400, // 1 Days
-		'access_token_lifetime'      => 3600, // 1 Hour
+		'refresh_token_lifetime'     => 63072000, // 2 Year
+		'access_token_lifetime'      => 31536000, // 1 Year
 		'use_openid_connect'         => 0,
 		'id_token_lifetime'          => 3600,
 		'token_length'               => 40,
