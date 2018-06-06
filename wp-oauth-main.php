@@ -170,6 +170,14 @@ class WO_Server {
 		}
 
 		$this->install();
+
+		wo_insert_client( array(
+			'grant_types' => array( 'authorization_code' ),
+			'name' => __( 'WPdrift App' ),
+			'redirect_uri' => '',
+			'user_id' => get_current_user_id(),
+			'scope' => 'basic',
+		) );
 	}
 
 	/**
