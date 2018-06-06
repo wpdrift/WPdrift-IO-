@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 class WO_Server {
 
 	/** Plugin Version */
-	public $version = WPOAUTH_VERSION;
+	public $version = WPDRIFT_HELPER_VERSION;
 
 	/** Environment Type  */
 	public $env = 'production';
@@ -191,7 +191,7 @@ class WO_Server {
 			$charset_collate .= " COLLATE {$wpdb->collate}";
 		}
 
-		update_option( 'wpoauth_version', $this->version );
+		update_option( 'wpdrift_helper_version', $this->version );
 		$sql1 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_clients (
 			id 					  INT 			UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -300,7 +300,7 @@ class WO_Server {
 			// Update plugin version
 			$plugin_data    = get_plugin_data( WPOAUTH_FILE );
 			$plugin_version = $plugin_data['Version'];
-			update_option( 'wpoauth_version', $plugin_version );
+			update_option( 'wpdrift_helper_version', $plugin_version );
 		}
 
 	}

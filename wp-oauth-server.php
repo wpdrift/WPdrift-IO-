@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPdrift Helper
  * Plugin URI: https://upnrunn.com/plugins/wpdrift-helper
- * Version: 3.4.5
+ * Version: 1.0.0
  * Description: Full OAuth 2.0 Server for WordPress. User Authorization Management Systems For WordPress, required by WPdrift.
  * Author: Upnrunn
  * Author URI: https://upnrunn.com
@@ -18,8 +18,8 @@ if ( ! defined( 'WPOAUTH_FILE' ) ) {
 	define( 'WPOAUTH_FILE', __FILE__ );
 }
 
-if ( ! defined( 'WPOAUTH_VERSION' ) ) {
-	define( 'WPOAUTH_VERSION', '3.4.5' );
+if ( ! defined( 'WPDRIFT_HELPER_VERSION' ) ) {
+	define( 'WPDRIFT_HELPER_VERSION', '1.0.0' );
 }
 
 // localize
