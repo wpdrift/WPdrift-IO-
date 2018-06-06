@@ -39,9 +39,6 @@ class WPOAuth_Admin {
 	 */
 	public function add_page() {
 		add_menu_page( 'OAuth Server', 'OAuth Server', 'manage_options', 'wo_manage_clients', "wo_admin_manage_clients_page", 'dashicons-groups' );
-		add_submenu_page( 'wo_manage_clients', 'Clients', __( 'Clients', 'wp-oauth' ), 'manage_options', 'wo_manage_clients', 'wo_admin_manage_clients_page' );
-		add_submenu_page( null, 'Add Client', 'Add Client', 'manage_options', 'wo_add_client', 'wo_add_client_page' );
-		add_submenu_page( null, 'Edit Client', 'Edit Clients', 'manage_options', 'wo_edit_client', 'wo_admin_edit_client_page' );
 	}
 
 	/**
