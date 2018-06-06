@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: WP OAuth Server
- * Plugin URI: https://wp-oauth.com
+ * Plugin Name: WPdrift Helper
+ * Plugin URI: https://upnrunn.com/plugins/wpdrift-helper
  * Version: 3.4.5
- * Description: Full OAuth 2.0 Server for WordPress. User Authorization Management Systems For WordPress. This is the Free community version of this plugin. Download the full version <a href="https://wp-oauth.com">by clicking here</a>.
- * Author: Dash10 Digital
- * Author URI: https://dash10.digital
- * Text Domain: wp-oauth
+ * Description: Full OAuth 2.0 Server for WordPress. User Authorization Management Systems For WordPress, required by WPdrift.
+ * Author: Upnrunn
+ * Author URI: https://upnrunn.com
+ * Text Domain: wpdrift-helper
  *
- * @author  Justin Greer <justin@justin-greer.com>
- * @package WP OAuth Server
+ * @author  Upnrunn <kishore@upnrunn.com>
+ * @package WPdrift Helper
  */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
@@ -25,7 +25,7 @@ if ( ! defined( 'WPOAUTH_VERSION' ) ) {
 // localize
 add_action( 'plugins_loaded', 'wo_load_textdomain', 99 );
 function wo_load_textdomain() {
-	load_plugin_textdomain( 'wp-oauth', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( 'wpdrift-helper', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
 /**
@@ -141,8 +141,8 @@ if ( $wp_version <= 4.3 ) {
 	function wo_incompatibility_with_wp_version() {
 		?>
         <div class="notice notice-error">
-            <p><?php _e( 'WP OAuth Server requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wp-oauth' ); ?>
-                <a href="<?php echo admin_url( 'update-core.php' ); ?>"><?php _e( 'Update Now', 'wp-oauth' ); ?></a></p>
+            <p><?php _e( 'WPdrift Helper requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-helper' ); ?>
+                <a href="<?php echo admin_url( 'update-core.php' ); ?>"><?php _e( 'Update Now', 'wpdrift-helper' ); ?></a></p>
         </div>
 		<?php
 	}
