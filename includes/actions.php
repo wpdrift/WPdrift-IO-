@@ -143,6 +143,10 @@ if (!function_exists('_custlog')) {
 add_action( 'rest_api_init', function () {
 	register_rest_route( 'wpdriftsupporter/v1', '/validate-n-save-host/', array(
 		'methods' => 'POST',
-		'callback' => array(  WO_Server, 'call_for_validating_client_hosts' ),
+		'callback' => 'call_for_validating_client_hosts',
 	) );
 } );
+
+function call_for_validating_client_hosts() {
+
+}
