@@ -30,9 +30,11 @@ function wh_get_user_last_login( $user ) {
 }
 
 function wh_get_check_user_avatar( $user ) {
-    if ( get_avatar_url( $user['id'], array( 'force_default' => true ) ) ) {
-        return true;
-    }
+    return wh_has_gravatar( $user['email'] );
+}
 
-    return false;
+function wh_has_gravatar( $email_address ) {
+	$url = 'http://www.gravatar.com/avatar/' . md5( strtolower( trim ( $email_address ) ) ) . '?d=404';
+	$headers = @get_headers( $url );
+	return preg_match( '|200|', $headers[0] ) ? true : false;
 }
