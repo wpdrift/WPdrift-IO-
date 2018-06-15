@@ -6,6 +6,12 @@ function wh_user_meta_fields() {
            'schema'          => null,
         )
     );
+
+    register_rest_field( 'user', 'has_avatar', array(
+           'get_callback'    => 'wh_get_check_user_avatar',
+           'schema'          => null,
+        )
+    );
 }
 
 function wh_get_user_last_login( $user ) {
@@ -21,4 +27,12 @@ function wh_get_user_last_login( $user ) {
     }
 
     return $sessions[0];
+}
+
+function wh_get_check_user_avatar( $user ) {
+    if ( get_avatar_url( $user['id'], array( 'force_default' => true ) ) ) {
+        return true;
+    }
+
+    return false;
 }
