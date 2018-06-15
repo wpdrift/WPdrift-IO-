@@ -30,11 +30,7 @@ function wh_get_user_last_login( $user ) {
 }
 
 function wh_get_check_user_avatar( $user ) {
-<<<<<<< HEAD
     if ( get_avatar_url( $user['id'], array( 'force_default' => true ) ) ) {
-=======
-    if ( get_avatar( $user['id'] ) ) {
->>>>>>> e35ba824ac70fd905d391150ed9996e0dde11a9c
         return true;
     }
 
