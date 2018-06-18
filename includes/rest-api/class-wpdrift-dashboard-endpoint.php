@@ -82,7 +82,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
       * @return WP_Error|bool
       */
      public function get_items_permissions_check( $request ) {
-        return true;
+        return current_user_can('list_users');
      }
 
      /**
