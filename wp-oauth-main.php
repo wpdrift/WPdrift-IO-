@@ -170,6 +170,22 @@ class WO_Server {
 		}
 
 		$this->install();
+
+		// if ( ! has_a_client() ) {
+		// 	wo_insert_client(array(
+		// 		'name' => 'hello',
+		// 		'redirect_uri' => '',
+		// 		'user_id' => 1,
+		// 		'grant_types' => array(
+		// 			'authorization_code',
+		// 			'implicit',
+		// 			'password',
+		// 			'client_credentials',
+		// 			'refresh_token'
+		// 		),
+		// 		'scope' => 'basic',
+		// 	));
+		// }
 	}
 
 	/**

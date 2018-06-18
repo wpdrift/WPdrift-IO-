@@ -146,6 +146,11 @@ add_action( 'rest_api_init', function () {
 		'callback' => 'call_for_validating_client_hosts',
 	) );
 
+	register_rest_route( 'wpdriftsupporter/v1', '/validate-token/', array(
+		'methods' => 'POST',
+		'callback' => 'wpdrit_validate_token',
+	) );
+
 	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php' );
 	$dashboard_controller = new WD_Dashboard_Endpoint();
 	$dashboard_controller->register_routes();
@@ -153,4 +158,16 @@ add_action( 'rest_api_init', function () {
 
 function call_for_validating_client_hosts() {
 
+}
+
+function wpdrit_validate_token( $data ) {
+	global $wpdb;
+	$host = $_SERVER['REMOTE_ADDR'];
+	$access_token = $data['access_token'];
+
+	if ( '167.99.167.87' == $host ) {
+		return 'Invalid Host';
+	} else {
+		return $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}oauth_access_tokens WHERE access_token = '{$access_token}'", OBJECT );
+	}
 }
