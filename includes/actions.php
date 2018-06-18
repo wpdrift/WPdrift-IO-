@@ -145,6 +145,10 @@ add_action( 'rest_api_init', function () {
 		'methods' => 'POST',
 		'callback' => 'call_for_validating_client_hosts',
 	) );
+
+	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php' );
+	$dashboard_controller = new WD_Dashboard_Endpoint();
+	$dashboard_controller->register_routes();
 } );
 
 function call_for_validating_client_hosts() {
