@@ -165,7 +165,7 @@ function wpdrit_validate_token( $data ) {
 	$host = $_SERVER['REMOTE_ADDR'];
 	$access_token = $data['access_token'];
 
-	if ( '167.99.167.87' == $host ) {
+	if ( '167.99.167.87' !== $host ) {
 		return 'Invalid Host';
 	} else {
 		return $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}oauth_access_tokens WHERE access_token = '{$access_token}'", OBJECT );
