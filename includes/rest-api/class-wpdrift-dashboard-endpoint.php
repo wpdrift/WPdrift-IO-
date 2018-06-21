@@ -59,7 +59,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
         $items['week_pages'] = $this->get_weekly_posts('page');
         $items['comments'] = wp_count_comments();
         $items['week_comments'] = $this->get_weekly_comments();
-        $items['last_five_users'] = $this->retrieve_recent_five_signup_users();
+        $items['recent_events'] = $this->retrieve_recent_events();
         $data = array();
         foreach ($items as $key => $item) {
             $itemdata = $this->prepare_item_for_response($item, $request);
@@ -156,10 +156,10 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
     *
     * @since 1.0.0
     */
-    public function retrieve_recent_five_signup_users()
+    public function retrieve_recent_events()
     {
         global $wpdb;
-        $last_ten_uids = $wpdb->get_results("SELECT ID FROM $wpdb->users ORDER BY ID DESC LIMIT 5");
+        $last_ten_uids = $wpdb->get_results("SELECT ID FROM $wpdb->users ORDER BY ID DESC LIMIT 10");
         $users_ids = array();
         foreach ($last_ten_uids as $last_ten_uid) {
             $users_ids[] = $last_ten_uid->ID;
@@ -169,14 +169,93 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
         );
 
         $users = get_users($args);
-        foreach ($users as $user) {
-            if (wh_has_gravatar($user->data->user_email)) {
-                $user->avatar = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($user->data->user_email))) . '?s=96&d=404';
-                ;
-            } else {
-                $user->avatar = "";
+        // Get recent 5 comments
+        $args_cmts = array(
+            'orderby' => array('comment_date'),
+            'order' => 'DESC',
+            'number' => 10
+        );
+
+        $comments = get_comments($args_cmts);
+
+        $recent_events_raw = array_merge($comments, $users);
+        $altername_arry = array();
+        for ($j=0; $j<=count($users); $j++) {
+            $altername_arry[] = $users[$j];
+            $altername_arry[] = $comments[$j];
+        }
+        $i = 0;
+        $recent_events = array();
+        foreach ($altername_arry as $recent_event) {
+            if ($recent_event != null) {
+                if ($i % 2 == 0) {
+                    if ($recent_event->ID != "") {
+                        $key_for_sort = strtotime($recent_event->data->user_registered);
+                        // User Sign Up
+                        $recent_events[$key_for_sort]['event_type'] = 'signup';
+                        $recent_events[$key_for_sort]['event_id'] = $recent_event->ID;
+                        $recent_events[$key_for_sort]['user_display_name'] = $this->get_display_name_by_id($recent_event->ID);
+                        $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->data->user_registered);
+                        $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->data->user_email);
+                    }
+                } else {
+                    if ($recent_event->comment_ID != "") {
+                        // Comment
+                        $key_for_sort = strtotime($recent_event->comment_date);
+                        $recent_events[$key_for_sort]['event_type'] = 'comment';
+                        $recent_events[$key_for_sort]['event_id'] = $recent_event->comment_ID;
+                        $recent_events[$key_for_sort]['user_display_name'] = $recent_event->comment_author;
+                        $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->comment_date);
+                        $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->comment_author_email);
+                    }
+                }
+                $i++;
             }
         }
-        return $users;
+        // Sort array by ksort
+        krsort($recent_events, 1);
+        $new_events = array();
+        $k = 0;
+        foreach ($recent_events as $recent_event) {
+            $new_events[$k]['event_type'] = $recent_event['event_type'];
+            $new_events[$k]['event_id'] = $recent_event['event_id'];
+            $new_events[$k]['user_display_name'] = $recent_event['user_display_name'];
+            $new_events[$k]['event_date'] = $recent_event['event_date'];
+            $new_events[$k]['user_avatar'] = $recent_event['user_avatar'];
+            $k++;
+        }
+
+        return $new_events;
+    }
+
+    // get user display name by id
+    public function get_display_name_by_id($id)
+    {
+        $first_name = get_user_meta($id, 'first_name', true);
+        $last_name = get_user_meta($id, 'last_name', true);
+        $user_name = "";
+        if ($first_name == "" && $last_name == "") {
+            // get display name of user
+            $user_name = get_the_author_meta('display_name', $id);
+        } else {
+            $user_name = $first_name . " " . $last_name;
+        }
+        return $user_name;
+    }
+    // get user avatar by applied $email_address
+    public function get_user_avatar_by_email($email_address)
+    {
+        if (wh_has_gravatar($email_address)) {
+            $user_avatar = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($email_address))) . '?s=48&d=404';
+            ;
+        } else {
+            $user_avatar = "";
+        }
+        return $user_avatar;
+    }
+    // get event date by supplied date and format it and return
+    public function get_event_date($supplied_date)
+    {
+        return human_time_diff(strtotime($supplied_date), current_time('timestamp')) . " " . __('ago');
     }
 }
