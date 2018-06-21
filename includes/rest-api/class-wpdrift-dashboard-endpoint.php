@@ -246,7 +246,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
     public function get_user_avatar_by_email($email_address)
     {
         if (wh_has_gravatar($email_address)) {
-            $user_avatar = 'http://www.gravatar.com/avatar/' . md5(strtolower(trim($email_address))) . '?s=48&d=404';
+            $user_avatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($email_address))) . '?s=48&d=404';
             ;
         } else {
             $user_avatar = "";
