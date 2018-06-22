@@ -179,37 +179,29 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
         $comments = get_comments($args_cmts);
 
         $recent_events_raw = array_merge($comments, $users);
-        $altername_arry = array();
-        for ($j=0; $j<=count($users); $j++) {
-            $altername_arry[] = $users[$j];
-            $altername_arry[] = $comments[$j];
-        }
         $i = 0;
         $recent_events = array();
-        foreach ($altername_arry as $recent_event) {
+        foreach ($recent_events_raw as $recent_event) {
             if ($recent_event != null) {
-                if ($i % 2 == 0) {
-                    if ($recent_event->ID != "") {
-                        $key_for_sort = strtotime($recent_event->data->user_registered);
-                        // User Sign Up
-                        $recent_events[$key_for_sort]['event_type'] = 'signup';
-                        $recent_events[$key_for_sort]['event_id'] = $recent_event->ID;
-                        $recent_events[$key_for_sort]['user_display_name'] = $this->get_display_name_by_id($recent_event->ID);
-                        $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->data->user_registered);
-                        $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->data->user_email);
-                        $recent_events[$key_for_sort]['user_id'] = $recent_event->ID;
-                    }
-                } else {
-                    if ($recent_event->comment_ID != "") {
-                        // Comment
-                        $key_for_sort = strtotime($recent_event->comment_date);
-                        $recent_events[$key_for_sort]['event_type'] = 'comment';
-                        $recent_events[$key_for_sort]['event_id'] = $recent_event->comment_ID;
-                        $recent_events[$key_for_sort]['user_display_name'] = $recent_event->comment_author;
-                        $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->comment_date);
-                        $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->comment_author_email);
-                        $recent_events[$key_for_sort]['user_id'] = $recent_event->user_id;
-                    }
+                if ($recent_event->ID != "") {
+                    $key_for_sort = strtotime($recent_event->data->user_registered);
+                    // User Sign Up
+                    $recent_events[$key_for_sort]['event_type'] = 'signup';
+                    $recent_events[$key_for_sort]['event_id'] = $recent_event->ID;
+                    $recent_events[$key_for_sort]['user_display_name'] = $this->get_display_name_by_id($recent_event->ID);
+                    $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->data->user_registered);
+                    $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->data->user_email);
+                    $recent_events[$key_for_sort]['user_id'] = $recent_event->ID;
+                }
+                if ($recent_event->comment_ID != "") {
+                    // Comment
+                    $key_for_sort = strtotime($recent_event->comment_date);
+                    $recent_events[$key_for_sort]['event_type'] = 'comment';
+                    $recent_events[$key_for_sort]['event_id'] = $recent_event->comment_ID;
+                    $recent_events[$key_for_sort]['user_display_name'] = $recent_event->comment_author;
+                    $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->comment_date);
+                    $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->comment_author_email);
+                    $recent_events[$key_for_sort]['user_id'] = $recent_event->user_id;
                 }
                 $i++;
             }
