@@ -169,7 +169,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
         );
 
         $users = get_users($args);
-        // Get recent 5 comments
+        // Get recent 10 comments
         $args_cmts = array(
             'orderby' => array('comment_date'),
             'order' => 'DESC',
