@@ -197,6 +197,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
                         $recent_events[$key_for_sort]['user_display_name'] = $this->get_display_name_by_id($recent_event->ID);
                         $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->data->user_registered);
                         $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->data->user_email);
+                        $recent_events[$key_for_sort]['user_id'] = $recent_event->ID;
                     }
                 } else {
                     if ($recent_event->comment_ID != "") {
@@ -207,6 +208,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
                         $recent_events[$key_for_sort]['user_display_name'] = $recent_event->comment_author;
                         $recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->comment_date);
                         $recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->comment_author_email);
+                        $recent_events[$key_for_sort]['user_id'] = $recent_event->user_id;
                     }
                 }
                 $i++;
@@ -222,6 +224,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller
             $new_events[$k]['user_display_name'] = $recent_event['user_display_name'];
             $new_events[$k]['event_date'] = $recent_event['event_date'];
             $new_events[$k]['user_avatar'] = $recent_event['user_avatar'];
+            $new_events[$k]['user_id'] = $recent_event['user_id'];
             $k++;
         }
 
