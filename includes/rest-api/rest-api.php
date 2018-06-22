@@ -29,6 +29,15 @@ function wh_user_meta_fields()
            'schema'          => null,
         )
     );
+    // user total comments, posts, pages count
+    register_rest_field(
+        'user',
+        'posted_content_count',
+        array(
+           'get_callback'    => 'wh_get_user_posted_content_count',
+           'schema'          => null,
+        )
+    );
 }
 
 function wh_get_user_last_login($user)
@@ -64,4 +73,17 @@ function wh_get_user_joined_date($user)
     $udata = get_userdata($user['id']);
     $registered = $udata->data->user_registered;
     return date("M d, Y", strtotime($registered));
+}
+
+function wh_get_user_posted_content_count($user)
+{
+    global $wpdb;
+    $posted_content = array();
+    $comments_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) AS total FROM $wpdb->comments WHERE comment_approved = 1 AND user_id = %s", $user['id']));
+    $posts_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) AS total FROM $wpdb->posts WHERE post_type = 'post' AND post_status = 'publish' AND post_author = %s", $user['id']));
+    $pages_count = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) AS total FROM $wpdb->posts WHERE post_type = 'page' AND post_status = 'publish' AND post_author = %s", $user['id']));
+    $posted_content['comments_count'] = $comments_count;
+    $posted_content['posts_count'] = $posts_count;
+    $posted_content['pages_count'] = $pages_count;
+    return $posted_content;
 }
