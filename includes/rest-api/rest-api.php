@@ -2,14 +2,14 @@
 add_action('rest_api_init', 'wh_user_meta_fields');
 function wh_user_meta_fields()
 {
-    // register_rest_field(
-    //     'user',
-    //     'login_activity',
-    //     array(
-    //        'get_callback'    => 'wh_get_user_login_activity',
-    //        'schema'          => null,
-    //     )
-    // );
+    register_rest_field(
+        'user',
+        'ip_data',
+        array(
+           'get_callback'    => 'wh_get_user_ip_location_data',
+           'schema'          => null,
+        )
+    );
 
     register_rest_field(
         'user',
@@ -49,18 +49,6 @@ function wh_user_meta_fields()
     );
 }
 
-// function wh_get_user_login_activity($user)
-// {
-//     if ( $login_activity = get_user_meta($user['id'], 'login_activity', true) ) {
-//         $login_activity['time_diff'] = human_time_diff( strtotime($login_activity['time']), current_time('timestamp') ) . ' ago';
-//     } else {
-//         $login_activity = array(
-//             'time_diff' => 'Never',
-//         );
-//     }
-//     return $login_activity;
-// }
-
 function wh_get_user_last_login($user)
 {
     $login_activity = get_user_meta($user['id'], 'last_login', true);
@@ -70,6 +58,10 @@ function wh_get_user_last_login($user)
     }
 
     return array();
+}
+
+function wh_get_user_ip_location_data( $user ) {
+    return get_user_meta($user['id'], 'ip_data', true);
 }
 
 function wh_get_check_user_avatar($user)

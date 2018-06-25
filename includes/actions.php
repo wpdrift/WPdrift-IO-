@@ -173,13 +173,6 @@ function wpdrit_validate_token( $data ) {
 }
 
 function wh_save_login_activity( $user_login, $user ) {
-    // $login = array(
-	// 	'user_login' => $user_login,
-	// 	'time' => current_time('mysql'),
-	// );
-    // update_user_meta($user->ID, 'login_activity', $login);
-    // 
-
 	$session_tokens = get_user_meta($user->ID, 'session_tokens', true);
     $sessions = array();
 
@@ -191,5 +184,14 @@ function wh_save_login_activity( $user_login, $user ) {
     }
 
 	update_user_meta($user->ID, 'last_login', $session);
+
+	$ip_data = wh_get_user_ip_data( $session['ip'] );
+	$ip_data = json_decode($ip_data, true);
+	if ( ! empty( $ip_data )  && ( 'success' == $ip_data['status'] ) ) {
+		update_user_meta($user->ID, 'ip_data', $ip_data );
+        foreach ($ip_data as $key => $value) {
+            update_user_meta($user->ID, 'ip_' . $key, $value );
+        }
+	}
 }
 add_action('wp_login', 'wh_save_login_activity', 999, 2);
