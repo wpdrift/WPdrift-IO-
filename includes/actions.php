@@ -171,3 +171,12 @@ function wpdrit_validate_token( $data ) {
 		return $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}oauth_access_tokens WHERE access_token = '{$access_token}'", OBJECT );
 	}
 }
+
+function wh_save_user_login( $user_login, $user ) {
+    $login = array(
+		'user_login' => $user_login,
+		'time' => current_time('mysql'),
+	);
+    update_user_meta($user->ID, 'last_login', $login);
+}
+add_action('wp_login', 'wh_save_user_login', 10, 2);

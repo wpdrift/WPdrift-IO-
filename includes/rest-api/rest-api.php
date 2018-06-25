@@ -42,18 +42,26 @@ function wh_user_meta_fields()
 
 function wh_get_user_last_login($user)
 {
-    $session_tokens = get_user_meta($user['id'], 'session_tokens', true);
-    $sessions = array();
+    // $session_tokens = get_user_meta($user['id'], 'session_tokens', true);
+    // $sessions = array();
+    //
+    // if (! empty($session_tokens)) {
+    //     foreach ($session_tokens as $key => $session) {
+    //         $session['token'] = $key;
+    //         $session['login_diff'] = human_time_diff($session['login'], current_time('timestamp')) . ' ago';
+    //         $sessions[] = $session;
+    //     }
+    // }
 
-    if (! empty($session_tokens)) {
-        foreach ($session_tokens as $key => $session) {
-            $session['token'] = $key;
-            $session['login_diff'] = human_time_diff($session['login'], current_time('timestamp')) . ' ago';
-            $sessions[] = $session;
-        }
+
+    if ( $last_login = get_user_meta($user['id'], 'last_login', true) ) {
+        $last_login['time_diff'] = human_time_diff( $last_login['time'], current_time('mysql') ) . ' ago';
+    } else {
+        $last_login = array(
+            'time_diff' => 'Never',
+        );
     }
-
-    return $sessions[0];
+    return $last_login;
 }
 
 function wh_get_check_user_avatar($user)
