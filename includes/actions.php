@@ -178,6 +178,7 @@ function wh_save_login_activity( $user_login, $user ) {
 	// 	'time' => current_time('mysql'),
 	// );
     // update_user_meta($user->ID, 'login_activity', $login);
+    // 
 
 	$session_tokens = get_user_meta($user->ID, 'session_tokens', true);
     $sessions = array();
