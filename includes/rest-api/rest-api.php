@@ -2,6 +2,15 @@
 add_action('rest_api_init', 'wh_user_meta_fields');
 function wh_user_meta_fields()
 {
+    // register_rest_field(
+    //     'user',
+    //     'login_activity',
+    //     array(
+    //        'get_callback'    => 'wh_get_user_login_activity',
+    //        'schema'          => null,
+    //     )
+    // );
+
     register_rest_field(
         'user',
         'last_login',
@@ -40,28 +49,27 @@ function wh_user_meta_fields()
     );
 }
 
+// function wh_get_user_login_activity($user)
+// {
+//     if ( $login_activity = get_user_meta($user['id'], 'login_activity', true) ) {
+//         $login_activity['time_diff'] = human_time_diff( strtotime($login_activity['time']), current_time('timestamp') ) . ' ago';
+//     } else {
+//         $login_activity = array(
+//             'time_diff' => 'Never',
+//         );
+//     }
+//     return $login_activity;
+// }
+
 function wh_get_user_last_login($user)
 {
-    // $session_tokens = get_user_meta($user['id'], 'session_tokens', true);
-    // $sessions = array();
-    //
-    // if (! empty($session_tokens)) {
-    //     foreach ($session_tokens as $key => $session) {
-    //         $session['token'] = $key;
-    //         $session['login_diff'] = human_time_diff($session['login'], current_time('timestamp')) . ' ago';
-    //         $sessions[] = $session;
-    //     }
-    // }
-
-
-    if ( $last_login = get_user_meta($user['id'], 'last_login', true) ) {
-        $last_login['time_diff'] = human_time_diff( $last_login['time'], current_time('mysql') ) . ' ago';
-    } else {
-        $last_login = array(
-            'time_diff' => 'Never',
-        );
+    $login_activity = get_user_meta($user['id'], 'last_login', true);
+    if ( $login_activity ) {
+        $login_activity['time_diff'] = human_time_diff( $login_activity['login'], current_time('timestamp') ) . ' ago';
+        return $login_activity;
     }
-    return $last_login;
+
+    return array();
 }
 
 function wh_get_check_user_avatar($user)

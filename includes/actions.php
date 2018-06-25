@@ -172,11 +172,23 @@ function wpdrit_validate_token( $data ) {
 	}
 }
 
-function wh_save_user_login( $user_login, $user ) {
-    $login = array(
-		'user_login' => $user_login,
-		'time' => current_time('mysql'),
-	);
-    update_user_meta($user->ID, 'last_login', $login);
+function wh_save_login_activity( $user_login, $user ) {
+    // $login = array(
+	// 	'user_login' => $user_login,
+	// 	'time' => current_time('mysql'),
+	// );
+    // update_user_meta($user->ID, 'login_activity', $login);
+
+	$session_tokens = get_user_meta($user->ID, 'session_tokens', true);
+    $sessions = array();
+
+    if (! empty($session_tokens)) {
+        foreach ($session_tokens as $key => $session) {
+            $session['token'] = $key;
+            $sessions[] = $session;
+        }
+    }
+
+	update_user_meta($user->ID, 'last_login', $session);
 }
-add_action('wp_login', 'wh_save_user_login', 10, 2);
+add_action('wp_login', 'wh_save_login_activity', 999, 2);
