@@ -95,7 +95,7 @@ class WD_RecentEvents_Endpoint extends WP_REST_Controller
     {
         $type = (isset($parameters['type']) && trim($parameters['type']) != "") ? trim($parameters['type']) : "all";
         global $wpdb;
-        $last_ten_uids = $wpdb->get_results("SELECT ID FROM $wpdb->users ORDER BY ID DESC LIMIT 10");
+        $last_ten_uids = $wpdb->get_results("SELECT ID FROM $wpdb->users ORDER BY ID DESC LIMIT 25");
         $users_ids = array();
         foreach ($last_ten_uids as $last_ten_uid) {
             $users_ids[] = $last_ten_uid->ID;
@@ -112,7 +112,7 @@ class WD_RecentEvents_Endpoint extends WP_REST_Controller
         $args_cmts = array(
             'orderby' => array('comment_date'),
             'order' => 'DESC',
-            'number' => 10
+            'number' => 25
         );
 
         $comments = get_comments($args_cmts);
