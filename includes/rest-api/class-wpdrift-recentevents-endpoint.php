@@ -108,7 +108,7 @@ class WD_RecentEvents_Endpoint extends WP_REST_Controller
         if ($type == "comment") {
             $users = array();
         }
-        // Get recent 10 comments
+        // Get recent 25 comments
         $args_cmts = array(
             'orderby' => array('comment_date'),
             'order' => 'DESC',
