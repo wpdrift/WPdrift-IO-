@@ -155,6 +155,12 @@ add_action('rest_api_init', function () {
         'callback' => 'wpdrit_validate_token',
     ));
 
+    // New edn point to check that plugin is installed or not
+    register_rest_route('wpdriftsupporter/v1', '/check-plugin/', array(
+        'methods' => 'GET',
+        'callback' => 'wpdrit_check_provide_plgn_ver',
+    ));
+
     require_once(dirname(WPDRIFT_HELPER_FILE) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php');
     $dashboard_controller = new WD_Dashboard_Endpoint();
     $dashboard_controller->register_routes();
@@ -206,3 +212,21 @@ function wh_save_login_activity($user_login, $user)
     }
 }
 add_action('wp_login', 'wh_save_login_activity', 999, 2);
+// check plugin is installed and then add version of plugin
+function wpdrit_check_provide_plgn_ver()
+{
+    global $wpdb;
+    $host = $_SERVER['REMOTE_ADDR'];
+    if ('167.99.167.87' !== $host) {
+        return 'Invalid Host';
+    } else {
+        $plugin_directory = "WPdrift-IO-/wp-oauth-server.php";
+        $plugin_active = false;
+        $plugin_version = WPDRIFT_HELPER_VERSION;
+        include_once(ABSPATH . 'wp-admin/includes/plugin.php');
+        if (is_plugin_active($plugin_directory)) {
+            $plugin_active = true;
+        }
+        return array('plugin_version' => $plugin_version, 'plugin_active' => $plugin_active);
+    }
+}
