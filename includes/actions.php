@@ -220,7 +220,7 @@ function wpdrit_check_provide_plgn_ver()
     if ('167.99.167.87' !== $host) {
         return 'Invalid Host';
     } else {
-        $plugin_directory = "WPdrift-IO-/wp-oauth-server.php";
+        $plugin_directory = "WPdrift-IO/wp-oauth-server.php";
         $plugin_active = false;
         $plugin_version = WPDRIFT_HELPER_VERSION;
         include_once(ABSPATH . 'wp-admin/includes/plugin.php');
