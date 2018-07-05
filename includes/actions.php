@@ -161,12 +161,12 @@ add_action('rest_api_init', function () {
         'callback' => 'wpdrit_check_provide_plgn_ver',
     ));
 
-    require_once(dirname(WPDRIFT_HELPER_FILE) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php');
+    require_once(dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php');
     $dashboard_controller = new WD_Dashboard_Endpoint();
     $dashboard_controller->register_routes();
 
     // Register new recent events end points
-    require_once(dirname(WPDRIFT_HELPER_FILE) . '/includes/rest-api/class-wpdrift-recentevents-endpoint.php');
+    require_once(dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-endpoint.php');
     $recent_event_controller = new WD_RecentEvents_Endpoint();
     $recent_event_controller->register_routes();
 });
