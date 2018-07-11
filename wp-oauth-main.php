@@ -51,7 +51,7 @@ class WO_Server {
 		}
 
 		if ( ! defined( 'WOCHECKSUM' ) ) {
-			define( 'WOCHECKSUM', 'DA3D039AA1D5BE2EFDFB96C457B5167F' );
+			define( 'WOCHECKSUM', 'F2B0D73C4BE99511D25BBAE6DF0BB28F' );
 		}
 
 		if ( function_exists( '__autoload' ) ) {
