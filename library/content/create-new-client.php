@@ -144,7 +144,7 @@ $options = get_option( 'wo_options' );
 						<?php wp_nonce_field( 'add-new-client' ); ?>
 						<?php if ( has_a_client() ): ?>
                             <span style="margin-top: 20px; color:#ff4954; margin-right: 80px; display: block">Limitation Reach. Max 1 Client. <strong><a
-                                        href="https://wp-oauth.com/downloads/wp-oauth-server/" target="_top">Upgrade to Pro</a></strong>.</span>
+                                        href="https://wpdrift.io/downloads/wp-oauth-server/" target="_top">Upgrade to Pro</a></strong>.</span>
 						<?php else: ?>
                             <input type="submit" value="Add Client"/>
 						<?php endif; ?>

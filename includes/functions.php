@@ -413,7 +413,7 @@ function wp_verifiy_authenticity_of_plugin_core()
         {
             ?>
             <div class="notice notice-error">
-                <p><strong>You are at risk!</strong> WP OAuth Server is not genuine. Please contact info@wp-oauth.com
+                <p><strong>You are at risk!</strong> WP OAuth Server is not genuine. Please contact info@wpdrift.io
                     immediately.</p>
             </div>
 			<?php

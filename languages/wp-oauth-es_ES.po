@@ -43,8 +43,8 @@ msgstr ""
 
 #. URI of the plugin
 #. Author URI of the plugin
-msgid "http://wp-oauth.com"
-msgstr "http://wp-oauth.com"
+msgid "http://wpdrift.io"
+msgstr "http://wpdrift.io"
 
 #. Author of the plugin
 msgid "WP OAuth Server"
@@ -185,18 +185,18 @@ msgid ""
 "reasons, a single\n"
 "\t\t\t\t\t\t\tgrant type should be used per client. To learn more about "
 "which grant type you will need,\n"
-"\t\t\t\t\t\t\tplease visit <a href=\"https://wp-oauth.com/kb/available-grant-"
+"\t\t\t\t\t\t\tplease visit <a href=\"https://wpdrift.io/kb/available-grant-"
 "types/\"\n"
 "\t\t\t\t\t\t\t                title=\"Learn more about which grant type to "
-"use\" target=\"_blank\">https://wp-oauth.com/kb/available-grant-types/</a>"
+"use\" target=\"_blank\">https://wpdrift.io/kb/available-grant-types/</a>"
 msgstr ""
 "Es importante elegir el tipo de subvención correcto para su cliente. Por "
 "razones de seguridad,\n"
 "Tipo de subvención debe ser utilizado por cliente. Para obtener más "
 "información sobre el tipo de subvención que necesitará,\n"
-"por favor visita <a href=\"https://wp-oauth.com/kb/available-grant-types/\"\n"
+"por favor visita <a href=\"https://wpdrift.io/kb/available-grant-types/\"\n"
 "\t\t\t\t\t\t\t                title=\"Learn more about which grant type to "
-"use\" target=\"_blank\">https://wp-oauth.com/kb/available-grant-types/</a>"
+"use\" target=\"_blank\">https://wpdrift.io/kb/available-grant-types/</a>"
 
 #: includes/admin/pages/edit-client.php:119
 msgid "Update Client"

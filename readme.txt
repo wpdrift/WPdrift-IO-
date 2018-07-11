@@ -37,7 +37,7 @@ WP OAuth Server allows you to connect a mobile application to any WordPress site
 
 = Documentation =
 
-Visit https://wp-oauth.com/support/documentation/ for detailed documentation on installing, configuring and using WordPress OAuth Server.
+Visit https://wpdrift.io/support/documentation/ for detailed documentation on installing, configuring and using WordPress OAuth Server.
 
 = Minimum Requirements =
 
@@ -50,7 +50,7 @@ Visit https://wp-oauth.com/support/documentation/ for detailed documentation on 
 
 = Support =
 
-Support requests should be made by opening a support request at https://wp-oauth.com/support/submit-ticket/.
+Support requests should be made by opening a support request at https://wpdrift.io/support/submit-ticket/.
 
 == Installation ==
 
@@ -72,17 +72,17 @@ Click on `Settings->OAuth Server`. Click on the `Clients` tab and then `Add New 
 Yes, WordPress OAuth Server does support Single Sign On for both Traditional OAuth2 Flow and OpenID Connect.
 
 = Is there support for this plugin? Can you help me? =
-You can visit our https://wp-oauth.com/support/submit-ticket/ to open up a support request directly with developers.
+You can visit our https://wpdrift.io/support/submit-ticket/ to open up a support request directly with developers.
 
 = Can you set this up for me on my current website? =
 * DRINKS COFFEE * Can I? "YES". You are more than welcome to contact us with if you should ever need assistance.
 
 = How do I use WordPress OAuth Server? =
-You can visit https://wp-oauth.com/support/documentation/. You will find in-depth documentation as well as examples of how to get started.
+You can visit https://wpdrift.io/support/documentation/. You will find in-depth documentation as well as examples of how to get started.
 
 == Upgrade Notice ==
 
-Version 2.0.0 and lower are not compatible with version 3.0.0. If you have built your service using version 2.0.0 or lower, visit https://wp-oauth.com/support/submit-ticket/ to open a new request support request.
+Version 2.0.0 and lower are not compatible with version 3.0.0. If you have built your service using version 2.0.0 or lower, visit https://wpdrift.io/support/submit-ticket/ to open a new request support request.
 
 For any upgrade or modification, PLEASE PLEASE PLEASE make a full backup of your data. 
 
@@ -399,7 +399,7 @@ For any upgrade or modification, PLEASE PLEASE PLEASE make a full backup of your
 
 = 3.0.0 =
 * Updated and rebuilt structure.
-* Visit <a href="http://wp-oauth.com">http://wp-oauth.com</a> for documentation and more information.
+* Visit <a href="http://wpdrift.io">http://wpdrift.io</a> for documentation and more information.
 
 = 2.0.0 =
 * Rebuild init plugin code structure for more flexibility and scalability.

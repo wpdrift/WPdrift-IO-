@@ -30,8 +30,8 @@ function wo_add_client_page() {
                         <p>
 							<?php _e( 'Choosing the correct grant type for your client is important. For security reasons, a single
 							grant type should be used per client. To learn more about which grant type you will need,
-							please visit <a href="https://wp-oauth.com/documentation/overview/supported-grant-types/"
-							                title="Learn more about which grant type to use" target="_blank">https://wp-oauth.com/documentation/overview/supported-grant-types/</a>.', 'wp-oauth' ); ?>
+							please visit <a href="https://wpdrift.io/documentation/overview/supported-grant-types/"
+							                title="Learn more about which grant type to use" target="_blank">https://wpdrift.io/documentation/overview/supported-grant-types/</a>.', 'wp-oauth' ); ?>
                         </p>
                         <hr/>
 
@@ -93,7 +93,7 @@ function wo_add_client_page() {
 
                                 <label> Redirect URI
                                     <small> (Optional -
-                                        Recommend: <a href="https://wp-oauth.com/kb/redirect-uri-recommend/"
+                                        Recommend: <a href="https://wpdrift.io/kb/redirect-uri-recommend/"
                                                       title="Why this is recommended" target="_blank">Why?)(</a>
                                     </small>
                                     <input class="emuv-input" type="text" name="redirect_uri"
@@ -141,7 +141,7 @@ function wo_add_client_page() {
 			<?php if ( has_a_client() ) : ?>
                 <div style="background: #e14d43; color: #fff; padding: 1em;">
                     <p>Pro version required in order to have more then 1 client. Upgrade by
-                        <a style="color: #fff;" href="https://wp-oauth.com/downloads/wp-oauth-server/" target="_blank">
+                        <a style="color: #fff;" href="https://wpdrift.io/downloads/wp-oauth-server/" target="_blank">
                             <strong>clicking here</strong>
                         </a>.
                     </p>

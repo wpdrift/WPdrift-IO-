@@ -54,8 +54,8 @@ function wo_admin_edit_client_page() {
 						<p>
 							<?php _e( 'Choosing the correct grant type for your client is important. For security reasons, a single
 							grant type should be used per client. To learn more about which grant type you will need,
-							please visit <a href="https://wp-oauth.com/documentation/overview/supported-grant-types/"
-							                title="Learn more about which grant type to use" target="_blank">https://wp-oauth.com/documentation/overview/supported-grant-types/</a>.', 'wp-oauth' ); ?>
+							please visit <a href="https://wpdrift.io/documentation/overview/supported-grant-types/"
+							                title="Learn more about which grant type to use" target="_blank">https://wpdrift.io/documentation/overview/supported-grant-types/</a>.', 'wp-oauth' ); ?>
 
 						</p>
 						<hr/>
