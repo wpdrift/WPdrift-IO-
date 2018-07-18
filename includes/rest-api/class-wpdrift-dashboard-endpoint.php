@@ -69,6 +69,9 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 
 		$items                = array();
 		$items['count_users'] = count_users();
+		$items['count_posts'] = wp_count_posts();
+		$items['count_pages'] = wp_count_posts( 'page' );
+		$items['count_comments'] = wp_count_comments();
 		$items['users']       = $this->get_users( $date_args );
 		$items['posts']       = $this->get_posts( $date_args );
 		$items['pages']       = $this->get_posts( $date_args, 'page' );
