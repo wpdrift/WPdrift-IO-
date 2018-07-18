@@ -67,11 +67,12 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			$date_args[0]['before'] = $request['before'];
 		}
 
-		$items          = array();
-		$items['users'] = $this->get_users( $date_args );
-		$items['posts'] = $this->get_posts( $date_args );
-		$items['pages'] = $this->get_posts( $date_args, 'page' );
-		$items['comments'] = $this->get_comments( $date_args );
+		$items                = array();
+		$items['count_users'] = count_users();
+		$items['users']       = $this->get_users( $date_args );
+		$items['posts']       = $this->get_posts( $date_args );
+		$items['pages']       = $this->get_posts( $date_args, 'page' );
+		$items['comments']    = $this->get_comments( $date_args );
 
 		/**
 		 * [$data description]
