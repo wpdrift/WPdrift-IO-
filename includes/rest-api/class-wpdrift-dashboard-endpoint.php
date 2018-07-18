@@ -35,6 +35,15 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 				'args'                => array(),
 			),
 		));
+
+		register_rest_route($this->namespace, '/' . $this->rest_base . '/bloginfo', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_bloginfo' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'args'                => array(),
+			),
+		));
 	}
 
 	/**
@@ -91,6 +100,24 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * [return description]
 		 * @var [type]
 		 */
+		return rest_ensure_response( $data );
+	}
+
+	/**
+	 * [get_version description]
+	 * @return [type] [description]
+	 */
+	public function get_bloginfo() {
+		$data = array(
+			'name' => get_bloginfo( 'name' ),
+			'description' => get_bloginfo( 'description' ),
+			'version' => get_bloginfo( 'version' ),
+			'url' => get_bloginfo( 'url' ),
+			'admin_email' => get_bloginfo( 'admin_email' ),
+			'language' => get_bloginfo( 'language' ),
+			'rss2_url' => get_bloginfo( 'rss2_url' ),
+			'comments_rss2_url' => get_bloginfo( 'comments_rss2_url' ),
+		);
 		return rest_ensure_response( $data );
 	}
 
