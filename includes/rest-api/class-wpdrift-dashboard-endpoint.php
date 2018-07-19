@@ -40,7 +40,6 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_bloginfo' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'                => array(),
 			),
 		));
