@@ -116,6 +116,8 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			'language' => get_bloginfo( 'language' ),
 			'rss2_url' => get_bloginfo( 'rss2_url' ),
 			'comments_rss2_url' => get_bloginfo( 'comments_rss2_url' ),
+			'admin_url' => admin_url(),
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
 		);
 		return rest_ensure_response( $data );
 	}
