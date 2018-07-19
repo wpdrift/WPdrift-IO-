@@ -165,7 +165,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * [$query_fields description]
 		 * @var string
 		 */
-		$query_fields  = "COUNT(*), EXTRACT(DAY FROM user_registered) day, EXTRACT(MONTH FROM user_registered) month, EXTRACT(YEAR FROM user_registered) year";
+		$query_fields  = "COUNT(*), user_registered, EXTRACT(DAY FROM user_registered) day, EXTRACT(MONTH FROM user_registered) month, EXTRACT(YEAR FROM user_registered) year";
 		$query_from    = "FROM $wpdb->users";
 		$query_where   = "WHERE 1=1";
 		$query_where  .= $date_query->get_sql();
@@ -176,16 +176,18 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * [$request description]
 		 * @var string
 		 */
-		$request = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
-		$col     = $wpdb->get_col( $request );
+		$request             = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$col                 = $wpdb->get_col( $request );
+		$col_user_registered = $wpdb->get_col( $request, 1 );
 
 		/**
 		 * [$data description]
 		 * @var array
 		 */
 		$data = [
-			'total' => array_sum( $col ),
-			'data'  => $col,
+			'total'  => array_sum( $col ),
+			'data'   => $col,
+			'labels' => $col_user_registered,
 		];
 
 		/**
