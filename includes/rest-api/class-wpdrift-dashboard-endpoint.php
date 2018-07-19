@@ -27,6 +27,11 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 	 * @since 1.0.0
 	 */
 	public function register_routes() {
+
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
 		register_rest_route($this->namespace, '/' . $this->rest_base, array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -36,11 +41,28 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			),
 		));
 
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
 		register_rest_route($this->namespace, '/' . $this->rest_base . '/bloginfo', array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_bloginfo' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'                => array(),
+			),
+		));
+
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
+		register_rest_route($this->namespace, '/' . $this->rest_base . '/referers', array(
+			array(
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( $this, 'get_referers' ),
+				'args'     => array(),
 			),
 		));
 	}
@@ -75,15 +97,15 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			$date_args[0]['before'] = $request['before'];
 		}
 
-		$items                = array();
-		$items['count_users'] = count_users();
-		$items['count_posts'] = wp_count_posts();
-		$items['count_pages'] = wp_count_posts( 'page' );
+		$items                   = array();
+		$items['count_users']    = count_users();
+		$items['count_posts']    = wp_count_posts();
+		$items['count_pages']    = wp_count_posts( 'page' );
 		$items['count_comments'] = wp_count_comments();
-		$items['users']       = $this->get_users( $date_args );
-		$items['posts']       = $this->get_posts( $date_args );
-		$items['pages']       = $this->get_posts( $date_args, 'page' );
-		$items['comments']    = $this->get_comments( $date_args );
+		$items['users']          = $this->get_users( $date_args );
+		$items['posts']          = $this->get_posts( $date_args );
+		$items['pages']          = $this->get_posts( $date_args, 'page' );
+		$items['comments']       = $this->get_comments( $date_args );
 
 		/**
 		 * [$data description]
@@ -107,41 +129,36 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function get_bloginfo() {
+
+		/**
+		 * [$data description]
+		 * @var array
+		 */
 		$data = array(
-			'name' => get_bloginfo( 'name' ),
-			'description' => get_bloginfo( 'description' ),
-			'version' => get_bloginfo( 'version' ),
-			'url' => get_bloginfo( 'url' ),
-			'admin_email' => get_bloginfo( 'admin_email' ),
-			'language' => get_bloginfo( 'language' ),
-			'rss2_url' => get_bloginfo( 'rss2_url' ),
+			'name'              => get_bloginfo( 'name' ),
+			'description'       => get_bloginfo( 'description' ),
+			'version'           => get_bloginfo( 'version' ),
+			'url'               => get_bloginfo( 'url' ),
+			'admin_email'       => get_bloginfo( 'admin_email' ),
+			'language'          => get_bloginfo( 'language' ),
+			'rss2_url'          => get_bloginfo( 'rss2_url' ),
 			'comments_rss2_url' => get_bloginfo( 'comments_rss2_url' ),
-			'admin_url' => admin_url(),
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'admin_url'         => admin_url(),
+			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 		);
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
 		return rest_ensure_response( $data );
 	}
 
 	/**
-	 * Prepare the item for the REST response
-	 *
-	 * @param mixed $item WordPress representation of the item.
-	 * @param WP_REST_Request $request Request object.
-	 * @return mixed
+	 * [get_referers description]
+	 * @return [type] [description]
 	 */
-	public function prepare_item_for_response( $item, $request ) {
-		return $item;
-	}
-
-	/**
-	 * Check if a given request has access to get items
-	 *
-	 * @param WP_REST_Request $request Full data about the request.
-	 * @return WP_Error|bool
-	 */
-	public function get_items_permissions_check( $request ) {
-		return true;
-		return current_user_can( 'list_users' );
+	public function get_referers() {
 	}
 
 	/**
@@ -299,4 +316,26 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		return $data;
 	}
+
+	/**
+	 * Check if a given request has access to get items
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 * @return WP_Error|bool
+	 */
+	public function get_items_permissions_check( $request ) {
+		return current_user_can( 'list_users' );
+	}
+
+	/**
+	 * Prepare the item for the REST response
+	 *
+	 * @param mixed $item WordPress representation of the item.
+	 * @param WP_REST_Request $request Request object.
+	 * @return mixed
+	 */
+	public function prepare_item_for_response( $item, $request ) {
+		return $item;
+	}
+
 }
