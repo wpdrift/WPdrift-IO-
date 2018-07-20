@@ -145,6 +145,16 @@ class WO_Server {
 	 * @return void
 	 */
 	public static function includes() {
+		/**
+		 * Load dependecies managed by composer.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
+		 * Setup eloquent db connection
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
+
 		if ( is_admin() ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/admin-options.php';
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/admin/post.php';
