@@ -1,3 +1,4 @@
+
 <?php
 global $wpdb;
 use Illuminate\Database\Capsule\Manager as Capsule;
