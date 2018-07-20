@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: WPdrift Helper
+ * Plugin Name: WPdrift IO
  * Plugin URI: http://wpdrift.io/
  * Version: 1.0.1
  * Description: Full OAuth 2.0 Server for WordPress. User Authorization Management Systems For WordPress, required by WPdrift.
  * Author: WPdrift
  * Author URI: https://wpdrift.com/
- * Text Domain: wpdrift-helper
+ * Text Domain: wpdrift-io
  *
  * @author  WPdrift <kishore@upnrunn.com>
  * @package WPdrift Helper
@@ -43,7 +43,7 @@ add_action( 'admin_enqueue_scripts', '_wo_server_register_files' );
 require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
-require_once( dirname( __FILE__ ) . '/wp-oauth-main.php' );
+require_once( dirname( __FILE__ ) . '/includes/class-wpdrift-io.php' );
 //require_once( dirname( __FILE__ ) . '/examples.php' );
 
 /**
@@ -153,7 +153,12 @@ if ( $wp_version <= 4.3 ) {
 }
 
 /**
- * @todo  Move setup and upgrade inside the function wo_plugin_activate()
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-wpdrift-io-activator.php
  */
-register_activation_hook( __FILE__, array( new WO_Server, 'setup' ) );
-register_activation_hook( __FILE__, array( new WO_Server, 'upgrade' ) );
+function activate_wpdrift_io() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-activator.php';
+	WPdrift_IO_Activator::activate();
+}
+
+register_activation_hook( __FILE__, 'activate_wpdrift_io' );
