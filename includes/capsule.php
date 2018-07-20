@@ -25,3 +25,9 @@ $capsule->setAsGlobal();
 
 // Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
 $capsule->bootEloquent();
+<<<<<<< HEAD
+=======
+
+$users = Capsule::table( 'users' )->get();
+print_r( $users );
+>>>>>>> 1e7091fb6b661c5ff8035f4e3f590e192127eb22
