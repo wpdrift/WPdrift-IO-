@@ -20,26 +20,6 @@ class WO_Server {
 	/** Server Instance */
 	public static $_instance = null;
 
-	/** Default Settings */
-	public $defualt_settings = array(
-		'enabled'                    => 1,
-		'client_id_length'           => 30,
-		'auth_code_enabled'          => 0,
-		'client_creds_enabled'       => 0,
-		'user_creds_enabled'         => 0,
-		'refresh_tokens_enabled'     => 0,
-		'jwt_bearer_enabled'         => 0,
-		'implicit_enabled'           => 0,
-		'require_exact_redirect_uri' => 0,
-		'enforce_state'              => 0,
-		'refresh_token_lifetime'     => 63072000, // 2 Year
-		'access_token_lifetime'      => 31536000, // 1 Year
-		'use_openid_connect'         => 0,
-		'id_token_lifetime'          => 3600,
-		'token_length'               => 40,
-		'beta'                       => 0,
-	);
-
 	function __construct() {
 
 		if ( ! defined( 'WOABSPATH' ) ) {

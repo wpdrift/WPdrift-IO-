@@ -22,6 +22,26 @@
  */
 class WPdrift_IO_Activator {
 
+	/** Default Settings */
+	public $defualt_settings = [
+		'enabled'                    => 1,
+		'client_id_length'           => 30,
+		'auth_code_enabled'          => 0,
+		'client_creds_enabled'       => 0,
+		'user_creds_enabled'         => 0,
+		'refresh_tokens_enabled'     => 0,
+		'jwt_bearer_enabled'         => 0,
+		'implicit_enabled'           => 0,
+		'require_exact_redirect_uri' => 0,
+		'enforce_state'              => 0,
+		'refresh_token_lifetime'     => 63072000, // 2 Year
+		'access_token_lifetime'      => 31536000, // 1 Year
+		'use_openid_connect'         => 0,
+		'id_token_lifetime'          => 3600,
+		'token_length'               => 40,
+		'beta'                       => 0,
+	];
+
 	/**
 	 * Short Description. (use period)
 	 *
@@ -30,8 +50,9 @@ class WPdrift_IO_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		$this->setup();
-		$this->upgrade();
+		self::setup();
+		self::install();
+		self::upgrade();
 	}
 
 	/**
@@ -42,10 +63,8 @@ class WPdrift_IO_Activator {
 	public function setup() {
 		$options = get_option( 'wo_options' );
 		if ( ! isset( $options['enabled'] ) ) {
-			update_option( 'wo_options', $this->defualt_settings );
+			update_option( 'wo_options', self::$defualt_settings );
 		}
-
-		$this->install();
 	}
 
 	/**
@@ -130,7 +149,7 @@ class WPdrift_IO_Activator {
 			$charset_collate .= " COLLATE {$wpdb->collate}";
 		}
 
-		update_option( 'wpdrift_helper_version', $this->version );
+		update_option( 'wpdrift_helper_version', WPDRIFT_HELPER_VERSION );
 		$sql1 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_clients (
 			id 					  INT 			UNSIGNED NOT NULL AUTO_INCREMENT,
