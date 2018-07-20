@@ -34,6 +34,12 @@ class WO_Server {
 			define( 'WOCHECKSUM', 'F2B0D73C4BE99511D25BBAE6DF0BB28F' );
 		}
 
+		/**
+		 * [$this->load_dependencies description]
+		 * @var [type]
+		 */
+		$this->load_dependencies();
+
 		if ( function_exists( '__autoload' ) ) {
 			spl_autoload_register( '__autoload' );
 		}
@@ -43,6 +49,30 @@ class WO_Server {
 		add_filter( 'determine_current_user', array( $this, '_wo_authenicate_bypass' ), 9999 );
 		add_action( 'init', array( __CLASS__, 'includes' ) );
 		//}
+
+	}
+
+	/**
+	 * [load_dependencies description]
+	 * @return [type] [description]
+	 */
+	private function load_dependencies() {
+
+		/**
+		 * Load dependecies managed by composer.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
+		 * Setup eloquent db connection
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
+
+		/**
+		 * [require_once description]
+		 * @var [type]
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-io-hits.php';
 
 	}
 
@@ -126,15 +156,9 @@ class WO_Server {
 	 */
 	public static function includes() {
 		/**
-		 * Load dependecies managed by composer.
+		 * [if description]
+		 * @var [type]
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
-
-		/**
-		 * Setup eloquent db connection
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
-
 		if ( is_admin() ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/admin-options.php';
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/admin/post.php';
@@ -144,6 +168,7 @@ class WO_Server {
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/ajax/class-wo-ajax.php';
 			}
 		}
+
 	}
 }
 

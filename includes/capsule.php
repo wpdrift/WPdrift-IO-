@@ -1,6 +1,4 @@
-
 <?php
-global $wpdb;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 $capsule = new Capsule;
@@ -13,7 +11,7 @@ $capsule->addConnection([
 	'password'  => DB_PASSWORD,
 	'charset'   => 'utf8',
 	'collation' => 'utf8_unicode_ci',
-	'prefix'    => $wpdb->prefix,
+	'prefix'    => '',
 ]);
 
 // Set the event dispatcher used by Eloquent models... (optional)

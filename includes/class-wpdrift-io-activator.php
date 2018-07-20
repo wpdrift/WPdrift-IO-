@@ -20,6 +20,9 @@
  * @subpackage WPdrift_IO/includes
  * @author     upnrunn <admin@upnrunn.com>
  */
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+
 class WPdrift_IO_Activator {
 
 	/** Default Settings */
@@ -53,6 +56,7 @@ class WPdrift_IO_Activator {
 		self::setup();
 		self::install();
 		self::upgrade();
+		self::db();
 	}
 
 	/**
@@ -153,80 +157,80 @@ class WPdrift_IO_Activator {
 		$sql1 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_clients (
 			id 					  INT 			UNSIGNED NOT NULL AUTO_INCREMENT,
-	        client_id             VARCHAR(255)	NOT NULL UNIQUE,
-	        client_secret         VARCHAR(255)  NOT NULL,
-	        redirect_uri          VARCHAR(2000),
-	        grant_types           VARCHAR(80),
-	        scope                 VARCHAR(4000),
-	        user_id               VARCHAR(80),
-	        name                  VARCHAR(80),
-	        description           LONGTEXT,
-	        PRIMARY KEY (id)
-	      	);
+			client_id             VARCHAR(255)	NOT NULL UNIQUE,
+			client_secret         VARCHAR(255)  NOT NULL,
+			redirect_uri          VARCHAR(2000),
+			grant_types           VARCHAR(80),
+			scope                 VARCHAR(4000),
+			user_id               VARCHAR(80),
+			name                  VARCHAR(80),
+			description           LONGTEXT,
+			PRIMARY KEY (id)
+			  );
 		";
 
 		$sql2 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_access_tokens (
 			id					 INT 			UNSIGNED NOT NULL AUTO_INCREMENT,
 			access_token         VARCHAR(255) 	NOT NULL UNIQUE,
-		    client_id            VARCHAR(255)	NOT NULL,
-		    user_id              VARCHAR(80),
-		    expires              TIMESTAMP      NOT NULL,
-		    scope                VARCHAR(4000),
-		    PRIMARY KEY (id)
-      		);
+			client_id            VARCHAR(255)	NOT NULL,
+			user_id              VARCHAR(80),
+			expires              TIMESTAMP      NOT NULL,
+			scope                VARCHAR(4000),
+			PRIMARY KEY (id)
+			  );
 		";
 
 		$sql3 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_refresh_tokens (
 			refresh_token       VARCHAR(255)    NOT NULL UNIQUE,
-		    client_id           VARCHAR(255)    NOT NULL,
-		    user_id             VARCHAR(80),
-		    expires             TIMESTAMP      	NOT NULL,
-		    scope               VARCHAR(4000),
-		    PRIMARY KEY (refresh_token)
-      		);
+			client_id           VARCHAR(255)    NOT NULL,
+			user_id             VARCHAR(80),
+			expires             TIMESTAMP      	NOT NULL,
+			scope               VARCHAR(4000),
+			PRIMARY KEY (refresh_token)
+			  );
 		";
 
 		$sql4 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_authorization_codes (
-	        authorization_code  VARCHAR(255)    NOT NULL UNIQUE,
-	        client_id           VARCHAR(1000)   NOT NULL,
-	        user_id             VARCHAR(80),
-	        redirect_uri        VARCHAR(2000),
-	        expires             TIMESTAMP      	NOT NULL,
-	        scope               VARCHAR(4000),
-	        id_token            VARCHAR(3000),
-	        PRIMARY KEY (authorization_code)
-	      	);
+			authorization_code  VARCHAR(255)    NOT NULL UNIQUE,
+			client_id           VARCHAR(1000)   NOT NULL,
+			user_id             VARCHAR(80),
+			redirect_uri        VARCHAR(2000),
+			expires             TIMESTAMP      	NOT NULL,
+			scope               VARCHAR(4000),
+			id_token            VARCHAR(3000),
+			PRIMARY KEY (authorization_code)
+			  );
 		";
 
 		$sql5 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_scopes (
 			id					INT 		 UNSIGNED NOT NULL AUTO_INCREMENT,
-	        scope               VARCHAR(80)  NOT NULL,
-	        is_default          BOOLEAN,
-	        PRIMARY KEY (id)
-      		);
+			scope               VARCHAR(80)  NOT NULL,
+			is_default          BOOLEAN,
+			PRIMARY KEY (id)
+			  );
 		";
 
 		$sql6 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_jwt (
-        	client_id           VARCHAR(255)  NOT NULL UNIQUE,
-        	subject             VARCHAR(80),
-        	public_key          VARCHAR(2000) NOT NULL,
-        	PRIMARY KEY (client_id)
-      		);
+			client_id           VARCHAR(255)  NOT NULL UNIQUE,
+			subject             VARCHAR(80),
+			public_key          VARCHAR(2000) NOT NULL,
+			PRIMARY KEY (client_id)
+			  );
 		";
 
 		$sql7 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_public_keys (
-        	client_id            VARCHAR(255) NOT NULL UNIQUE,
-        	public_key           VARCHAR(2000),
-        	private_key          VARCHAR(2000),
-        	encryption_algorithm VARCHAR(100) DEFAULT 'RS256',
-        	PRIMARY KEY (client_id)
-      		);
+			client_id            VARCHAR(255) NOT NULL UNIQUE,
+			public_key           VARCHAR(2000),
+			private_key          VARCHAR(2000),
+			encryption_algorithm VARCHAR(100) DEFAULT 'RS256',
+			PRIMARY KEY (client_id)
+			  );
 		";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -261,6 +265,55 @@ class WPdrift_IO_Activator {
 			update_option( 'wpdrift_helper_version', $plugin_version );
 		}
 
+	}
+
+	/**
+	 * [db description]
+	 * @return [type] [description]
+	 */
+	public function db() {
+		/**
+		 * [global description]
+		 * @var [type]
+		 */
+		global $wpdb;
+
+		/**
+		 * [Capsule description]
+		 * @var [type]
+		 */
+		Capsule::schema()->create( $wpdb->prefix . 'wpdriftio_hits', function ( $table ) {
+			/**
+			 * [$table->increments description]
+			 * @var [type]
+			 */
+			$table->increments( 'id' );
+
+			/**
+			 * [$table->integer description]
+			 * @var [type]
+			 */
+			$table->integer( 'page_id' );
+			$table->integer( 'user_id' );
+
+			/**
+			 * [$table->string description]
+			 * @var [type]
+			 */
+			$table->string( 'referer' );
+			$table->string( 'host' );
+			$table->string( 'uri' );
+			$table->string( 'agent' );
+			$table->string( 'browser' );
+			$table->string( 'device' );
+
+			/**
+			 * [$table->ipAddress description]
+			 * @var [type]
+			 */
+			$table->ipAddress( 'ip' );
+			$table->timestamps();
+		});
 	}
 
 }

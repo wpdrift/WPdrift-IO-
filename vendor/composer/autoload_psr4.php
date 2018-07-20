@@ -10,6 +10,7 @@ return array(
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
+    'Models\\' => array($baseDir . '/app/models'),
     'Illuminate\\Support\\' => array($vendorDir . '/illuminate/support'),
     'Illuminate\\Events\\' => array($vendorDir . '/illuminate/events'),
     'Illuminate\\Database\\' => array($vendorDir . '/illuminate/database'),

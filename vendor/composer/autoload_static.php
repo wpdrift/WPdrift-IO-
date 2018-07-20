@@ -22,6 +22,10 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
             'Psr\\SimpleCache\\' => 16,
             'Psr\\Container\\' => 14,
         ),
+        'M' => 
+        array (
+            'Models\\' => 7,
+        ),
         'I' => 
         array (
             'Illuminate\\Support\\' => 19,
@@ -52,6 +56,10 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
+        'Models\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/models',
         ),
         'Illuminate\\Support\\' => 
         array (

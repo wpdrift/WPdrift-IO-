@@ -161,4 +161,14 @@ function activate_wpdrift_io() {
 	WPdrift_IO_Activator::activate();
 }
 
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-wpdrift-io-deactivator.php
+ */
+function deactivate_wpdrift_io() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-deactivator.php';
+	WPdrift_IO_Deactivator::deactivate();
+}
+
 register_activation_hook( __FILE__, 'activate_wpdrift_io' );
+register_deactivation_hook( __FILE__, 'deactivate_wpdrift_io' );
