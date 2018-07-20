@@ -68,7 +68,7 @@ class WO_Table extends WP_List_Table {
 		return $columns = array(
 			'title'     => __( 'Name' ),
 			'client_id' => __( 'Client ID' ),
-			//'client_secret' => __( 'Redirect URI' )
+			'client_secret' => __( 'Client Secret' )
 		);
 	}
 
@@ -169,6 +169,10 @@ class WO_Table extends WP_List_Table {
 						// case "user_id": echo '<td '.$attributes.'>'.stripslashes($rec->user_id).'</td>';  break;
 						case 'client_id':
 							echo '<td ' . $attributes . '>' . get_post_meta( $rec->ID, 'client_id', true ) . '</td>';
+							break;
+
+						case 'client_secret':
+							echo '<td ' . $attributes . '>' . get_post_meta( $rec->ID, 'client_secret', true ) . '</td>';
 							break;
 					}
 				}

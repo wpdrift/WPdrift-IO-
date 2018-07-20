@@ -37,7 +37,7 @@ class WO_Server {
 		'use_openid_connect'         => 0,
 		'id_token_lifetime'          => 3600,
 		'token_length'               => 40,
-		'beta'                       => 0
+		'beta'                       => 0,
 	);
 
 	function __construct() {
@@ -129,7 +129,7 @@ class WO_Server {
 		$file  = 'class-' . str_replace( '_', '-', $class ) . '.php';
 
 		if ( strpos( $class, 'wo_' ) === 0 ) {
-			$path = dirname( __FILE__ ) . '/library/' . trailingslashit( substr( str_replace( '_', '-', $class ), 18 ) );
+			$path = plugin_dir_path( dirname( __FILE__ ) ) . '/library/' . trailingslashit( substr( str_replace( '_', '-', $class ), 18 ) );
 		}
 
 		if ( $path && is_readable( $path . $file ) ) {
@@ -154,7 +154,6 @@ class WO_Server {
 				require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/ajax/class-wo-ajax.php';
 			}
 		}
-
 	}
 }
 

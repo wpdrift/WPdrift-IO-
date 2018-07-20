@@ -92,3 +92,17 @@ function wo_public_insert_client( $client_data = null ) {
 
 	return $client_insert;
 }
+
+// print_r(wo_public_insert_client( array(
+// 	'name'         => __( 'Example', 'wpdrift-io' ),
+// 	'user_id'      => 1,
+// 	'grant_types'  => array(
+// 		'authorization_code',
+// 		'implicit',
+// 		'password',
+// 		'client_credentials',
+// 		'refresh_token',
+// 	),
+// 	'scope'        => 'basic',
+// 	'redirect_uri' => 'http://localhost/php/files/cb.php',
+// )));
