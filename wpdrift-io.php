@@ -44,7 +44,6 @@ require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-wpdrift-io.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
-//require_once( dirname( __FILE__ ) . '/examples.php' );
 
 /**
  * Adds/registers query vars
