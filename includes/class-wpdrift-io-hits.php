@@ -32,10 +32,10 @@ class WPdrift_IO_Hits {
 		 */
 		$hit          = new Models\Hit();
 		$hit->user_id = get_current_user_id();
-		$hit->agent   = $_SERVER['HTTP_USER_AGENT'];
-		$hit->host    = $_SERVER['HTTP_HOST'];
-		$hit->uri     = $_SERVER['REQUEST_URI'];
-		$hit->ip      = $_SERVER['REMOTE_ADDR'];
+		$hit->agent   = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		$hit->host    = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+		$hit->uri     = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+		$hit->ip      = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
 		$hit->referer = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
 
 		/**
