@@ -344,7 +344,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * [$date_query description]
 		 * @var WP_Date_Query
 		 */
-		$date_query = new WP_Date_Query( $date_args );
+		$date_query = new WP_Date_Query( $date_args, 'comment_date' );
 
 		/**
 		 * [$query_fields description]
