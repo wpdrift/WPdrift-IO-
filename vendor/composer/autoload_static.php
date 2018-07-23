@@ -7,8 +7,14 @@ namespace Composer\Autoload;
 class ComposerStaticInit77691e56c829d88115dbba70bda6d359
 {
     public static $files = array (
+        '20f378a8a84881cf108b4428c19cf452' => __DIR__ . '/..' . '/league/uri-hostname-parser/src/functions_include.php',
+        'e1e8b49c332434256b5df11b0f0c2a62' => __DIR__ . '/..' . '/league/uri-parser/src/functions_include.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '48197193621c5ab80fbc196827e806d1' => __DIR__ . '/..' . '/league/uri-components/src/functions_include.php',
+        '244240de28ad61783068aef6c6b63aea' => __DIR__ . '/..' . '/league/uri-schemes/src/functions_include.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
+        'eadffebc88609f262c6ec51faebeac60' => __DIR__ . '/..' . '/league/uri-manipulations/src/functions_include.php',
+        '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -20,11 +26,19 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
         'P' => 
         array (
             'Psr\\SimpleCache\\' => 16,
+            'Psr\\Http\\Message\\' => 17,
             'Psr\\Container\\' => 14,
         ),
         'M' => 
         array (
             'Models\\' => 7,
+            'MaxMind\\WebService\\' => 19,
+            'MaxMind\\Exception\\' => 18,
+            'MaxMind\\Db\\' => 11,
+        ),
+        'L' => 
+        array (
+            'League\\Uri\\' => 11,
         ),
         'I' => 
         array (
@@ -34,9 +48,18 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
             'Illuminate\\Contracts\\' => 21,
             'Illuminate\\Container\\' => 21,
         ),
+        'G' => 
+        array (
+            'GeoIp2\\' => 7,
+        ),
         'D' => 
         array (
             'Doctrine\\Common\\Inflector\\' => 26,
+            'DeviceDetector\\' => 15,
+        ),
+        'C' => 
+        array (
+            'Composer\\CaBundle\\' => 18,
         ),
     );
 
@@ -53,6 +76,10 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
         array (
             0 => __DIR__ . '/..' . '/psr/simple-cache/src',
         ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
         'Psr\\Container\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
@@ -60,6 +87,27 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
         'Models\\' => 
         array (
             0 => __DIR__ . '/../..' . '/app/models',
+        ),
+        'MaxMind\\WebService\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/WebService',
+        ),
+        'MaxMind\\Exception\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind/web-service-common/src/Exception',
+        ),
+        'MaxMind\\Db\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/maxmind-db/reader/src/MaxMind/Db',
+        ),
+        'League\\Uri\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/league/uri-components/src',
+            1 => __DIR__ . '/..' . '/league/uri-hostname-parser/src',
+            2 => __DIR__ . '/..' . '/league/uri-interfaces/src',
+            3 => __DIR__ . '/..' . '/league/uri-manipulations/src',
+            4 => __DIR__ . '/..' . '/league/uri-parser/src',
+            5 => __DIR__ . '/..' . '/league/uri-schemes/src',
         ),
         'Illuminate\\Support\\' => 
         array (
@@ -81,14 +129,40 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
         ),
+        'GeoIp2\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/geoip2/geoip2/src',
+        ),
         'Doctrine\\Common\\Inflector\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/inflector/lib/Doctrine/Common/Inflector',
+        ),
+        'DeviceDetector\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/piwik/device-detector',
+        ),
+        'Composer\\CaBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/ca-bundle/src',
         ),
     );
 
     public static $fallbackDirsPsr4 = array (
         0 => __DIR__ . '/..' . '/nesbot/carbon/src',
+    );
+
+    public static $prefixesPsr0 = array (
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
+    );
+
+    public static $classMap = array (
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -97,6 +171,8 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
             $loader->prefixLengthsPsr4 = ComposerStaticInit77691e56c829d88115dbba70bda6d359::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit77691e56c829d88115dbba70bda6d359::$prefixDirsPsr4;
             $loader->fallbackDirsPsr4 = ComposerStaticInit77691e56c829d88115dbba70bda6d359::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit77691e56c829d88115dbba70bda6d359::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit77691e56c829d88115dbba70bda6d359::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -273,25 +273,49 @@ class WPdrift_IO_Activator {
 			 * [$table->integer description]
 			 * @var [type]
 			 */
-			$table->integer( 'page_id' );
-			$table->integer( 'user_id' );
+			$table->integer( 'page_id' )->nullable();
+			$table->integer( 'user_id' )->nullable();
 
 			/**
 			 * [$table->string description]
 			 * @var [type]
 			 */
-			$table->string( 'referer' );
-			$table->string( 'host' );
-			$table->string( 'uri' );
-			$table->string( 'agent' );
-			$table->string( 'browser' );
-			$table->string( 'device' );
+			$table->string( 'referer' )->nullable();
+			$table->string( 'host' )->nullable();
+			$table->string( 'domain' )->nullable();
+			$table->string( 'uri' )->nullable();
+			$table->string( 'agent' )->nullable();
+
+			/**
+			 * [$table->string description]
+			 * @var [type]
+			 */
+			$table->string( 'client_type' )->nullable();
+			$table->string( 'client_name' )->nullable();
+			$table->string( 'client_short_name' )->nullable();
+			$table->string( 'client_version' )->nullable();
+			$table->string( 'client_engine' )->nullable();
+
+			/**
+			 * [$table->string description]
+			 * @var [type]
+			 */
+			$table->string( 'os_name' )->nullable();
+			$table->string( 'os_short_name' )->nullable();
+			$table->string( 'os_version' )->nullable();
+			$table->string( 'os_platform' )->nullable();
+
+			/**
+			 * [$table->string description]
+			 * @var [type]
+			 */
+			$table->string( 'device_name' )->nullable();
 
 			/**
 			 * [$table->ipAddress description]
 			 * @var [type]
 			 */
-			$table->ipAddress( 'ip' );
+			$table->ipAddress( 'ip' )->nullable();
 			$table->timestamps();
 		});
 	}

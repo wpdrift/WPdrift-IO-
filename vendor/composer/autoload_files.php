@@ -6,6 +6,12 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    '20f378a8a84881cf108b4428c19cf452' => $vendorDir . '/league/uri-hostname-parser/src/functions_include.php',
+    'e1e8b49c332434256b5df11b0f0c2a62' => $vendorDir . '/league/uri-parser/src/functions_include.php',
     '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => $vendorDir . '/symfony/polyfill-mbstring/bootstrap.php',
+    '48197193621c5ab80fbc196827e806d1' => $vendorDir . '/league/uri-components/src/functions_include.php',
+    '244240de28ad61783068aef6c6b63aea' => $vendorDir . '/league/uri-schemes/src/functions_include.php',
     '72579e7bd17821bb1321b87411366eae' => $vendorDir . '/illuminate/support/helpers.php',
+    'eadffebc88609f262c6ec51faebeac60' => $vendorDir . '/league/uri-manipulations/src/functions_include.php',
+    '04c6c5c2f7095ccf6c481d3e53e1776f' => $vendorDir . '/mustangostang/spyc/Spyc.php',
 );
