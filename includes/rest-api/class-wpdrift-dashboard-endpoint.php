@@ -60,9 +60,10 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		register_rest_route($this->namespace, '/' . $this->rest_base . '/referers', array(
 			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'get_referers' ),
-				'args'     => array(),
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_referers' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'args'                => array(),
 			),
 		));
 	}
@@ -158,7 +159,69 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 	 * [get_referers description]
 	 * @return [type] [description]
 	 */
-	public function get_referers() {
+	public function get_referers( $request ) {
+		/**
+		 * [global description]
+		 * @var [type]
+		 */
+		global $wpdb;
+
+		$date_args = array();
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( isset( $request['after'] ) ) {
+			$date_args[0]['after'] = $request['after'];
+		}
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( isset( $request['before'] ) ) {
+			$date_args[0]['before'] = $request['before'];
+		}
+
+		/**
+		 * [$date_query description]
+		 * @var WP_Date_Query
+		 */
+		$date_query = new WP_Date_Query( $date_args, 'created_at' );
+
+		/**
+		 * [$query_fields description]
+		 * @var string
+		 */
+		$query_fields  = "COUNT(*) as count, referer";
+		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
+		$query_where   = "WHERE 1=1";
+		$query_where  .= $date_query->get_sql();
+		$query_groupby = "GROUP BY referer";
+		$query_orderby = "ORDER BY count DESC";
+
+		/**
+		 * [$request description]
+		 * @var string
+		 */
+		$request = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$results = $wpdb->get_results( $request );
+
+		/**
+		 * [$data description]
+		 * @var array
+		 */
+		$data = [
+			'request' => $request,
+			'results' => $results,
+		];
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return rest_ensure_response( $data );
 	}
 
 	/**
