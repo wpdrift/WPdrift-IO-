@@ -47,10 +47,9 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		register_rest_route($this->namespace, '/' . $this->rest_base . '/bloginfo', array(
 			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_bloginfo' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				'args'                => array(),
+				'methods'  => WP_REST_Server::READABLE,
+				'callback' => array( $this, 'get_bloginfo' ),
+				'args'     => array(),
 			),
 		));
 
@@ -194,11 +193,11 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * [$query_fields description]
 		 * @var string
 		 */
-		$query_fields  = "COUNT(*) as count, referer";
+		$query_fields  = "COUNT(*) as count, domain";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
 		$query_where   = "WHERE 1=1";
 		$query_where  .= $date_query->get_sql();
-		$query_groupby = "GROUP BY referer";
+		$query_groupby = "GROUP BY domain";
 		$query_orderby = "ORDER BY count DESC";
 
 		/**
@@ -387,7 +386,6 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function get_items_permissions_check( $request ) {
-		return true;
 		return current_user_can( 'list_users' );
 	}
 

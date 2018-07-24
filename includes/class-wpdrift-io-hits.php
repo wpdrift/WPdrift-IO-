@@ -7,6 +7,7 @@
 use Models\Hit;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Device\DeviceParserAbstract;
+use League\Uri;
 
 /**
  * [WPdrift_IO_Hits description]
@@ -57,26 +58,39 @@ class WPdrift_IO_Hits {
 		 * [$hit->client_type description]
 		 * @var [type]
 		 */
-		$hit->client_type       = $client['type'];
-		$hit->client_name       = $client['name'];
-		$hit->client_short_name = $client['short_name'];
-		$hit->client_version    = $client['version'];
-		$hit->client_engine     = $client['engine'];
+		$hit->client_type       = isset( $client['type'] ) ? $client['type'] : '';
+		$hit->client_name       = isset( $client['name'] ) ? $client['name'] : '';
+		$hit->client_short_name = isset( $client['short_name'] ) ? $client['short_name'] : '';
+		$hit->client_version    = isset( $client['version'] ) ? $client['version'] : '';
+		$hit->client_engine     = isset( $client['engine'] ) ? $client['engine'] : '';
 
 		/**
 		 * [$hit->os_name description]
 		 * @var [type]
 		 */
-		$hit->os_name       = $os['name'];
-		$hit->os_short_name = $os['short_name'];
-		$hit->os_version    = $os['version'];
-		$hit->os_platform   = $os['platform'];
+		$hit->os_name       = isset( $os['name'] ) ? $os['name'] : '';
+		$hit->os_short_name = isset( $os['short_name'] ) ? $os['short_name'] : '';
+		$hit->os_version    = isset( $os['version'] ) ? $os['version'] : '';
+		$hit->os_platform   = isset( $os['platform'] ) ? $os['platform'] : '';
 
 		/**
 		 * [$hit->os_platform description]
 		 * @var [type]
 		 */
-		$hit->device_name = $device_name;
+		$hit->device_name = isset( $device_name ) ? $device_name : '';
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		$hit->domain = home_url();
+		if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+			$uri = Uri\parse( $_SERVER['HTTP_REFERER'] );
+
+			if ( $uri['host'] ) {
+				$hit->domain = $uri['host'];
+			}
+		}
 
 		/**
 		 * [$hit->save description]

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPdrift IO
  * Plugin URI: http://wpdrift.io/
- * Version: 1.0.1
+ * Version: 7.0.1
  * Description: Full OAuth 2.0 Server for WordPress. User Authorization Management Systems For WordPress, required by WPdrift.
  * Author: WPdrift
  * Author URI: https://wpdrift.com/
@@ -19,7 +19,7 @@ if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
 }
 
 if ( ! defined( 'WPDRIFT_HELPER_VERSION' ) ) {
-	define( 'WPDRIFT_HELPER_VERSION', '1.0.0' );
+	define( 'WPDRIFT_HELPER_VERSION', '7.0.0' );
 }
 
 // localize
