@@ -61,7 +61,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_referers' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'                => array(),
 			),
 		));
@@ -212,8 +212,9 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * @var array
 		 */
 		$data = [
-			'request' => $request,
 			'results' => $results,
+			'browsers' => $this->get_browsers( $date_args ),
+			'oss' => $this->get_oss( $date_args ),
 		];
 
 		/**
@@ -221,6 +222,92 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		return rest_ensure_response( $data );
+	}
+
+	/**
+	 * [get_browsers description]
+	 * @return [type] [description]
+	 */
+	public function get_browsers( $date_args ) {
+		/**
+		 * [global description]
+		 * @var [type]
+		 */
+		global $wpdb;
+
+		/**
+		 * [$date_query description]
+		 * @var WP_Date_Query
+		 */
+		$date_query = new WP_Date_Query( $date_args, 'created_at' );
+
+		/**
+		 * [$query_fields description]
+		 * @var string
+		 */
+		$query_fields  = "COUNT(*) as count, client_name";
+		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
+		$query_where   = "WHERE 1=1";
+		$query_where  .= $date_query->get_sql();
+		$query_groupby = "GROUP BY client_name";
+		$query_orderby = "ORDER BY count DESC";
+
+		/**
+		 * [$request description]
+		 * @var string
+		 */
+		$request = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$counts                 = $wpdb->get_col( $request );
+		$labels                 = $wpdb->get_col( $request, 1 );
+
+		return [
+			'counts' => $counts,
+			'labels' => $labels,
+		];
+	}
+
+	/**
+	 * [get_oss description]
+	 * @param  [type] $date_args [description]
+	 * @return [type]            [description]
+	 */
+	public function get_oss( $date_args ) {
+		/**
+		 * [global description]
+		 * @var [type]
+		 */
+		global $wpdb;
+
+		/**
+		 * [$date_query description]
+		 * @var WP_Date_Query
+		 */
+		$date_query = new WP_Date_Query( $date_args, 'created_at' );
+
+		/**
+		 * [$query_fields description]
+		 * @var string
+		 */
+		$query_fields  = "COUNT( DISTINCT os_name ) as count, os_name";
+		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
+		$query_where   = "WHERE 1=1";
+		$query_where  .= $date_query->get_sql();
+		$query_groupby = "GROUP BY os_name";
+		$query_orderby = "ORDER BY count DESC";
+
+		/**
+		 * [$request description]
+		 * @var string
+		 */
+		$request = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$counts                 = $wpdb->get_col( $request );
+		$labels                 = $wpdb->get_col( $request, 1 );
+
+		return [
+			'request' => $request,
+			'counts' => $counts,
+			'labels' => $labels,
+		];
 	}
 
 	/**

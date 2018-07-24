@@ -9,6 +9,8 @@
  * manipulation.
  */
 
+// phpinfo();
+
 defined('ABSPATH') or die('No script kiddies please!');
 
 // Hook into core filters
@@ -20,41 +22,41 @@ require_once(dirname(__FILE__) . '/actions.php');
 add_action('init', 'wo_types');
 function wo_types()
 {
-    $labels = array(
-        'name'               => _x('Client', 'post type general name', 'wp-oauth'),
-        'singular_name'      => _x('Client', 'post type singular name', 'wp-oauth'),
-        'menu_name'          => _x('Clients', 'admin menu', 'wp-oauth'),
-        'name_admin_bar'     => _x('Client', 'add new on admin bar', 'wp-oauth'),
-        'add_new'            => _x('Add New', 'Client', 'wp-oauth'),
-        'add_new_item'       => __('Add New BoClientok', 'wp-oauth'),
-        'new_item'           => __('New Client', 'wp-oauth'),
-        'edit_item'          => __('Edit Client', 'wp-oauth'),
-        'view_item'          => __('View Client', 'wp-oauth'),
-        'all_items'          => __('All Clients', 'wp-oauth'),
-        'search_items'       => __('Search Clients', 'wp-oauth'),
-        'parent_item_colon'  => __('Parent Clients:', 'wp-oauth'),
-        'not_found'          => __('No clients found.', 'wp-oauth'),
-        'not_found_in_trash' => __('No clients found in Trash.', 'wp-oauth')
-    );
+	$labels = array(
+		'name'               => _x('Client', 'post type general name', 'wp-oauth'),
+		'singular_name'      => _x('Client', 'post type singular name', 'wp-oauth'),
+		'menu_name'          => _x('Clients', 'admin menu', 'wp-oauth'),
+		'name_admin_bar'     => _x('Client', 'add new on admin bar', 'wp-oauth'),
+		'add_new'            => _x('Add New', 'Client', 'wp-oauth'),
+		'add_new_item'       => __('Add New BoClientok', 'wp-oauth'),
+		'new_item'           => __('New Client', 'wp-oauth'),
+		'edit_item'          => __('Edit Client', 'wp-oauth'),
+		'view_item'          => __('View Client', 'wp-oauth'),
+		'all_items'          => __('All Clients', 'wp-oauth'),
+		'search_items'       => __('Search Clients', 'wp-oauth'),
+		'parent_item_colon'  => __('Parent Clients:', 'wp-oauth'),
+		'not_found'          => __('No clients found.', 'wp-oauth'),
+		'not_found_in_trash' => __('No clients found in Trash.', 'wp-oauth')
+	);
 
-    $args = array(
-        'labels'              => $labels,
-        'description'         => __('Description.', 'wp-oauth'),
-        'public'              => true,
-        'publicly_queryable'  => false,
-        'show_ui'             => true,
-        'show_in_menu'        => false,
-        'query_var'           => true,
-        'rewrite'             => array( 'slug' => 'wo_client' ),
-        'capability_type'     => 'post',
-        'has_archive'         => true,
-        'hierarchical'        => false,
-        'menu_position'       => null,
-        'supports'            => array( 'title' ),
-        'exclude_from_search' => true
-    );
+	$args = array(
+		'labels'              => $labels,
+		'description'         => __('Description.', 'wp-oauth'),
+		'public'              => true,
+		'publicly_queryable'  => false,
+		'show_ui'             => true,
+		'show_in_menu'        => false,
+		'query_var'           => true,
+		'rewrite'             => array( 'slug' => 'wo_client' ),
+		'capability_type'     => 'post',
+		'has_archive'         => true,
+		'hierarchical'        => false,
+		'menu_position'       => null,
+		'supports'            => array( 'title' ),
+		'exclude_from_search' => true
+	);
 
-    register_post_type('wo_client', $args);
+	register_post_type('wo_client', $args);
 }
 
 /**
@@ -69,45 +71,45 @@ function wo_types()
 function wo_insert_client($client_data = null)
 {
 
-    // @todo Look into changing capabilities to create_clients after proper mapping has been done
-    if (! current_user_can('manage_options') || is_null($client_data) || has_a_client()) {
-        exit('Not Allowed');
+	// @todo Look into changing capabilities to create_clients after proper mapping has been done
+	if (! current_user_can('manage_options') || is_null($client_data) || has_a_client()) {
+		exit('Not Allowed');
 
-        return false;
-    }
+		return false;
+	}
 
-    do_action('wo_before_create_client', array( $client_data ));
+	do_action('wo_before_create_client', array( $client_data ));
 
-    // Generate the keys
-    $client_id     = wo_gen_key();
-    $client_secret = wo_gen_key();
+	// Generate the keys
+	$client_id     = wo_gen_key();
+	$client_secret = wo_gen_key();
 
-    $grant_types = isset($client_data['grant_types']) ? $client_data['grant_types'] : array();
+	$grant_types = isset($client_data['grant_types']) ? $client_data['grant_types'] : array();
 
-    $client = array(
-        'post_title'     => wp_strip_all_tags($client_data['name']),
-        'post_status'    => 'publish',
-        'post_author'    => get_current_user_id(),
-        'post_type'      => 'wo_client',
-        'comment_status' => 'closed',
-        'meta_input'     => array(
-            'client_id'     => $client_id,
-            'client_secret' => $client_secret,
-            'grant_types'   => $grant_types,
-            'redirect_uri'  => $client_data['redirect_uri'],
-            'user_id'       => $client_data['user_id'],
-            'scope'         => $client_data['scope']
-        )
+	$client = array(
+		'post_title'     => wp_strip_all_tags($client_data['name']),
+		'post_status'    => 'publish',
+		'post_author'    => get_current_user_id(),
+		'post_type'      => 'wo_client',
+		'comment_status' => 'closed',
+		'meta_input'     => array(
+			'client_id'     => $client_id,
+			'client_secret' => $client_secret,
+			'grant_types'   => $grant_types,
+			'redirect_uri'  => $client_data['redirect_uri'],
+			'user_id'       => $client_data['user_id'],
+			'scope'         => $client_data['scope']
+		)
 
-    );
+	);
 
-    // Insert the post into the database
-    $client_insert = wp_insert_post($client);
-    if (is_wp_error($client_insert)) {
-        exit($client_insert->get_error_message());
-    }
+	// Insert the post into the database
+	$client_insert = wp_insert_post($client);
+	if (is_wp_error($client_insert)) {
+		exit($client_insert->get_error_message());
+	}
 
-    return $client_insert;
+	return $client_insert;
 }
 
 /**
@@ -119,23 +121,23 @@ function wo_insert_client($client_data = null)
  */
 function wo_update_client($client = null)
 {
-    if (is_null($client)) {
-        return;
-    }
+	if (is_null($client)) {
+		return;
+	}
 
-    $client_data = array(
-        'ID'         => $client['edit_client'],
-        'post_title' => $client['name']
-    );
-    wp_update_post($client_data, true);
+	$client_data = array(
+		'ID'         => $client['edit_client'],
+		'post_title' => $client['name']
+	);
+	wp_update_post($client_data, true);
 
-    $grant_types = isset($client['grant_types']) ? $client['grant_types'] : array();
-    update_post_meta($client['edit_client'], 'client_id', $client['client_id']);
-    update_post_meta($client['edit_client'], 'client_secret', $client['client_secret']);
-    update_post_meta($client['edit_client'], 'grant_types', $grant_types);
-    update_post_meta($client['edit_client'], 'redirect_uri', $client['redirect_uri']);
-    update_post_meta($client['edit_client'], 'user_id', $client['user_id']);
-    update_post_meta($client['edit_client'], 'scope', $client['scope']);
+	$grant_types = isset($client['grant_types']) ? $client['grant_types'] : array();
+	update_post_meta($client['edit_client'], 'client_id', $client['client_id']);
+	update_post_meta($client['edit_client'], 'client_secret', $client['client_secret']);
+	update_post_meta($client['edit_client'], 'grant_types', $grant_types);
+	update_post_meta($client['edit_client'], 'redirect_uri', $client['redirect_uri']);
+	update_post_meta($client['edit_client'], 'user_id', $client['user_id']);
+	update_post_meta($client['edit_client'], 'scope', $client['scope']);
 }
 
 /**
@@ -145,29 +147,29 @@ function wo_update_client($client = null)
  */
 function get_client_by_client_id($client_id)
 {
-    $query   = new \WP_Query();
-    $clients = $query->query(array(
-        'post_type'   => 'wo_client',
-        'post_status' => 'any',
-        'meta_query'  => array(
-            array(
-                'key'   => 'client_id',
-                'value' => $client_id,
-            )
-        ),
-    ));
+	$query   = new \WP_Query();
+	$clients = $query->query(array(
+		'post_type'   => 'wo_client',
+		'post_status' => 'any',
+		'meta_query'  => array(
+			array(
+				'key'   => 'client_id',
+				'value' => $client_id,
+			)
+		),
+	));
 
-    if ($clients) {
-        $client                = $clients[0];
-        $client->client_secret = get_post_meta($client->ID, 'client_secret', true);
-        $client->redirect_uri  = get_post_meta($client->ID, 'redirect_uri', true);
-        $client->grant_types   = get_post_meta($client->ID, 'grant_types', true);
-        $client->user_id       = get_post_meta($client->ID, 'user_id', true);
-        $client->scope         = get_post_meta($client->ID, 'scope', true);
-        $client->meta          = get_post_meta($client->ID);
+	if ($clients) {
+		$client                = $clients[0];
+		$client->client_secret = get_post_meta($client->ID, 'client_secret', true);
+		$client->redirect_uri  = get_post_meta($client->ID, 'redirect_uri', true);
+		$client->grant_types   = get_post_meta($client->ID, 'grant_types', true);
+		$client->user_id       = get_post_meta($client->ID, 'user_id', true);
+		$client->scope         = get_post_meta($client->ID, 'scope', true);
+		$client->meta          = get_post_meta($client->ID);
 
-        return (array) $client;
-    }
+		return (array) $client;
+	}
 }
 
 /**
@@ -179,22 +181,22 @@ function get_client_by_client_id($client_id)
  */
 function wo_get_client($id = null)
 {
-    if (is_null($id)) {
-        return;
-    }
+	if (is_null($id)) {
+		return;
+	}
 
-    global $wpdb;
-    $prep = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}posts WHERE ID = %s", array( $id ));
+	global $wpdb;
+	$prep = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}posts WHERE ID = %s", array( $id ));
 
-    $client = $wpdb->get_row($prep);
-    if (! $client) {
-        return false;
-    }
+	$client = $wpdb->get_row($prep);
+	if (! $client) {
+		return false;
+	}
 
-    $client->grant_types = maybe_unserialize(get_post_meta($client->ID, 'grant_types', true));
-    $client->user_id     = get_post_meta($client->ID, 'user_id', true);
+	$client->grant_types = maybe_unserialize(get_post_meta($client->ID, 'grant_types', true));
+	$client->user_id     = get_post_meta($client->ID, 'user_id', true);
 
-    return $client;
+	return $client;
 }
 
 /**
@@ -206,30 +208,30 @@ function wo_get_client($id = null)
 function wo_gen_key($length = 40)
 {
 
-    // Gather the settings
-    $user_defined_length = wo_setting('token_length');
+	// Gather the settings
+	$user_defined_length = wo_setting('token_length');
 
-    /**
-     * Temp Fix for https://github.com/justingreerbbi/wp-oauth-server/issues/3
-     * @todo Remove this check on next standard release
-     */
-    if ($user_defined_length > 255) {
-        $user_defined_length = 255;
-    }
+	/**
+	 * Temp Fix for https://github.com/justingreerbbi/wp-oauth-server/issues/3
+	 * @todo Remove this check on next standard release
+	 */
+	if ($user_defined_length > 255) {
+		$user_defined_length = 255;
+	}
 
-    // If user setting is larger than 0, then define it
-    if ($user_defined_length > 0) {
-        $length = $user_defined_length;
-    }
+	// If user setting is larger than 0, then define it
+	if ($user_defined_length > 0) {
+		$length = $user_defined_length;
+	}
 
-    $characters   = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $randomString = '';
+	$characters   = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$randomString = '';
 
-    for ($i = 0; $i < $length; $i ++) {
-        $randomString .= $characters[ rand(0, strlen($characters) - 1) ];
-    }
+	for ($i = 0; $i < $length; $i ++) {
+		$randomString .= $characters[ rand(0, strlen($characters) - 1) ];
+	}
 
-    return $randomString;
+	return $randomString;
 }
 
 /**
@@ -244,13 +246,13 @@ function wo_gen_key($length = 40)
  */
 function wo_crypt($input, $rounds = 7)
 {
-    $salt       = "";
-    $salt_chars = array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9));
-    for ($i = 0; $i < 22; $i ++) {
-        $salt .= $salt_chars[ array_rand($salt_chars) ];
-    }
+	$salt       = "";
+	$salt_chars = array_merge(range('A', 'Z'), range('a', 'z'), range(0, 9));
+	for ($i = 0; $i < 22; $i ++) {
+		$salt .= $salt_chars[ array_rand($salt_chars) ];
+	}
 
-    return crypt($input, sprintf('$2a$%02d$', $rounds) . $salt);
+	return crypt($input, sprintf('$2a$%02d$', $rounds) . $salt);
 }
 
 /**
@@ -261,12 +263,12 @@ function wo_crypt($input, $rounds = 7)
  */
 function has_a_client()
 {
-    global $wpdb;
-    $count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'wo_client'");
+	global $wpdb;
+	$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'wo_client'");
 
-    if (intval($count) >= 1) {
-        return true;
-    }
+	if (intval($count) >= 1) {
+		return true;
+	}
 }
 
 /**
@@ -275,24 +277,24 @@ function has_a_client()
  */
 function client_ip()
 {
-    $ipaddress = '';
-    if (getenv('HTTP_CLIENT_IP')) {
-        $ipaddress = getenv('HTTP_CLIENT_IP');
-    } elseif (getenv('HTTP_X_FORWARDED_FOR')) {
-        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-    } elseif (getenv('HTTP_X_FORWARDED')) {
-        $ipaddress = getenv('HTTP_X_FORWARDED');
-    } elseif (getenv('HTTP_FORWARDED_FOR')) {
-        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-    } elseif (getenv('HTTP_FORWARDED')) {
-        $ipaddress = getenv('HTTP_FORWARDED');
-    } elseif (getenv('REMOTE_ADDR')) {
-        $ipaddress = getenv('REMOTE_ADDR');
-    } else {
-        $ipaddress = 'UNKNOWN';
-    }
+	$ipaddress = '';
+	if (getenv('HTTP_CLIENT_IP')) {
+		$ipaddress = getenv('HTTP_CLIENT_IP');
+	} elseif (getenv('HTTP_X_FORWARDED_FOR')) {
+		$ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+	} elseif (getenv('HTTP_X_FORWARDED')) {
+		$ipaddress = getenv('HTTP_X_FORWARDED');
+	} elseif (getenv('HTTP_FORWARDED_FOR')) {
+		$ipaddress = getenv('HTTP_FORWARDED_FOR');
+	} elseif (getenv('HTTP_FORWARDED')) {
+		$ipaddress = getenv('HTTP_FORWARDED');
+	} elseif (getenv('REMOTE_ADDR')) {
+		$ipaddress = getenv('REMOTE_ADDR');
+	} else {
+		$ipaddress = 'UNKNOWN';
+	}
 
-    return $ipaddress;
+	return $ipaddress;
 }
 
 /**
@@ -301,11 +303,11 @@ function client_ip()
  */
 function wo_os_is_win()
 {
-    if (strtoupper(substr(PHP_OS, 0, 3)) === "WIN") {
-        return true;
-    }
+	if (strtoupper(substr(PHP_OS, 0, 3)) === "WIN") {
+		return true;
+	}
 
-    return false;
+	return false;
 }
 
 /**
@@ -315,12 +317,12 @@ function wo_os_is_win()
  */
 function get_private_server_key()
 {
-    $keys = apply_filters('wo_server_keys', array(
-        'public'  => WOABSPATH . '/library/keys/public_key.pem',
-        'private' => WOABSPATH . '/library/keys/private_key.pem',
-    ));
+	$keys = apply_filters('wo_server_keys', array(
+		'public'  => WOABSPATH . '/library/keys/public_key.pem',
+		'private' => WOABSPATH . '/library/keys/private_key.pem',
+	));
 
-    return file_get_contents($keys['private']);
+	return file_get_contents($keys['private']);
 }
 
 /**
@@ -330,12 +332,12 @@ function get_private_server_key()
  */
 function get_public_server_key()
 {
-    $keys = apply_filters('wo_server_keys', array(
-        'public'  => WOABSPATH . '/library/keys/public_key.pem',
-        'private' => WOABSPATH . '/library/keys/private_key.pem',
-    ));
+	$keys = apply_filters('wo_server_keys', array(
+		'public'  => WOABSPATH . '/library/keys/public_key.pem',
+		'private' => WOABSPATH . '/library/keys/private_key.pem',
+	));
 
-    return file_get_contents($keys['public']);
+	return file_get_contents($keys['public']);
 }
 
 /**
@@ -349,7 +351,7 @@ function get_public_server_key()
  */
 function wo_get_algorithm()
 {
-    return 'RS256';
+	return 'RS256';
 }
 
 /**
@@ -359,22 +361,22 @@ function wo_get_algorithm()
  */
 function wo_has_certificates()
 {
-    $keys = apply_filters('wo_server_keys', array(
-        'public'  => WOABSPATH . '/library/keys/public_key.pem',
-        'private' => WOABSPATH . '/library/keys/private_key.pem',
-    ));
+	$keys = apply_filters('wo_server_keys', array(
+		'public'  => WOABSPATH . '/library/keys/public_key.pem',
+		'private' => WOABSPATH . '/library/keys/private_key.pem',
+	));
 
-    if (is_array($keys)) {
-        foreach ($keys as $key) {
-            if (! file_exists($key)) {
-                return false;
-            }
-        }
+	if (is_array($keys)) {
+		foreach ($keys as $key) {
+			if (! file_exists($key)) {
+				return false;
+			}
+		}
 
-        return true;
-    } else {
-        return false;
-    }
+		return true;
+	} else {
+		return false;
+	}
 }
 
 /**
@@ -386,41 +388,41 @@ function wo_has_certificates()
  */
 function wo_setting($key = null)
 {
-    $default_settings = _WO()->defualt_settings;
-    $settings         = get_option('wo_options');
-    $settings         = array_merge($default_settings, array_filter($settings, function ($value) {
-        return $value !== '';
-    }));
-    // No key is provided, let return the entire options table
-    if (is_null($key)) {
-        return $settings;
-    }
+	$default_settings = _WO()->defualt_settings;
+	$settings         = get_option('wo_options');
+	$settings         = array_merge($default_settings, array_filter($settings, function ($value) {
+		return $value !== '';
+	}));
+	// No key is provided, let return the entire options table
+	if (is_null($key)) {
+		return $settings;
+	}
 
-    if (! isset($settings[ $key ])) {
-        return;
-    }
+	if (! isset($settings[ $key ])) {
+		return;
+	}
 
-    return $settings[ $key ];
+	return $settings[ $key ];
 }
 
 function wp_verifiy_authenticity_of_plugin_core()
 {
-    if (wo_is_dev()) {
-        return;
-    }
-    if (WOCHECKSUM != strtoupper(md5_file(__FILE__))) {
-        function wo_incompatibility_with_wp_version()
-        {
-            ?>
-            <div class="notice notice-error">
-                <p><strong>You are at risk!</strong> WP OAuth Server is not genuine. Please contact info@wpdrift.io
-                    immediately.</p>
-            </div>
+	if (wo_is_dev()) {
+		return;
+	}
+	if (WOCHECKSUM != strtoupper(md5_file(__FILE__))) {
+		function wo_incompatibility_with_wp_version()
+		{
+			?>
+			<div class="notice notice-error">
+				<p><strong>You are at risk!</strong> WP OAuth Server is not genuine. Please contact info@wpdrift.io
+					immediately.</p>
+			</div>
 			<?php
-        }
+		}
 
-        add_action('admin_notices', 'wo_incompatibility_with_wp_version');
-    }
+		add_action('admin_notices', 'wo_incompatibility_with_wp_version');
+	}
 }
 
 add_action('init', 'wp_verifiy_authenticity_of_plugin_core');
@@ -431,11 +433,11 @@ add_action('init', 'wp_verifiy_authenticity_of_plugin_core');
  */
 function wo_is_core_valid()
 {
-    if (WOCHECKSUM != strtoupper(md5_file(__FILE__))) {
-        return false;
-    }
+	if (WOCHECKSUM != strtoupper(md5_file(__FILE__))) {
+		return false;
+	}
 
-    return true;
+	return true;
 }
 
 /**
@@ -444,16 +446,16 @@ function wo_is_core_valid()
  */
 function license_status()
 {
-    $options = get_option('wo_options');
-    $status  = isset($options['license_status']) ? $options['license_status'] : '';
-    switch ($status) {
-        case 'invalid':
-            echo 'Invalid. Activate your license now.';
-            break;
-        case 'valid':
-            echo 'Valid';
-            break;
-    }
+	$options = get_option('wo_options');
+	$status  = isset($options['license_status']) ? $options['license_status'] : '';
+	switch ($status) {
+		case 'invalid':
+			echo 'Invalid. Activate your license now.';
+			break;
+		case 'valid':
+			echo 'Valid';
+			break;
+	}
 }
 
 /**
@@ -462,7 +464,7 @@ function license_status()
  */
 function wo_license_information()
 {
-    return get_option("wo_license_information");
+	return get_option("wo_license_information");
 }
 
 /**
@@ -471,7 +473,7 @@ function wo_license_information()
  */
 function wo_license_key()
 {
-    return get_option("wo_license_key");
+	return get_option("wo_license_key");
 }
 
 /**
@@ -482,7 +484,7 @@ function wo_license_key()
  */
 function wo_is_dev()
 {
-    return _WO()->env == 'development' ? true : false;
+	return _WO()->env == 'development' ? true : false;
 }
 
 /**
@@ -491,14 +493,14 @@ function wo_is_dev()
  */
 function wo_is_protocol_secure()
 {
-    $isSecure = false;
-    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
-        $isSecure = true;
-    } elseif (! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
-        $isSecure = true;
-    }
+	$isSecure = false;
+	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+		$isSecure = true;
+	} elseif (! empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || ! empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+		$isSecure = true;
+	}
 
-    return $isSecure;
+	return $isSecure;
 }
 
 /**
@@ -512,32 +514,32 @@ function wo_is_protocol_secure()
  */
 function wo_admin_setting_tabs($page, $tabs, $location, $default, $current = null)
 {
-    if (is_null($current)) {
-        if (isset($_GET['tab'])) {
-            $current = $_GET['tab'];
-        } else {
-            $current = $default;
-        }
-    }
-    $content = '';
-    $content .= '<h2 class="nav-tab-wrapper">';
-    foreach ($tabs as $tab => $tabname) {
-        if ($current == $tab) {
-            $class = ' nav-tab-active';
-        } else {
-            $class = '';
-        }
-        $content .= '<a class="nav-tab' . $class . '" href="?page=' .
-                    $page . '&tab=' . $tab . '">' . $tabname . '</a>';
-    }
-    $content .= '</h2>';
-    echo $content;
-    if (! $current) {
-        $current = key($tabs);
-    }
-    require_once($location . $current . '.php');
+	if (is_null($current)) {
+		if (isset($_GET['tab'])) {
+			$current = $_GET['tab'];
+		} else {
+			$current = $default;
+		}
+	}
+	$content = '';
+	$content .= '<h2 class="nav-tab-wrapper">';
+	foreach ($tabs as $tab => $tabname) {
+		if ($current == $tab) {
+			$class = ' nav-tab-active';
+		} else {
+			$class = '';
+		}
+		$content .= '<a class="nav-tab' . $class . '" href="?page=' .
+					$page . '&tab=' . $tab . '">' . $tabname . '</a>';
+	}
+	$content .= '</h2>';
+	echo $content;
+	if (! $current) {
+		$current = key($tabs);
+	}
+	require_once($location . $current . '.php');
 
-    return;
+	return;
 }
 
 // Public Functions.
@@ -546,30 +548,30 @@ require_once(dirname(__FILE__) . '/public.php');
 function wh_get_user_ip_data( $ip )
 {
 
-    $curl = curl_init();
+	$curl = curl_init();
 
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => "http://ip-api.com/json/" . $ip,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "GET",
-        CURLOPT_HTTPHEADER => array(
-            "Cache-Control: no-cache",
-            "Postman-Token: 4aa2c721-fb17-47f9-b4ca-8b4d125d01b8"
-        ),
-    ));
+	curl_setopt_array($curl, array(
+		CURLOPT_URL => "http://ip-api.com/json/" . $ip,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_ENCODING => "",
+		CURLOPT_MAXREDIRS => 10,
+		CURLOPT_TIMEOUT => 30,
+		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		CURLOPT_CUSTOMREQUEST => "GET",
+		CURLOPT_HTTPHEADER => array(
+			"Cache-Control: no-cache",
+			"Postman-Token: 4aa2c721-fb17-47f9-b4ca-8b4d125d01b8"
+		),
+	));
 
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
+	$response = curl_exec($curl);
+	$err = curl_error($curl);
 
-    curl_close($curl);
+	curl_close($curl);
 
-    if ($err) {
-        return "cURL Error #:" . $err;
-    } else {
-        return $response;
-    }
+	if ($err) {
+		return "cURL Error #:" . $err;
+	} else {
+		return $response;
+	}
 }
