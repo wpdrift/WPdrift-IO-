@@ -7,6 +7,8 @@
  * @since 1.0.0
  */
 
+use SebastianBergmann\Timer\Timer;
+
 /**
  * [WPdrift_Users_Controller description]
  */
@@ -56,6 +58,13 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 	 * @param WP_REST_Request $request Current request.
 	 */
 	public function get_items( $request ) {
+
+		/**
+		 * [Timer description]
+		 * @var [type]
+		 */
+		Timer::start();
+
 		/**
 		 * [global description]
 		 * @var [type]
@@ -106,9 +115,15 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 * [$request description]
 		 * @var string
 		 */
-		$request             = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
-		$col                 = $wpdb->get_col( $request );
-		$col_user_registered = $wpdb->get_col( $request, 1 );
+		$query             = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$col                 = $wpdb->get_col( $query );
+		$col_user_registered = $wpdb->get_col( $query, 1 );
+
+		/**
+		 * [$time description]
+		 * @var [type]
+		 */
+		$time = Timer::stop();
 
 		/**
 		 * [$data description]
@@ -124,6 +139,7 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 			'total'  => array_sum( $col ),
 			'data'   => $col,
 			'labels' => $col_user_registered,
+			'time'   => Timer::secondsToTimeString( $time ),
 		];
 
 		$data[] = $this->prepare_response_for_collection( $response );

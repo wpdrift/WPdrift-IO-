@@ -5,7 +5,9 @@
         "mobiledetect/mobiledetectlib": "^2.8",
         "geoip2/geoip2": "^2.9",
         "piwik/device-detector": "^3.10",
-        "league/uri": "^5.3"
+        "league/uri": "^5.3",
+        "phpunit/php-timer": "^2.0",
+        "nesbot/carbon": "^1.32"
     },
     "autoload": {
         "psr-4": {
