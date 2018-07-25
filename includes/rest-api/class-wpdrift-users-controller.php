@@ -31,7 +31,7 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 	}
@@ -104,7 +104,7 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 * [$query_fields description]
 		 * @var string
 		 */
-		$query_fields  = "COUNT(*), user_registered, EXTRACT(DAY FROM user_registered) day, EXTRACT(MONTH FROM user_registered) month, EXTRACT(YEAR FROM user_registered) year";
+		$query_fields  = "COUNT(*), user_registered, HOUR(user_registered) hour, DAY(user_registered) day, WEEK(user_registered) week, MONTH(user_registered) month, YEAR(user_registered) year";
 		$query_from    = "FROM $wpdb->users";
 		$query_where   = "WHERE 1=1";
 		$query_where  .= $date_query->get_sql();
@@ -115,7 +115,7 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 * [$request description]
 		 * @var string
 		 */
-		$query             = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$query               = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
 		$col                 = $wpdb->get_col( $query );
 		$col_user_registered = $wpdb->get_col( $query, 1 );
 

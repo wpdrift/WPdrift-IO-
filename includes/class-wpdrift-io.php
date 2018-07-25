@@ -92,6 +92,7 @@ class WO_Server {
 		 * [require_once description]
 		 * @var [type]
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-date-query.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-io-hits.php';
 
 	}
