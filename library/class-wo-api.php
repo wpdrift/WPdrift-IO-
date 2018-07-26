@@ -143,7 +143,7 @@ if ( 'authorize' == $method ) {
 	 * if( $prompt == 'login') do show the authorization form again even if they are logged in.
 	 */
 	if ( ! is_user_logged_in() ) {
-		wp_redirect( wp_login_url( site_url( $_SERVER['REQUEST_URI'] ) ) );
+		wp_redirect( wp_login_url( add_query_arg( $request->query, home_url( '/oauth/authorize' ) ) ) );
 		exit;
 	}
 
