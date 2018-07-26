@@ -5,6 +5,7 @@
 
 defined( 'ABSPATH' ) || exit;
 use Carbon\Carbon;
+use League\Uri;
 
 /**
  * Dashboard endpoints.
@@ -194,12 +195,20 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * [$query_fields description]
 		 * @var string
 		 */
-		$query_fields  = "COUNT(*) as count, domain";
+		$uri    = Uri\parse( get_site_url() );
+		$domain = $uri['host'];
+
+		/**
+		 * [$query_like description]
+		 * @var string
+		 */
+		$query_like    = "'%{$domain}%'";
+		$query_fields  = "COUNT(*) as counts, domain, referer";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
-		$query_where   = "WHERE 1=1";
+		$query_where   = "WHERE domain NOT LIKE {$query_like}";
 		$query_where  .= $date_query->get_sql();
 		$query_groupby = "GROUP BY domain";
-		$query_orderby = "ORDER BY count DESC";
+		$query_orderby = "ORDER BY counts DESC";
 		$query_limit   = "LIMIT 10";
 
 		/**
@@ -210,12 +219,28 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		$results = $wpdb->get_results( $request );
 
 		/**
+		 * [$referers description]
+		 * @var array
+		 */
+		$referers = array();
+		foreach ( $results as $result ) {
+			$data = array();
+			$uri  = Uri\parse( $result->referer );
+
+			$data['counts'] = $result->counts;
+			$data['domain'] = $result->domain;
+			$data['link']   = "{$uri['scheme']}://{$uri['host']}";
+
+			$referers[] = $data;
+		}
+
+		/**
 		 * [$data description]
 		 * @var array
 		 */
 		$today = getdate();
 		$data  = [
-			'results'       => $results,
+			'results'       => $referers,
 			'browsers'      => $this->get_browsers( $date_args ),
 			'oss'           => $this->get_oss( $date_args ),
 			'days_hits'     => $this->get_hits( array(
