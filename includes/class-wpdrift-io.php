@@ -65,10 +65,8 @@ class WO_Server {
 		}
 		spl_autoload_register( array( $this, 'autoload' ) );
 
-		//if ( ! defined( 'DOING_CRON' ) ) {
 		add_filter( 'determine_current_user', array( $this, '_wo_authenicate_bypass' ), 9999 );
 		add_action( 'init', array( __CLASS__, 'includes' ) );
-		//}
 
 	}
 
@@ -175,22 +173,7 @@ class WO_Server {
 	 *
 	 * @return void
 	 */
-	public static function includes() {
-		/**
-		 * [if description]
-		 * @var [type]
-		 */
-		if ( is_admin() ) {
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/admin-options.php';
-			require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/admin/post.php';
-
-			/** include the ajax class if DOING_AJAX is defined */
-			if ( defined( 'DOING_AJAX' ) ) {
-				require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/ajax/class-wo-ajax.php';
-			}
-		}
-
-	}
+	public static function includes() {}
 }
 
 function _WO() {
