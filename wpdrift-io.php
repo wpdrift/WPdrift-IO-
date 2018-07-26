@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPdrift IO
  * Plugin URI: http://wpdrift.io/
- * Version: 7.0.1
+ * Version: 2.0.1
  * Description: Full OAuth 2.0 Server for WordPress. User Authorization Management Systems For WordPress, required by WPdrift.
  * Author: WPdrift
  * Author URI: https://wpdrift.com/
@@ -19,7 +19,7 @@ if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
 }
 
 if ( ! defined( 'WPDRIFT_HELPER_VERSION' ) ) {
-	define( 'WPDRIFT_HELPER_VERSION', '7.0.0' );
+	define( 'WPDRIFT_HELPER_VERSION', '2.0.1' );
 }
 
 // localize
@@ -141,10 +141,14 @@ global $wp_version;
 if ( $wp_version <= 4.3 ) {
 	function wo_incompatibility_with_wp_version() {
 		?>
-        <div class="notice notice-error">
-            <p><?php _e( 'WPdrift Helper requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-helper' ); ?>
-                <a href="<?php echo admin_url( 'update-core.php' ); ?>"><?php _e( 'Update Now', 'wpdrift-helper' ); ?></a></p>
-        </div>
+		<div class="notice notice-error">
+			<p>
+				<?php _e( 'WPdrift Helper requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-helper' ); ?>
+				<a href="<?php echo admin_url( 'update-core.php' ); ?>">
+					<?php _e( 'Update Now', 'wpdrift-helper' ); ?>
+				</a>
+			</p>
+		</div>
 		<?php
 	}
 
