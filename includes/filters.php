@@ -4,14 +4,14 @@
  * @deprecated Schedule for removal. The PHP server handles all these now.
  */
 function wo_api_error_setup( $errors ) {
-	$errors["invalid_access_token"]  = "The access token is invalid or has expired";
-	$errors["invalid_refresh_token"] = "The refresh token is invalid or has expired";
-	$errors["invalid_credentials"]   = "Invalid user credentials";
+	$errors['invalid_access_token']  = __( 'The access token is invalid or has expired', 'wpdrift-io' );
+	$errors['invalid_refresh_token'] = __( 'The refresh token is invalid or has expired', 'wpdrift-io' );
+	$errors['invalid_credentials']   = __( 'Invalid user credentials', 'wpdrift-io' );
 
 	return $errors;
 }
 
-add_filter( "WO_API_Errors", "wo_api_error_setup", 1 );
+add_filter( 'WO_API_Errors', 'wo_api_error_setup', 1 );
 
 /**
  * Default Method Filter for the resource server API calls
@@ -20,14 +20,14 @@ add_filter( "WO_API_Errors", "wo_api_error_setup", 1 );
  */
 function wo_default_endpoints() {
 	$endpoints = array(
-		'me'            => array(
+		'me'      => array(
 			'func'   => '_wo_method_me',
-			'public' => false
+			'public' => false,
 		),
-		'destroy'       => array(
+		'destroy' => array(
 			'func'   => '_wo_method_destroy',
-			'public' => false
-		)
+			'public' => false,
+		),
 	);
 
 	return $endpoints;
@@ -105,7 +105,7 @@ function _wo_method_destroy( $token = null ) {
 	/** Prepare the return */
 	$response = new OAuth2\Response( array(
 		'status'      => true,
-		'description' => 'Session destroyed successfully'
+		'description' => __( 'Session destroyed successfully', 'wpdrift-io' ),
 	) );
 	$response->send();
 	exit;
@@ -119,7 +119,7 @@ function _wo_method_destroy( $token = null ) {
  */
 function _wo_method_me( $token = null ) {
 
-	if ( ! isset( $token['user_id'] ) || $token['user_id'] == 0 ) {
+	if ( ! isset( $token['user_id'] ) || 0 == $token['user_id'] ) {
 		$response = new OAuth2\Response();
 		$response->setError(
 			400,
@@ -164,20 +164,21 @@ function _wo_method_me( $token = null ) {
  *
  * @return mixed
  */
-function wo_server_register_routes( $response_object ) {
+function wpdriftio_server_register_routes( $response_object ) {
 
 	if ( empty( $response_object->data['authentication'] ) ) {
-		$response_object->data['authentication'] = array();
+		$response_object->data['authentication'] = [];
 	}
-	$response_object->data['authentication']['oauth2'] = array(
+
+	$response_object->data['authentication']['oauth2'] = [
 		'authorize' => site_url( 'oauth/authorize' ),
 		'token'     => site_url( 'oauth/token' ),
 		'me'        => site_url( 'oauth/me' ),
 		'version'   => '2.0',
-		'software'  => 'WP OAuth Server'
-	);
+		'software'  => 'WPdrift IO',
+	];
 
 	return $response_object;
 }
 
-add_filter( 'rest_index', 'wo_server_register_routes' );
+add_filter( 'rest_index', 'wpdriftio_server_register_routes' );
