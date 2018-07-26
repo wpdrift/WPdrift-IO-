@@ -28,18 +28,6 @@ function wo_load_textdomain() {
 	load_plugin_textdomain( 'wpdrift-helper', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 }
 
-/**
- * 5.4 Strict Mode Temp Patch
- *
- * Since PHP 5.4, WP will through notices due to the way WP calls statically
- */
-function _wo_server_register_files() {
-	wp_register_style( 'wo_admin', plugins_url( '/assets/css/admin.css', __FILE__ ) );
-	wp_register_script( 'wo_admin', plugins_url( '/assets/js/admin.js', __FILE__ ), array( 'jquery-ui-tabs' ) );
-}
-
-add_action( 'admin_enqueue_scripts', '_wo_server_register_files' );
-
 require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 require_once( dirname( __FILE__ ) . '/includes/class-wpdrift-io.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
