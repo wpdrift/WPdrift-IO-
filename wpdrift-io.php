@@ -12,14 +12,47 @@
  * @package WPdrift Helper
  */
 
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'WPDRIFT_HELPER_VERSION', '2.0.1' );
+
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-wpdrift-io-activator.php
+ */
+function activate_wpdrift_io() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-activator.php';
+	WPdrift_IO_Activator::activate();
+}
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-wpdrift-io-deactivator.php
+ */
+function deactivate_wpdrift_io() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-deactivator.php';
+	WPdrift_IO_Deactivator::deactivate();
+}
+
+register_activation_hook( __FILE__, 'activate_wpdrift_io' );
+register_deactivation_hook( __FILE__, 'deactivate_wpdrift_io' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io.php';
 
 if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
 	define( 'WPDRIFT_HELPER_FILE', __FILE__ );
-}
-
-if ( ! defined( 'WPDRIFT_HELPER_VERSION' ) ) {
-	define( 'WPDRIFT_HELPER_VERSION', '2.0.1' );
 }
 
 // localize
@@ -29,7 +62,6 @@ function wo_load_textdomain() {
 }
 
 require_once( dirname( __FILE__ ) . '/includes/functions.php' );
-require_once( dirname( __FILE__ ) . '/includes/class-wpdrift-io.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
 
@@ -142,24 +174,3 @@ if ( $wp_version <= 4.3 ) {
 
 	add_action( 'admin_notices', 'wo_incompatibility_with_wp_version' );
 }
-
-/**
- * The code that runs during plugin activation.
- * This action is documented in includes/class-wpdrift-io-activator.php
- */
-function activate_wpdrift_io() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-activator.php';
-	WPdrift_IO_Activator::activate();
-}
-
-/**
- * The code that runs during plugin deactivation.
- * This action is documented in includes/class-wpdrift-io-deactivator.php
- */
-function deactivate_wpdrift_io() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-deactivator.php';
-	WPdrift_IO_Deactivator::deactivate();
-}
-
-register_activation_hook( __FILE__, 'activate_wpdrift_io' );
-register_deactivation_hook( __FILE__, 'deactivate_wpdrift_io' );
