@@ -11,8 +11,33 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 class WO_Server {
 
-	/** Plugin Version */
-	public $version = WPDRIFT_HELPER_VERSION;
+	/**
+	 * The loader that's responsible for maintaining and registering all hooks that power
+	 * the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      WPdrift_IO_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 */
+	protected $loader;
+
+	/**
+	 * The unique identifier of this plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
+	 */
+	protected $plugin_name;
+
+	/**
+	 * The current version of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   protected
+	 * @var      string    $version    The current version of the plugin.
+	 */
+	protected $version;
 
 	/** Environment Type  */
 	public $env = 'production';
@@ -40,7 +65,22 @@ class WO_Server {
 	/** Server Instance */
 	public static $_instance = null;
 
+	/**
+	 * Define the core functionality of the plugin.
+	 *
+	 * Set the plugin name and the plugin version that can be used throughout the plugin.
+	 * Load the dependencies, define the locale, and set the hooks for the admin area and
+	 * the public-facing side of the site.
+	 *
+	 * @since    1.0.0
+	 */
 	function __construct() {
+		if ( defined( 'WPDRIFT_HELPER_VERSION' ) ) {
+			$this->version = WPDRIFT_HELPER_VERSION;
+		} else {
+			$this->version = '1.0.0';
+		}
+		$this->plugin_name = 'wpdrift-io';
 
 		if ( ! defined( 'WOABSPATH' ) ) {
 			define( 'WOABSPATH', dirname( __FILE__ ) );
@@ -59,6 +99,7 @@ class WO_Server {
 		 * @var [type]
 		 */
 		$this->load_dependencies();
+		$this->set_locale();
 
 		if ( function_exists( '__autoload' ) ) {
 			spl_autoload_register( '__autoload' );
@@ -77,6 +118,24 @@ class WO_Server {
 	private function load_dependencies() {
 
 		/**
+		 * The class responsible for orchestrating the actions and filters of the
+		 * core plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-io-loader.php';
+
+		/**
+		 * The class responsible for defining internationalization functionality
+		 * of the plugin.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-io-i18n.php';
+
+		/**
+		 * The class responsible for defining all actions that occur in the public-facing
+		 * side of the site.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wpdrift-io-public.php';
+
+		/**
 		 * Load dependecies managed by composer.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
@@ -92,6 +151,25 @@ class WO_Server {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-date-query.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-io-hits.php';
+
+		$this->loader = new WPdrift_IO_Loader();
+
+	}
+
+	/**
+	 * Define the locale for this plugin for internationalization.
+	 *
+	 * Uses the WPdrift_IO_i18n class in order to set the domain and to register the hook
+	 * with WordPress.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function set_locale() {
+
+		$plugin_i18n = new WPdrift_IO_i18n();
+
+		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
 
@@ -138,8 +216,7 @@ class WO_Server {
 	 *
 	 * @return object plugin instance
 	 */
-	public
-	static function instance() {
+	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
 		}
@@ -174,6 +251,47 @@ class WO_Server {
 	 * @return void
 	 */
 	public static function includes() {}
+
+	/**
+	 * Run the loader to execute all of the hooks with WordPress.
+	 *
+	 * @since    1.0.0
+	 */
+	public function run() {
+		$this->loader->run();
+	}
+
+	/**
+	 * The name of the plugin used to uniquely identify it within the context of
+	 * WordPress and to define internationalization functionality.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The name of the plugin.
+	 */
+	public function get_plugin_name() {
+		return $this->plugin_name;
+	}
+
+	/**
+	 * The reference to the class that orchestrates the hooks with the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    WPdrift_IO_Loader    Orchestrates the hooks of the plugin.
+	 */
+	public function get_loader() {
+		return $this->loader;
+	}
+
+	/**
+	 * Retrieve the version number of the plugin.
+	 *
+	 * @since     1.0.0
+	 * @return    string    The version number of the plugin.
+	 */
+	public function get_version() {
+		return $this->version;
+	}
+
 }
 
 function _WO() {

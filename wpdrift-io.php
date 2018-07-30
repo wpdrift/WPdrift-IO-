@@ -55,12 +55,6 @@ if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
 	define( 'WPDRIFT_HELPER_FILE', __FILE__ );
 }
 
-// localize
-add_action( 'plugins_loaded', 'wo_load_textdomain', 99 );
-function wo_load_textdomain() {
-	load_plugin_textdomain( 'wpdrift-helper', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-}
-
 require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
