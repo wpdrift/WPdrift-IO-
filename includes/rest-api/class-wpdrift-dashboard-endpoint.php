@@ -63,7 +63,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_referers' ),
-				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 				'args'                => array(),
 			),
 		));
@@ -81,6 +81,11 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		global $wpdb;
+
+		/**
+		 * [$date_args description]
+		 * @var array
+		 */
 		$date_args = array();
 
 		/**
@@ -205,7 +210,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		$query_like    = "'%{$domain}%'";
 		$query_fields  = "COUNT(*) as counts, domain, referer";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
-		$query_where   = "WHERE domain NOT LIKE {$query_like}";
+		$query_where   = "WHERE domain NOT LIKE {$query_like} AND type='view'";
 		$query_where  .= $date_query->get_sql();
 		$query_groupby = "GROUP BY domain";
 		$query_orderby = "ORDER BY counts DESC";
@@ -285,7 +290,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		$query_fields  = "COUNT(*) as count, created_at";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
-		$query_where   = "WHERE 1=1";
+		$query_where   = "WHERE type='view'";
 		$query_where  .= $date_query->get_sql();
 
 		/**
@@ -344,7 +349,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		$query_fields  = "COUNT(*) as count, created_at, DAY(created_at) day, MONTH(created_at) month, YEAR(created_at) year";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
-		$query_where   = "WHERE 1=1";
+		$query_where   = "WHERE type='view'";
 		$query_groupby = "GROUP BY day, month, year";
 		$query_orderby = "ORDER BY count DESC";
 
@@ -404,12 +409,13 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		$query_fields  = "COUNT(*) as count";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
+		$query_where   = "WHERE type='view'";
 
 		/**
 		 * [$request description]
 		 * @var string
 		 */
-		$query   = "SELECT $query_fields $query_from";
+		$query   = "SELECT $query_fields $query_from $query_where";
 		$results = $wpdb->get_var( $query );
 
 		/**
@@ -443,7 +449,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		$query_fields  = "COUNT(*) as count, client_name";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
-		$query_where   = "WHERE 1=1";
+		$query_where   = "WHERE type='view'";
 		$query_where  .= $date_query->get_sql();
 		$query_groupby = "GROUP BY client_name";
 		$query_orderby = "ORDER BY count DESC";
@@ -487,7 +493,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		 */
 		$query_fields  = "COUNT( DISTINCT os_name ) as count, os_name";
 		$query_from    = "FROM {$wpdb->prefix}wpdriftio_hits";
-		$query_where   = "WHERE 1=1";
+		$query_where   = "WHERE type='view'";
 		$query_where  .= $date_query->get_sql();
 		$query_groupby = "GROUP BY os_name";
 		$query_orderby = "ORDER BY count DESC";
@@ -502,7 +508,6 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 		$labels                 = $wpdb->get_col( $request, 1 );
 
 		return [
-			'request' => $request,
 			'counts' => $counts,
 			'labels' => $labels,
 		];
@@ -671,6 +676,7 @@ class WD_Dashboard_Endpoint extends WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function get_items_permissions_check( $request ) {
+		return true;
 		return current_user_can( 'list_users' );
 	}
 
