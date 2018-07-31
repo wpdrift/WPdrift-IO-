@@ -182,6 +182,14 @@ function wpdriftio_register_rest_routes() {
 	$dashboard_controller->register_routes();
 
 	/**
+	 * [require_once description]
+	 * @var [type]
+	 */
+	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-hits-controller.php' );
+	$hits_controller = new WPdrift_Hits_Controller();
+	$hits_controller->register_routes();
+
+	/**
 	 * Register new recent events end points
 	 * @var [type]
 	 */
