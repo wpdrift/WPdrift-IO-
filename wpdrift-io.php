@@ -25,6 +25,14 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'WPDRIFT_HELPER_VERSION', '2.0.1' );
 
 /**
+ * [if description]
+ * @var [type]
+ */
+if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
+	define( 'WPDRIFT_HELPER_FILE', __FILE__ );
+}
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wpdrift-io-activator.php
  */
@@ -51,10 +59,10 @@ register_deactivation_hook( __FILE__, 'deactivate_wpdrift_io' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io.php';
 
-if ( ! defined( 'WPDRIFT_HELPER_FILE' ) ) {
-	define( 'WPDRIFT_HELPER_FILE', __FILE__ );
-}
-
+/**
+ * [require_once description]
+ * @var [type]
+ */
 require_once( dirname( __FILE__ ) . '/includes/functions.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
 require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
