@@ -77,11 +77,7 @@ module.exports = __webpack_require__(1);
 (function ($) {
 	'use strict';
 
-	console.log('test');
-
-	$(window).load(function () {
-		console.log('load test');
-	});
+	console.log(wpdrift_io);
 })(jQuery);
 
 /***/ })

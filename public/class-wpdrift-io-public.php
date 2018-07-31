@@ -67,7 +67,7 @@ class WPdrift_IO_Public {
 	 * [hits description]
 	 * @return [type] [description]
 	 */
-	public function hits() {
+	public function record_hit() {
 
 		/**
 		 * Exit early.
@@ -89,20 +89,44 @@ class WPdrift_IO_Public {
 		 * [$hit description]
 		 * @var Models
 		 */
-		$hit          = new Models\Hit();
-		$hit->user_id = get_current_user_id();
-		$hit->agent   = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
-		$hit->host    = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
-		$hit->uri     = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
-		$hit->ip      = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
-		$hit->referer = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
-		$hit->page_id = $this->set_page_id();
+		$hit_recorder = new Models\Hit();
+
+		/**
+		 * [$hit_data description]
+		 * @var [type]
+		 */
+		$hit_data = $this->get_hit();
+		foreach ( $hit_data as $key => $value ) {
+			$hit_recorder->$key = $value;
+		}
+
+		/**
+		 * [$hit->save description]
+		 * @var [type]
+		 */
+		$hit_recorder->save();
+	}
+
+	/**
+	 * [get_hit description]
+	 * @return [type] [description]
+	 */
+	public function get_hit() {
+		$hit = array();
+
+		$hit['user_id'] = get_current_user_id();
+		$hit['agent']   = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		$hit['host']    = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+		$hit['uri']     = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+		$hit['ip']      = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
+		$hit['referer'] = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
+		$hit['page_id'] = $this->get_page_id();
 
 		/**
 		 * [$dd description]
 		 * @var DeviceDetector
 		 */
-		$dd = new DeviceDetector( $hit->agent );
+		$dd = new DeviceDetector( $hit['agent'] );
 		$dd->parse();
 
 		/**
@@ -117,55 +141,80 @@ class WPdrift_IO_Public {
 		 * [$hit->client_type description]
 		 * @var [type]
 		 */
-		$hit->client_type       = $this->set_client( $client, 'type' );
-		$hit->client_name       = $this->set_client( $client, 'name' );
-		$hit->client_short_name = $this->set_client( $client, 'short_name' );
-		$hit->client_version    = $this->set_client( $client, 'version' );
-		$hit->client_engine     = $this->set_client( $client, 'engine' );
+		$hit['client_type']       = $this->set_client( $client, 'type' );
+		$hit['client_name']       = $this->set_client( $client, 'name' );
+		$hit['client_short_name'] = $this->set_client( $client, 'short_name' );
+		$hit['client_version']    = $this->set_client( $client, 'version' );
+		$hit['client_engine']     = $this->set_client( $client, 'engine' );
 
 		/**
 		 * [$hit->os_name description]
 		 * @var [type]
 		 */
-		$hit->os_name       = $this->set_os( $os, 'name' );
-		$hit->os_short_name = $this->set_os( $os, 'short_name' );
-		$hit->os_version    = $this->set_os( $os, 'version' );
-		$hit->os_platform   = $this->set_os( $os, 'platform' );
+		$hit['os_name']       = $this->set_os( $os, 'name' );
+		$hit['os_short_name'] = $this->set_os( $os, 'short_name' );
+		$hit['os_version']    = $this->set_os( $os, 'version' );
+		$hit['os_platform']   = $this->set_os( $os, 'platform' );
 
 		/**
 		 * [$hit->os_platform description]
 		 * @var [type]
 		 */
-		$hit->device_name = isset( $device_name ) ? $device_name : '';
+		$hit['device_name'] = isset( $device_name ) ? $device_name : __( 'Others', 'wpdrift-io' );
 
 		/**
-		 * [if description]
+		 * [$hit description]
 		 * @var [type]
 		 */
-		$hit->domain = home_url();
-		if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
-			$uri = Uri\parse( $_SERVER['HTTP_REFERER'] );
-
-			if ( $uri['host'] ) {
-				$hit->domain = $uri['host'];
-			}
-		}
+		$hit['domain'] = $this->get_domain();
 
 		/**
-		 * [$hit->save description]
+		 * [return description]
 		 * @var [type]
 		 */
-		$hit->save();
+		return $hit;
 	}
 
 	/**
 	 * [set_page description]
 	 */
-	public function set_page_id() {
+	public function get_page_id() {
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
 		if ( is_singular() ) {
 			return get_the_ID();
 		}
-		return 0;
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return null;
+	}
+
+	/**
+	 * [set_domain description]
+	 */
+	public function get_domain() {
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
+			$uri = Uri\parse( $_SERVER['HTTP_REFERER'] );
+
+			if ( $uri['host'] ) {
+				return $uri['host'];
+			}
+		}
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return home_url();
 	}
 
 	/**
@@ -213,6 +262,16 @@ class WPdrift_IO_Public {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdrift-io-public.js', array( 'jquery' ), $this->version, true );
 
+		/**
+		 * [$localize_script_data description]
+		 * @var [type]
+		 */
+		$localize_script_data = [
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'hit'     => $this->get_hit(),
+		];
+
+		wp_localize_script( $this->plugin_name, 'wpdrift_io', $localize_script_data );
 	}
 
 }
