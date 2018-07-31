@@ -151,7 +151,6 @@ class WO_Server {
 		 * @var [type]
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-date-query.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-io-hits.php';
 
 		$this->loader = new WPdrift_IO_Loader();
 
@@ -185,6 +184,7 @@ class WO_Server {
 
 		$plugin_public = new WPdrift_IO_Public( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'init', $plugin_public, 'hits' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
