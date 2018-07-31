@@ -60,6 +60,21 @@ register_deactivation_hook( __FILE__, 'deactivate_wpdrift_io' );
 require plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io.php';
 
 /**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_wpdriftio() {
+	_WO()->run();
+}
+
+run_wpdriftio();
+
+/**
  * [require_once description]
  * @var [type]
  */
