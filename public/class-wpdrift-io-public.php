@@ -103,7 +103,9 @@ class WPdrift_IO_Public {
 		 */
 		$hit_data = $this->get_hit();
 		foreach ( $hit_data as $key => $value ) {
-			$hit_recorder->$key = $value;
+			if ( ! empty( $value ) ) {
+				$hit_recorder->$key = $value;
+			}
 		}
 
 		/**
@@ -131,6 +133,7 @@ class WPdrift_IO_Public {
 		 * @var Models
 		 */
 		$hit_recorder = new Models\Hit();
+		$hit_recorder->save();
 
 		/**
 		 * [$hit_recorder->type description]
@@ -143,7 +146,9 @@ class WPdrift_IO_Public {
 		 * @var [type]
 		 */
 		foreach ( $hit_data as $key => $value ) {
-			$hit_recorder->$key = $value;
+			if ( ! empty( $value ) ) {
+				$hit_recorder->$key = $value;
+			}
 		}
 
 		/**
@@ -159,7 +164,7 @@ class WPdrift_IO_Public {
 		 */
 		$hit_recorder->save();
 
-		echo 'recorded';
+		echo $url;
 		wp_die();
 	}
 
