@@ -70,6 +70,22 @@ class WPdrift_IO_Public {
 	public function hits() {
 
 		/**
+		 * Exit early.
+		 * @var [type]
+		 */
+		if ( is_admin() ) {
+			return;
+		}
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( ! ( is_singular() || is_archive() || is_home() || is_front_page() ) ) {
+			return;
+		}
+
+		/**
 		 * [$hit description]
 		 * @var Models
 		 */
@@ -80,6 +96,7 @@ class WPdrift_IO_Public {
 		$hit->uri     = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
 		$hit->ip      = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '';
 		$hit->referer = isset( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
+		$hit->page_id = $this->set_page_id();
 
 		/**
 		 * [$dd description]
@@ -100,20 +117,20 @@ class WPdrift_IO_Public {
 		 * [$hit->client_type description]
 		 * @var [type]
 		 */
-		$hit->client_type       = isset( $client['type'] ) ? $client['type'] : '';
-		$hit->client_name       = isset( $client['name'] ) ? $client['name'] : '';
-		$hit->client_short_name = isset( $client['short_name'] ) ? $client['short_name'] : '';
-		$hit->client_version    = isset( $client['version'] ) ? $client['version'] : '';
-		$hit->client_engine     = isset( $client['engine'] ) ? $client['engine'] : '';
+		$hit->client_type       = $this->set_client( $client, 'type' );
+		$hit->client_name       = $this->set_client( $client, 'name' );
+		$hit->client_short_name = $this->set_client( $client, 'short_name' );
+		$hit->client_version    = $this->set_client( $client, 'version' );
+		$hit->client_engine     = $this->set_client( $client, 'engine' );
 
 		/**
 		 * [$hit->os_name description]
 		 * @var [type]
 		 */
-		$hit->os_name       = isset( $os['name'] ) ? $os['name'] : '';
-		$hit->os_short_name = isset( $os['short_name'] ) ? $os['short_name'] : '';
-		$hit->os_version    = isset( $os['version'] ) ? $os['version'] : '';
-		$hit->os_platform   = isset( $os['platform'] ) ? $os['platform'] : '';
+		$hit->os_name       = $this->set_os( $os, 'name' );
+		$hit->os_short_name = $this->set_os( $os, 'short_name' );
+		$hit->os_version    = $this->set_os( $os, 'version' );
+		$hit->os_platform   = $this->set_os( $os, 'platform' );
 
 		/**
 		 * [$hit->os_platform description]
@@ -139,6 +156,40 @@ class WPdrift_IO_Public {
 		 * @var [type]
 		 */
 		$hit->save();
+	}
+
+	/**
+	 * [set_page description]
+	 */
+	public function set_page_id() {
+		if ( is_singular() ) {
+			return get_the_ID();
+		}
+		return 0;
+	}
+
+	/**
+	 * [set_client description]
+	 */
+	public function set_client( $client, $meta ) {
+		if ( isset( $client[ $meta ] ) && ! empty( $client[ $meta ] ) ) {
+			return $client[ $meta ];
+		}
+
+		return __( 'Others', 'wpdrift-oi' );
+	}
+
+	/**
+	 * [set_os description]
+	 * @param [type] $client [description]
+	 * @param [type] $meta   [description]
+	 */
+	public function set_os( $os, $meta ) {
+		if ( isset( $os[ $meta ] ) && ! empty( $os[ $meta ] ) ) {
+			return $os[ $meta ];
+		}
+
+		return __( 'Others', 'wpdrift-oi' );
 	}
 
 	/**
