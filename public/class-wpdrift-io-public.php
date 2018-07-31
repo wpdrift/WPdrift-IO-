@@ -92,6 +92,12 @@ class WPdrift_IO_Public {
 		$hit_recorder = new Models\Hit();
 
 		/**
+		 * [$hit_recorder->type description]
+		 * @var string
+		 */
+		$hit_recorder->type = 'view';
+
+		/**
 		 * [$hit_data description]
 		 * @var [type]
 		 */
@@ -105,6 +111,56 @@ class WPdrift_IO_Public {
 		 * @var [type]
 		 */
 		$hit_recorder->save();
+	}
+
+	/**
+	 * [record_click description]
+	 * @return [type] [description]
+	 */
+	public function record_click() {
+		/**
+		 * [$hit_data description]
+		 * @var [type]
+		 */
+		$hit_data = $_POST['hit'];
+		$host     = $_POST['host'];
+		$url      = $_POST['url'];
+
+		/**
+		 * [$hit description]
+		 * @var Models
+		 */
+		$hit_recorder = new Models\Hit();
+
+		/**
+		 * [$hit_recorder->type description]
+		 * @var string
+		 */
+		$hit_recorder->type = 'click';
+
+		/**
+		 * [foreach description]
+		 * @var [type]
+		 */
+		foreach ( $hit_data as $key => $value ) {
+			$hit_recorder->$key = $value;
+		}
+
+		/**
+		 * [$hit_recorder->host description]
+		 * @var [type]
+		 */
+		$hit_recorder->host = $host;
+		$hit_recorder->uri  = $url;
+
+		/**
+		 * [$hit->save description]
+		 * @var [type]
+		 */
+		$hit_recorder->save();
+
+		echo 'recorded';
+		wp_die();
 	}
 
 	/**

@@ -268,6 +268,7 @@ class WPdrift_IO_Activator {
 			 * @var [type]
 			 */
 			$table->increments( 'id' );
+			$table->string( 'type' )->nullable();
 
 			/**
 			 * [$table->integer description]
