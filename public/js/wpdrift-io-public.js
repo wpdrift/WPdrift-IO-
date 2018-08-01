@@ -88,7 +88,7 @@ var URL = __webpack_require__(2);
 		var url = $link.attr('href');
 		var parsed_url = new URL(url);
 
-		if (parsed_url.host == wpdrift_io.hit.domain) {
+		if (parsed_url.host == wpdrift_io.hit.host) {
 			window.open(url, '_self');
 		} else {
 			window.open(url, '_blank');
@@ -105,8 +105,8 @@ var URL = __webpack_require__(2);
 			});
 		}
 
-		// console.log( parsed_url.host );
-		// console.log( wpdrift_io.hit.domain );
+		console.log(parsed_url.host);
+		console.log(wpdrift_io.hit.host);
 	});
 })(jQuery);
 
