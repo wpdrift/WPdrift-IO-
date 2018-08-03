@@ -440,15 +440,6 @@ function wo_is_core_valid()
 }
 
 /**
- * Retrieves the license information
- * @return Array License Information
- */
-function wo_license_information()
-{
-	return get_option("wo_license_information");
-}
-
-/**
  * Retrieves the license key
  * @return [type] [description]
  */
