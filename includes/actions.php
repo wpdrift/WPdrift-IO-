@@ -166,6 +166,14 @@ function wpdriftio_register_rest_routes() {
 	 * [require_once description]
 	 * @var [type]
 	 */
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-clients-controller.php' );
+	$users_controller = new WPdrift_Clients_Controller();
+	$users_controller->register_routes();
+
+	/**
+	 * [require_once description]
+	 * @var [type]
+	 */
 	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-users-controller.php' );
 	$users_controller = new WPdrift_Users_Controller();
 	$users_controller->register_routes();
@@ -174,7 +182,7 @@ function wpdriftio_register_rest_routes() {
 	 * [require_once description]
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php' );
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-controller.php' );
 	$dashboard_controller = new WPdrift_Dashboard_Controller();
 	$dashboard_controller->register_routes();
 
