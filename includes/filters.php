@@ -3,7 +3,7 @@
  * WordPress OAuth Server Error Filter
  * @deprecated Schedule for removal. The PHP server handles all these now.
  */
-function wo_api_error_setup( $errors ) {
+function wpdrift_worker_api_error_setup( $errors ) {
 	$errors['invalid_access_token']  = __( 'The access token is invalid or has expired', 'wpdrift-worker' );
 	$errors['invalid_refresh_token'] = __( 'The refresh token is invalid or has expired', 'wpdrift-worker' );
 	$errors['invalid_credentials']   = __( 'Invalid user credentials', 'wpdrift-worker' );
@@ -11,21 +11,21 @@ function wo_api_error_setup( $errors ) {
 	return $errors;
 }
 
-add_filter( 'WO_API_Errors', 'wo_api_error_setup', 1 );
+add_filter( 'WO_API_Errors', 'wpdrift_worker_api_error_setup', 1 );
 
 /**
  * Default Method Filter for the resource server API calls
  *
  * @since  3.1.8 Endpoints now can accept public methods that bypass the token authorization
  */
-function wo_default_endpoints() {
+function wpdrift_worker_default_endpoints() {
 	$endpoints = array(
 		'me'      => array(
-			'func'   => '_wo_method_me',
+			'func'   => '_wpdrift_worker_method_me',
 			'public' => false,
 		),
 		'destroy' => array(
-			'func'   => '_wo_method_destroy',
+			'func'   => '_wpdrift_worker_method_destroy',
 			'public' => false,
 		),
 	);
@@ -33,7 +33,7 @@ function wo_default_endpoints() {
 	return $endpoints;
 }
 
-add_filter( 'wpdrift_worker_endpoints', 'wo_default_endpoints', 1 );
+add_filter( 'wpdrift_worker_endpoints', 'wpdrift_worker_default_endpoints', 1 );
 
 /**
  * Token Introspection
@@ -64,7 +64,7 @@ function _wo_method_introspection( $token = null ) {
 	$valid = wpdrift_worker_public_get_access_token( $access_token );
 	if ( false == $valid ) {
 		$response = new OAuth2\Response( array(
-			'active' => false
+			'active' => false,
 		) );
 		$response->send();
 	}
@@ -91,7 +91,7 @@ function _wo_method_introspection( $token = null ) {
  *
  * @param null $token
  */
-function _wo_method_destroy( $token = null ) {
+function _wpdrift_worker_method_destroy( $token = null ) {
 	$access_token = &$token['access_token'];
 
 	global $wpdb;
@@ -117,7 +117,7 @@ function _wo_method_destroy( $token = null ) {
  *
  * @param null $token
  */
-function _wo_method_me( $token = null ) {
+function _wpdrift_worker_method_me( $token = null ) {
 
 	if ( ! isset( $token['user_id'] ) || 0 == $token['user_id'] ) {
 		$response = new OAuth2\Response();
@@ -148,9 +148,9 @@ function _wo_method_me( $token = null ) {
 	/**
 	 * user information returned by the default me method is filtered
 	 * @since 3.3.7
-	 * @filter wo_me_resource_return
+	 * @filter wpdrift_worker_me_resource_return
 	 */
-	$me_data = apply_filters( 'wo_me_resource_return', $me_data );
+	$me_data = apply_filters( 'wpdrift_worker_me_resource_return', $me_data );
 
 	$response = new OAuth2\Response( $me_data );
 	$response->send();
@@ -175,7 +175,7 @@ function wpdriftio_server_register_routes( $response_object ) {
 		'token'     => site_url( 'oauth/token' ),
 		'me'        => site_url( 'oauth/me' ),
 		'version'   => '2.0',
-		'software'  => 'WPdrift IO',
+		'software'  => 'WPdrift IO - Worker',
 	];
 
 	return $response_object;
