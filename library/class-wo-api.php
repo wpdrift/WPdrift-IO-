@@ -1,10 +1,10 @@
 <?php
 /**
- * WP OAuth Server API.
+ * WPdrift Worker API.
  */
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-do_action( 'wo_before_api', array( $_REQUEST ) );
+do_action( 'wpdrift_worker_before_api', array( $_REQUEST ) );
 require_once dirname( __FILE__ ) . '/OAuth2/Autoloader.php';
 OAuth2\Autoloader::register();
 
@@ -19,8 +19,8 @@ if ( 0 == wo_setting( 'enabled' ) ) {
 	exit;
 }
 
-$wo_strict_api_lockdown = apply_filters( 'wo_strict_api_lockdown', false );
-if ( $wo_strict_api_lockdown && ! wo_is_core_valid() && ! wo_is_dev() ) {
+$wpdrift_worker_strict_api_lockdown = apply_filters( 'wpdrift_worker_strict_api_lockdown', false );
+if ( $wpdrift_worker_strict_api_lockdown && ! wo_is_core_valid() && ! wo_is_dev() ) {
 	$response = new OAuth2\Response();
 	$response->setError( 403, 'security_risk', __( 'plugin core is not authenticate', 'wpdrift-worker' ) );
 	$response->send();
@@ -45,11 +45,11 @@ $config     = array(
 	'enforce_state'                     => wo_setting( 'enforce_state' ),
 	'require_exact_redirect_uri'        => wo_setting( 'require_exact_redirect_uri' ),
 	'allow_implicit'                    => wo_setting( 'implicit_enabled' ),
-	'allow_credentials_in_request_body' => apply_filters( 'wo_allow_credentials_in_request_body', true ),
-	'allow_public_clients'              => apply_filters( 'wo_allow_public_clients', false ),
-	'always_issue_new_refresh_token'    => apply_filters( 'wo_always_issue_new_refresh_token', true ),
-	'unset_refresh_token_after_use'     => apply_filters( 'wo_unset_refresh_token_after_use', false ),
-	'redirect_status_code'              => apply_filters( 'wo_redirect_status_code', 302 ),
+	'allow_credentials_in_request_body' => apply_filters( 'wpdrift_worker_allow_credentials_in_request_body', true ),
+	'allow_public_clients'              => apply_filters( 'wpdrift_worker_allow_public_clients', false ),
+	'always_issue_new_refresh_token'    => apply_filters( 'wpdrift_worker_always_issue_new_refresh_token', true ),
+	'unset_refresh_token_after_use'     => apply_filters( 'wpdrift_worker_unset_refresh_token_after_use', false ),
+	'redirect_status_code'              => apply_filters( 'wpdrift_worker_redirect_status_code', 302 ),
 );
 
 $server = new OAuth2\Server( $storage, $config );
@@ -74,7 +74,7 @@ if ( '1' == wo_setting( 'auth_code_enabled' ) ) {
 | DEFAULT SCOPES
 |--------------------------------------------------------------------------
 |
-| Supported scopes can be added to the plugin by modifying the wo_scopes.
+| Supported scopes can be added to the plugin by modifying the wpdrift_worker_scopes.
 | Until further notice, the default scope is 'basic'. Plans are in place to
 | allow this scope to be adjusted.
 |
@@ -83,10 +83,10 @@ if ( '1' == wo_setting( 'auth_code_enabled' ) ) {
  */
 $default_scope = 'basic';
 
-$supported_scopes = apply_filters( 'wo_scopes', array(
+$supported_scopes = apply_filters( 'wpdrift_worker_scopes', array(
 	'openid',
 	'profile',
-	'email'
+	'email',
 ) );
 
 $scope_util = new OAuth2\Scope( array(
@@ -189,11 +189,11 @@ if ( 'authorize' == $method ) {
 	 * @todo If the user clicks deny, then the application does not return to the app and simply loads the request again.
 	 * we need to look into a to allow the app the report that it is not authorized while
 	 *
-	 * @example add_filter('wo_use_grant_request', '__return_true');
+	 * @example add_filter('wpdrift_worker_use_grant_request', '__return_true');
 	 *
 	 * @since 3.5.0
 	 */
-	if ( apply_filters( 'wo_use_grant_request', false ) ) {
+	if ( apply_filters( 'wpdrift_worker_use_grant_request', false ) ) {
 
 		$current_user = get_current_user_id();
 
@@ -237,7 +237,7 @@ if ( 'authorize' == $method ) {
 |@since 3.0.5
 */
 if ( 'keys' == $well_known ) {
-	$keys       = apply_filters( 'wo_server_keys', array(
+	$keys       = apply_filters( 'wpdrift_worker_server_keys', array(
 		'public'  => WOABSPATH . '/library/keys/public_key.pem',
 		'private' => WOABSPATH . '/library/keys/private_key.pem',
 	) );
@@ -288,7 +288,7 @@ if ( 'openid-configuration' == $well_known ) {
 		)
 	);
 
-	$openid_discovery_configuration = apply_filters( 'wo_openid_discovery', $openid_discovery_values );
+	$openid_discovery_configuration = apply_filters( 'wpdrift_worker_openid_discovery', $openid_discovery_values );
 
 	$response = new OAuth2\Response( $openid_discovery_configuration );
 	$response->send();
@@ -309,7 +309,7 @@ if ( 'openid-configuration' == $well_known ) {
 | allow for developers to customize error messages.
 |
 */
-$resource_server_methods = apply_filters( 'wo_endpoints', null );
+$resource_server_methods = apply_filters( 'wpdrift_worker_endpoints', null );
 
 // Check to see if the method exists in the filter.
 if ( array_key_exists( $method, $resource_server_methods ) ) {

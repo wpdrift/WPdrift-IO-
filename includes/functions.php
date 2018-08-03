@@ -316,7 +316,7 @@ function wo_os_is_win()
  */
 function get_private_server_key()
 {
-	$keys = apply_filters('wo_server_keys', array(
+	$keys = apply_filters('wpdrift_worker_server_keys', array(
 		'public'  => WOABSPATH . '/library/keys/public_key.pem',
 		'private' => WOABSPATH . '/library/keys/private_key.pem',
 	));
@@ -331,7 +331,7 @@ function get_private_server_key()
  */
 function get_public_server_key()
 {
-	$keys = apply_filters('wo_server_keys', array(
+	$keys = apply_filters('wpdrift_worker_server_keys', array(
 		'public'  => WOABSPATH . '/library/keys/public_key.pem',
 		'private' => WOABSPATH . '/library/keys/private_key.pem',
 	));
@@ -360,7 +360,7 @@ function wo_get_algorithm()
  */
 function wo_has_certificates()
 {
-	$keys = apply_filters('wo_server_keys', array(
+	$keys = apply_filters('wpdrift_worker_server_keys', array(
 		'public'  => WOABSPATH . '/library/keys/public_key.pem',
 		'private' => WOABSPATH . '/library/keys/private_key.pem',
 	));

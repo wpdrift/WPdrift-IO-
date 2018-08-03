@@ -33,7 +33,7 @@ function wo_default_endpoints() {
 	return $endpoints;
 }
 
-add_filter( 'wo_endpoints', 'wo_default_endpoints', 1 );
+add_filter( 'wpdrift_worker_endpoints', 'wo_default_endpoints', 1 );
 
 /**
  * Token Introspection
