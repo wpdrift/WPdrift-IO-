@@ -173,21 +173,3 @@ function wpdrift_worker_server_deactivation( $network_wide ) {
 }
 
 register_deactivation_hook( __FILE__, 'wpdrift_worker_server_deactivation' );
-
-global $wp_version;
-if ( $wp_version <= 4.3 ) {
-	function wpdrift_worker_incompatibility_with_wp_version() {
-		?>
-		<div class="notice notice-error">
-			<p>
-				<?php _e( 'WPdrift IO Worker requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-worker' ); ?>
-				<a href="<?php echo admin_url( 'update-core.php' ); ?>">
-					<?php _e( 'Update Now', 'wpdrift-worker' ); ?>
-				</a>
-			</p>
-		</div>
-		<?php
-	}
-
-	add_action( 'admin_notices', 'wpdrift_worker_incompatibility_with_wp_version' );
-}

@@ -45,4 +45,31 @@ class WPdrift_Worker_Admin {
 
 	}
 
+	/**
+	 * Check incompatibility with WordPress version.
+	 * @var [type]
+	 */
+	public function incompatibility_with_wp_version() {
+		global $wp_version;
+
+		/**
+		 * Exit early.
+		 * @var [type]
+		 */
+		if ( $wp_version >= 4.3 ) {
+			return;
+		}
+
+		?>
+		<div class="notice notice-error">
+			<p>
+				<?php _e( 'WPdrift IO Worker requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-worker' ); ?>
+				<a href="<?php echo admin_url( 'update-core.php' ); ?>">
+					<?php _e( 'Update Now', 'wpdrift-worker' ); ?>
+				</a>
+			</p>
+		</div>
+		<?php
+	}
+
 }
