@@ -61,7 +61,7 @@ function _wo_method_introspection( $token = null ) {
 	}
 
 	// Check if the token is valid
-	$valid = wo_public_get_access_token( $access_token );
+	$valid = wpdrift_worker_public_get_access_token( $access_token );
 	if ( false == $valid ) {
 		$response = new OAuth2\Response( array(
 			'active' => false

@@ -8,11 +8,11 @@
 
 /**
  *
- * @deprecated in favor of wo_public_get_access_token
+ * @deprecated in favor of wpdrift_worker_public_get_access_token
  */
-function wo_get_access_token( $access_token, $return_type = ARRAY_A ) {
+function wpdrift_worker_get_access_token( $access_token, $return_type = ARRAY_A ) {
 
-	$data = wo_public_get_access_token( $access_token, $return_type );
+	$data = wpdrift_worker_public_get_access_token( $access_token, $return_type );
 
 	return $data;
 }
@@ -25,19 +25,21 @@ function wo_get_access_token( $access_token, $return_type = ARRAY_A ) {
  *
  * @return array|bool|null|object|void
  */
-function wo_public_get_access_token( $access_token, $return_type = ARRAY_A ) {
+function wpdrift_worker_public_get_access_token( $access_token, $return_type = ARRAY_A ) {
 	if ( is_null( $access_token ) ) {
 		return false;
 	}
 
 	global $wpdb;
-	$prepare_query = $wpdb->prepare( "
+	$prepare_query = $wpdb->prepare(
+		"
 		SELECT *
 		FROM {$wpdb->prefix}oauth_access_tokens
 		WHERE access_token = %s
 		LIMIT 1
 		",
-		array( $access_token ) );
+		array( $access_token )
+	);
 
 	$access_token = $wpdb->get_row( $prepare_query, $return_type );
 	if ( $access_token ) {
@@ -57,7 +59,7 @@ function wo_public_get_access_token( $access_token, $return_type = ARRAY_A ) {
  *
  * @return bool|int|WP_Error
  */
-function wo_public_insert_client( $client_data = null ) {
+function wpdrift_worker_public_insert_client( $client_data = null ) {
 
 	do_action( 'wo_before_create_client', array( $client_data ) );
 
@@ -79,9 +81,8 @@ function wo_public_insert_client( $client_data = null ) {
 			'grant_types'   => $grant_types,
 			'redirect_uri'  => sanitize_text_field( $client_data['redirect_uri'] ),
 			'user_id'       => $user_id,
-			'scope'         => sanitize_text_field( $client_data['scope'] )
-		)
-
+			'scope'         => sanitize_text_field( $client_data['scope'] ),
+		),
 	);
 
 	// Insert the post into the database
@@ -93,7 +94,7 @@ function wo_public_insert_client( $client_data = null ) {
 	return $client_insert;
 }
 
-// print_r(wo_public_insert_client( array(
+// print_r(wpdrift_worker_public_insert_client( array(
 // 	'name'         => __( 'Example', 'wpdrift-worker' ),
 // 	'user_id'      => 1,
 // 	'grant_types'  => array(
