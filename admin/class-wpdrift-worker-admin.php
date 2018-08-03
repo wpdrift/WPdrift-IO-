@@ -63,11 +63,40 @@ class WPdrift_Worker_Admin {
 		?>
 		<div class="notice notice-error">
 			<p>
-				<?php _e( 'WPdrift IO Worker requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-worker' ); ?>
+				<?php _e( 'WPdrift IO - Worker requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-worker' ); ?>
 				<a href="<?php echo admin_url( 'update-core.php' ); ?>">
 					<?php _e( 'Update Now', 'wpdrift-worker' ); ?>
 				</a>
 			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * [wo_incompatibility_with_wp_version description]
+	 * @return [type] [description]
+	 */
+	function verifiy_authenticity_of_plugin_core() {
+
+		/**
+		 * Exit early.
+		 * @var [type]
+		 */
+		if ( wo_is_dev() ) {
+			return;
+		}
+
+		/**
+		 * Looks good, exit.
+		 * @var [type]
+		 */
+		if ( WOCHECKSUM == strtoupper( md5_file( __FILE__ ) ) ) {
+			return;
+		}
+
+		?>
+		<div class="notice notice-error">
+			<p><strong>You are at risk!</strong> WPdrift IO - Worker is not genuine. Please contact info@wpdrift.io immediately.</p>
 		</div>
 		<?php
 	}

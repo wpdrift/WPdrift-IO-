@@ -404,28 +404,6 @@ function wo_setting($key = null)
 	return $settings[ $key ];
 }
 
-function wp_verifiy_authenticity_of_plugin_core()
-{
-	if (wo_is_dev()) {
-		return;
-	}
-	if (WOCHECKSUM != strtoupper(md5_file(__FILE__))) {
-		function wo_incompatibility_with_wp_version()
-		{
-			?>
-			<div class="notice notice-error">
-				<p><strong>You are at risk!</strong> WP OAuth Server is not genuine. Please contact info@wpdrift.io
-					immediately.</p>
-			</div>
-			<?php
-		}
-
-		add_action('admin_notices', 'wo_incompatibility_with_wp_version');
-	}
-}
-
-add_action('init', 'wp_verifiy_authenticity_of_plugin_core');
-
 /**
  * Returns if the core is valid
  * @return [type] [description]

@@ -191,6 +191,7 @@ class WO_Server {
 		$plugin_admin = new WPdrift_Worker_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'incompatibility_with_wp_version' );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'verifiy_authenticity_of_plugin_core' );
 
 	}
 
