@@ -31,6 +31,11 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 				'callback'            => array( $this, 'get_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'create_item' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+			),
 		) );
 	}
 
@@ -47,6 +52,13 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		if ( ! current_user_can( 'list_users' ) ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the post resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
+
+		// $host = $_SERVER['REMOTE_ADDR'];
+		// if ( '167.99.167.87' != $host ) {
+		// 	return 'Invalid Host';
+		// } else {
+		//
+		// }
 	}
 
 	/**
@@ -100,6 +112,34 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 	}
 
 	/**
+	 * [create_item description]
+	 * @return [type] [description]
+	 */
+	public function create_item( $request ) {
+		/**
+		 * [$client_data description]
+		 * @var [type]
+		 */
+		$client_data = $this->prepare_item_for_database( $request );
+
+		/**
+		 * [$client description]
+		 * @var [type]
+		 */
+		$client = wp_insert_post( $client_data );
+		if ( $client ) {
+			$client_data['store_id'] = $params['sid'];
+			return $client_data;
+		}
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return new WP_Error( 'error_creating_client', __( 'Error when creating client.', 'text-domain' ) );
+	}
+
+	/**
 	 * Matches the post data to the schema we want.
 	 *
 	 * @param WP_Post $post The comment object whose response is being prepared.
@@ -125,6 +165,49 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		return rest_ensure_response( $client_data );
+	}
+
+	/**
+	 * [prepare_item_for_database description]
+	 * @return [type] [description]
+	 */
+	public function prepare_item_for_database( $request ) {
+		/**
+		 * [$params description]
+		 * @var [type]
+		 */
+		$params = $request->get_params();
+
+		/**
+		 * [$client_data description]
+		 * @var array
+		 */
+		$client_data = array(
+			'post_title'     => $params['store_name'],
+			'post_status'    => 'publish',
+			'post_author'    => '1',
+			'post_type'      => 'wo_client',
+			'comment_status' => 'closed',
+			'meta_input'     => array(
+				'client_id'     => wo_gen_key(),
+				'client_secret' => wo_gen_key(),
+				'grant_types'   => array(
+					'authorization_code',
+					'implicit',
+					'password',
+					'client_credentials',
+					'refresh_token',
+				),
+				'redirect_uri'  => $params['return_url'],
+				'user_id'       => '-1',
+			),
+		);
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return $client_data;
 	}
 
 	/**

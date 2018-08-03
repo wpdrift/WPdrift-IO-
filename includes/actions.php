@@ -75,56 +75,6 @@ if ( $wpdrift_worker_restrict_single_access_token ) {
 	add_action( 'wo_set_access_token', 'wpdrift_worker_only_allow_one_access_token' );
 }
 
-// validating requester
-add_filter( 'rest_pre_dispatch', 'validate_wpdrift_request', 10, 3 );
-function validate_wpdrift_request( $result, $server, $request ) {
-	$route = $request->get_route();
-	if ($route == "/wpdriftsupporter/v1/validate-n-save-host") {
-		$host = $_SERVER['REMOTE_ADDR'];
-		if ('167.99.167.87' !== $host) {
-			// Referer is set to something that we don't allow.
-			return 'Invalid Host';
-		} else {
-			// setup the credentials and
-			// Go Ahead!
-			$params = $request->get_params('POST');
-			$client_id     = wo_gen_key();
-			$client_secret = wo_gen_key();
-			// Add host
-			$grant_types = array(
-				'authorization_code',
-				'implicit',
-				'password',
-				'client_credentials',
-				'refresh_token'
-			);
-			$client_data = array(
-				'post_title'     => $params['store_name'],
-				'post_status'    => 'publish',
-				'post_author'    => '1',
-				'post_type'      => 'wo_client',
-				'comment_status' => 'closed',
-				'meta_input'     => array(
-					'client_id'     => $client_id,
-					'client_secret' => $client_secret,
-					'grant_types'   => $grant_types,
-					'redirect_uri'  => $params['return_url'],
-					'user_id'       => '-1'
-				)
-			);
-
-			wp_insert_post($client_data);
-
-			$client_data['store_id'] = $params['sid'];
-
-			return $client_data;
-		}
-		return $result;
-	}
-	// Otherwise we are good - return original result and let WordPress handle as usual.
-	return $result;
-}
-
 // Debugging part
 if (!function_exists('_custlog')) {
 	function _custlog($message)
