@@ -440,24 +440,6 @@ function wo_is_core_valid()
 }
 
 /**
- * Retrieve the license status
- * @return String Valid|Invalid
- */
-function license_status()
-{
-	$options = get_option('wo_options');
-	$status  = isset($options['license_status']) ? $options['license_status'] : '';
-	switch ($status) {
-		case 'invalid':
-			echo 'Invalid. Activate your license now.';
-			break;
-		case 'valid':
-			echo 'Valid';
-			break;
-	}
-}
-
-/**
  * Retrieves the license information
  * @return Array License Information
  */
