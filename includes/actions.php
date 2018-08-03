@@ -175,7 +175,7 @@ function wpdriftio_register_rest_routes() {
 	 * @var [type]
 	 */
 	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php' );
-	$dashboard_controller = new WD_Dashboard_Endpoint();
+	$dashboard_controller = new WPdrift_Dashboard_Controller();
 	$dashboard_controller->register_routes();
 
 	/**
@@ -190,8 +190,8 @@ function wpdriftio_register_rest_routes() {
 	 * Register new recent events end points
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-endpoint.php' );
-	$recent_event_controller = new WD_RecentEvents_Endpoint();
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-controller.php' );
+	$recent_event_controller = new WPdrift_RecentEvents_Controller();
 	$recent_event_controller->register_routes();
 }
 

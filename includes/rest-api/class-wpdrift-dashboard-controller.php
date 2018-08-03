@@ -12,7 +12,7 @@ use League\Uri;
  *
  * @since 1.0.0
  */
-class WD_Dashboard_Endpoint extends WP_REST_Controller {
+class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	/**
 	 * Constructor.
 	 *
