@@ -100,6 +100,7 @@ class WO_Server {
 		 */
 		$this->load_dependencies();
 		$this->set_locale();
+		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
 		if ( function_exists( '__autoload' ) ) {
@@ -175,6 +176,19 @@ class WO_Server {
 		$plugin_i18n = new WPdrift_IO_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the admin area functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_admin_hooks() {
+
+		$plugin_admin = new Plugin_Name_Admin( $this->get_plugin_name(), $this->get_version() );
 
 	}
 
