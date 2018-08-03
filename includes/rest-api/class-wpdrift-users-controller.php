@@ -256,12 +256,12 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 	 */
 	public function get_filters( $dates, $mode ) {
 		$filters = [
-			'minute' => __( 'Minute', 'wpdrift-io' ),
-			'hour'   => __( 'hour', 'wpdrift-io' ),
-			'day'    => __( 'Day', 'wpdrift-io' ),
-			'week'   => __( 'Week', 'wpdrift-io' ),
-			'month'  => __( 'Month', 'wpdrift-io' ),
-			'year'   => __( 'Year', 'wpdrift-io' ),
+			'minute' => __( 'Minute', 'wpdrift-worker' ),
+			'hour'   => __( 'hour', 'wpdrift-worker' ),
+			'day'    => __( 'Day', 'wpdrift-worker' ),
+			'week'   => __( 'Week', 'wpdrift-worker' ),
+			'month'  => __( 'Month', 'wpdrift-worker' ),
+			'year'   => __( 'Year', 'wpdrift-worker' ),
 		];
 
 		return $filters;

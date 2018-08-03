@@ -221,7 +221,7 @@ class WPdrift_IO_Public {
 		 * [$hit->os_platform description]
 		 * @var [type]
 		 */
-		$hit['device_name'] = isset( $device_name ) ? $device_name : __( 'Others', 'wpdrift-io' );
+		$hit['device_name'] = isset( $device_name ) ? $device_name : __( 'Others', 'wpdrift-worker' );
 
 		/**
 		 * [$hit description]

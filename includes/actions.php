@@ -169,7 +169,7 @@ function wpdriftio_register_rest_routes() {
 	 * [require_once description]
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-users-controller.php' );
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-users-controller.php' );
 	$users_controller = new WPdrift_Users_Controller();
 	$users_controller->register_routes();
 
@@ -177,7 +177,7 @@ function wpdriftio_register_rest_routes() {
 	 * [require_once description]
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php' );
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-endpoint.php' );
 	$dashboard_controller = new WD_Dashboard_Endpoint();
 	$dashboard_controller->register_routes();
 
@@ -185,7 +185,7 @@ function wpdriftio_register_rest_routes() {
 	 * [require_once description]
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-hits-controller.php' );
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-hits-controller.php' );
 	$hits_controller = new WPdrift_Hits_Controller();
 	$hits_controller->register_routes();
 
@@ -193,7 +193,7 @@ function wpdriftio_register_rest_routes() {
 	 * Register new recent events end points
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_HELPER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-endpoint.php' );
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-endpoint.php' );
 	$recent_event_controller = new WD_RecentEvents_Endpoint();
 	$recent_event_controller->register_routes();
 }
@@ -251,7 +251,7 @@ function wpdrit_check_provide_plgn_ver()
 	} else {
 		$plugin_directory = "WPdrift-IO/wpdrift-io.php";
 		$plugin_active = false;
-		$plugin_version = WPDRIFT_HELPER_VERSION;
+		$plugin_version = WPDRIFT_WORKER_VERSION;
 		include_once(ABSPATH . 'wp-admin/includes/plugin.php');
 		if (is_plugin_active($plugin_directory)) {
 			$plugin_active = true;

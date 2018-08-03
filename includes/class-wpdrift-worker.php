@@ -75,12 +75,12 @@ class WO_Server {
 	 * @since    1.0.0
 	 */
 	function __construct() {
-		if ( defined( 'WPDRIFT_HELPER_VERSION' ) ) {
-			$this->version = WPDRIFT_HELPER_VERSION;
+		if ( defined( 'WPDRIFT_WORKER_VERSION' ) ) {
+			$this->version = WPDRIFT_WORKER_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'wpdrift-io';
+		$this->plugin_name = 'wpdrift-worker';
 
 		if ( ! defined( 'WOABSPATH' ) ) {
 			define( 'WOABSPATH', dirname( __FILE__ ) );
@@ -215,7 +215,7 @@ class WO_Server {
 			return (int) $user_id;
 		}
 
-		require_once( dirname( WPDRIFT_HELPER_FILE ) . '/library/OAuth2/Autoloader.php' );
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/library/OAuth2/Autoloader.php' );
 		OAuth2\Autoloader::register();
 		$server  = new OAuth2\Server( new OAuth2\Storage\Wordpressdb() );
 		$request = OAuth2\Request::createFromGlobals();

@@ -133,7 +133,7 @@ class WPdrift_IO_Activator {
 			$charset_collate .= " COLLATE {$wpdb->collate}";
 		}
 
-		update_option( 'wpdrift_helper_version', WPDRIFT_HELPER_VERSION );
+		update_option( 'wpdrift_helper_version', WPDRIFT_WORKER_VERSION );
 		$sql1 = "
 			CREATE TABLE IF NOT EXISTS {$wpdb->prefix}oauth_clients (
 			id 					  INT 			UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -233,14 +233,14 @@ class WPdrift_IO_Activator {
 				'private_key_type' => OPENSSL_KEYTYPE_RSA,
 			) );
 			openssl_pkey_export( $res, $privKey );
-			file_put_contents( dirname( WPDRIFT_HELPER_FILE ) . '/library/keys/private_key.pem', $privKey );
+			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/library/keys/private_key.pem', $privKey );
 
 			$pubKey = openssl_pkey_get_details( $res );
 			$pubKey = $pubKey['key'];
-			file_put_contents( dirname( WPDRIFT_HELPER_FILE ) . '/library/keys/public_key.pem', $pubKey );
+			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/library/keys/public_key.pem', $pubKey );
 
 			// Update plugin version
-			$plugin_data    = get_plugin_data( WPDRIFT_HELPER_FILE );
+			$plugin_data    = get_plugin_data( WPDRIFT_WORKER_FILE );
 			$plugin_version = $plugin_data['Version'];
 			update_option( 'wpdrift_helper_version', $plugin_version );
 		}

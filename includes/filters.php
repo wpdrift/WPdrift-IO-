@@ -4,9 +4,9 @@
  * @deprecated Schedule for removal. The PHP server handles all these now.
  */
 function wo_api_error_setup( $errors ) {
-	$errors['invalid_access_token']  = __( 'The access token is invalid or has expired', 'wpdrift-io' );
-	$errors['invalid_refresh_token'] = __( 'The refresh token is invalid or has expired', 'wpdrift-io' );
-	$errors['invalid_credentials']   = __( 'Invalid user credentials', 'wpdrift-io' );
+	$errors['invalid_access_token']  = __( 'The access token is invalid or has expired', 'wpdrift-worker' );
+	$errors['invalid_refresh_token'] = __( 'The refresh token is invalid or has expired', 'wpdrift-worker' );
+	$errors['invalid_credentials']   = __( 'Invalid user credentials', 'wpdrift-worker' );
 
 	return $errors;
 }
@@ -105,7 +105,7 @@ function _wo_method_destroy( $token = null ) {
 	/** Prepare the return */
 	$response = new OAuth2\Response( array(
 		'status'      => true,
-		'description' => __( 'Session destroyed successfully', 'wpdrift-io' ),
+		'description' => __( 'Session destroyed successfully', 'wpdrift-worker' ),
 	) );
 	$response->send();
 	exit;

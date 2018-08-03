@@ -94,7 +94,7 @@ function wo_public_insert_client( $client_data = null ) {
 }
 
 // print_r(wo_public_insert_client( array(
-// 	'name'         => __( 'Example', 'wpdrift-io' ),
+// 	'name'         => __( 'Example', 'wpdrift-worker' ),
 // 	'user_id'      => 1,
 // 	'grant_types'  => array(
 // 		'authorization_code',
