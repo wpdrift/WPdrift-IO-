@@ -180,9 +180,9 @@ if ( $wp_version <= 4.3 ) {
 		?>
 		<div class="notice notice-error">
 			<p>
-				<?php _e( 'WPdrift Helper requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-helper' ); ?>
+				<?php _e( 'WPdrift IO Worker requires that WordPress 4.4 or greater be used. Update to the latest WordPress version.', 'wpdrift-worker' ); ?>
 				<a href="<?php echo admin_url( 'update-core.php' ); ?>">
-					<?php _e( 'Update Now', 'wpdrift-helper' ); ?>
+					<?php _e( 'Update Now', 'wpdrift-worker' ); ?>
 				</a>
 			</p>
 		</div>
