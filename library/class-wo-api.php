@@ -14,7 +14,7 @@ $default_settings = _WO()->defualt_settings;
 if ( 0 == wo_setting( 'enabled' ) ) {
 	do_action( 'wo_before_unavailable_error' );
 	$response = new OAuth2\Response();
-	$response->setError( 503, 'error', __( 'temporarily unavailable', 'wp-oauth' ) );
+	$response->setError( 503, 'error', __( 'temporarily unavailable', 'wpdrift-worker' ) );
 	$response->send();
 	exit;
 }
@@ -22,7 +22,7 @@ if ( 0 == wo_setting( 'enabled' ) ) {
 $wo_strict_api_lockdown = apply_filters( 'wo_strict_api_lockdown', false );
 if ( $wo_strict_api_lockdown && ! wo_is_core_valid() && ! wo_is_dev() ) {
 	$response = new OAuth2\Response();
-	$response->setError( 403, 'security_risk', __( 'plugin core is not authenticate', 'wp-oauth' ) );
+	$response->setError( 403, 'security_risk', __( 'plugin core is not authenticate', 'wpdrift-worker' ) );
 	$response->send();
 	exit;
 }
@@ -356,6 +356,6 @@ if ( array_key_exists( $method, $resource_server_methods ) ) {
  * @since 3.1.0
  */
 $response = new OAuth2\Response();
-$response->setError( 400, 'invalid_request', __( 'unknown request', 'wp-oauth' ) );
+$response->setError( 400, 'invalid_request', __( 'unknown request', 'wpdrift-worker' ) );
 $response->send();
 exit;

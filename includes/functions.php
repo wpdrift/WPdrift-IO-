@@ -20,28 +20,27 @@ require_once dirname(__FILE__) . '/filters.php';
 require_once(dirname(__FILE__) . '/actions.php');
 
 add_action('init', 'wo_types');
-function wo_types()
-{
+function wo_types() {
 	$labels = array(
-		'name'               => _x('Client', 'post type general name', 'wp-oauth'),
-		'singular_name'      => _x('Client', 'post type singular name', 'wp-oauth'),
-		'menu_name'          => _x('Clients', 'admin menu', 'wp-oauth'),
-		'name_admin_bar'     => _x('Client', 'add new on admin bar', 'wp-oauth'),
-		'add_new'            => _x('Add New', 'Client', 'wp-oauth'),
-		'add_new_item'       => __('Add New BoClientok', 'wp-oauth'),
-		'new_item'           => __('New Client', 'wp-oauth'),
-		'edit_item'          => __('Edit Client', 'wp-oauth'),
-		'view_item'          => __('View Client', 'wp-oauth'),
-		'all_items'          => __('All Clients', 'wp-oauth'),
-		'search_items'       => __('Search Clients', 'wp-oauth'),
-		'parent_item_colon'  => __('Parent Clients:', 'wp-oauth'),
-		'not_found'          => __('No clients found.', 'wp-oauth'),
-		'not_found_in_trash' => __('No clients found in Trash.', 'wp-oauth')
+		'name'               => _x( 'Client', 'post type general name', 'wpdrift-worker' ),
+		'singular_name'      => _x( 'Client', 'post type singular name', 'wpdrift-worker' ),
+		'menu_name'          => _x( 'Clients', 'admin menu', 'wpdrift-worker' ),
+		'name_admin_bar'     => _x( 'Client', 'add new on admin bar', 'wpdrift-worker' ),
+		'add_new'            => _x( 'Add New', 'Client', 'wpdrift-worker' ),
+		'add_new_item'       => __( 'Add New BoClientok', 'wpdrift-worker' ),
+		'new_item'           => __( 'New Client', 'wpdrift-worker' ),
+		'edit_item'          => __( 'Edit Client', 'wpdrift-worker' ),
+		'view_item'          => __( 'View Client', 'wpdrift-worker' ),
+		'all_items'          => __( 'All Clients', 'wpdrift-worker' ),
+		'search_items'       => __( 'Search Clients', 'wpdrift-worker' ),
+		'parent_item_colon'  => __( 'Parent Clients:', 'wpdrift-worker' ),
+		'not_found'          => __( 'No clients found.', 'wpdrift-worker' ),
+		'not_found_in_trash' => __( 'No clients found in Trash.', 'wpdrift-worker' ),
 	);
 
 	$args = array(
 		'labels'              => $labels,
-		'description'         => __('Description.', 'wp-oauth'),
+		'description'         => __( 'Description.', 'wpdrift-worker' ),
 		'public'              => true,
 		'publicly_queryable'  => false,
 		'show_ui'             => true,
@@ -53,10 +52,10 @@ function wo_types()
 		'hierarchical'        => false,
 		'menu_position'       => null,
 		'supports'            => array( 'title' ),
-		'exclude_from_search' => true
+		'exclude_from_search' => true,
 	);
 
-	register_post_type('wo_client', $args);
+	register_post_type( 'wo_client', $args );
 }
 
 /**
