@@ -1,9 +1,9 @@
 <?php
 /**
- * WP OAuth Server Actions
+ * WPdrift Worker actions
  *
- * @author Justin Greer <justin@justin-greer.com>
- * @package WordPress OAuth Server
+ * @author  WPdrift <kishore@upnrunn.com>
+ * @package WPdrift Worker
  */
 
 /**
@@ -16,33 +16,32 @@
  *
  * @since 3.1.8
  */
-function wo_password_reset_action($user, $new_pass)
-{
+function wpdrift_worker_password_reset_action( $user, $new_pass ) {
 	global $wpdb;
-	$wpdb->delete("{$wpdb->prefix}oauth_access_tokens", array( "user_id" => $user->ID ));
-	$wpdb->delete("{$wpdb->prefix}oauth_refresh_tokens", array( "user_id" => $user->ID ));
+	$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user->ID ) );
+	$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user->ID ) );
 }
 
-add_action('password_reset', 'wo_password_reset_action', 10, 2);
+add_action( 'password_reset', 'wpdrift_worker_password_reset_action', 10, 2 );
 
 /**
- * [wo_profile_update_action description]
+ * [wpdrift_worker_profile_update_action description]
  *
  * @param  int $user_id WP User ID
  *
  * @return Void
  */
-function wo_profile_update_action($user_id)
-{
-	if (! isset($_POST['pass1']) || '' == $_POST['pass1']) {
+function wpdrift_worker_profile_update_action( $user_id ) {
+	if ( ! isset( $_POST['pass1'] ) || '' == $_POST['pass1'] ) {
 		return;
 	}
+
 	global $wpdb;
-	$wpdb->delete("{$wpdb->prefix}oauth_access_tokens", array( "user_id" => $user_id ));
-	$wpdb->delete("{$wpdb->prefix}oauth_refresh_tokens", array( "user_id" => $user_id ));
+	$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user_id ) );
+	$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user_id ) );
 }
 
-add_action('profile_update', 'wo_profile_update_action');
+add_action( 'profile_update', 'wpdrift_worker_profile_update_action' );
 
 /**
  * Only allow 1 acces_token at a time
@@ -51,9 +50,8 @@ add_action('profile_update', 'wo_profile_update_action');
  *
  * @return [type]          [description]
  */
-function wo_only_allow_one_access_token($object)
-{
-	if (is_null($object)) {
+function wpdrift_worker_only_allow_one_access_token( $object ) {
+	if ( is_null( $object ) ) {
 		return;
 	}
 
@@ -62,8 +60,8 @@ function wo_only_allow_one_access_token($object)
 
 	// Remove all other access tokens and refresh tokens from the system
 	global $wpdb;
-	$wpdb->delete("{$wpdb->prefix}oauth_access_tokens", array( "user_id" => $user_id ));
-	$wpdb->delete("{$wpdb->prefix}oauth_refresh_tokens", array( "user_id" => $user_id ));
+	$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user_id ) );
+	$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user_id ) );
 
 	return;
 }
@@ -72,15 +70,14 @@ function wo_only_allow_one_access_token($object)
  * Restrict users to only have a single access token
  * @since 3.2.7
  */
-$wo_restrict_single_access_token = apply_filters('wo_restrict_single_access_token', false);
-if ($wo_restrict_single_access_token) {
-	add_action('wo_set_access_token', 'wo_only_allow_one_access_token');
+$wpdrift_worker_restrict_single_access_token = apply_filters( 'wpdrift_worker_restrict_single_access_token', false );
+if ( $wpdrift_worker_restrict_single_access_token ) {
+	add_action( 'wo_set_access_token', 'wpdrift_worker_only_allow_one_access_token' );
 }
 
 // validating requester
-add_filter('rest_pre_dispatch', 'validate_wpdrift_request', 10, 3);
-function validate_wpdrift_request($result, $server, $request)
-{
+add_filter( 'rest_pre_dispatch', 'validate_wpdrift_request', 10, 3 );
+function validate_wpdrift_request( $result, $server, $request ) {
 	$route = $request->get_route();
 	if ($route == "/wpdriftsupporter/v1/validate-n-save-host") {
 		$host = $_SERVER['REMOTE_ADDR'];
