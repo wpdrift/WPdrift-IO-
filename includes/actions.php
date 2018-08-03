@@ -96,11 +96,6 @@ if (!function_exists('_custlog')) {
  * @return [type] [description]
  */
 function wpdriftio_register_rest_routes() {
-	register_rest_route('wpdriftsupporter/v1', '/validate-n-save-host/', array(
-		'methods'  => 'POST',
-		'callback' => 'call_for_validating_client_hosts',
-	));
-
 	register_rest_route('wpdriftsupporter/v1', '/validate-token/', array(
 		'methods'  => 'POST',
 		'callback' => 'wpdrit_validate_token',
@@ -154,10 +149,6 @@ function wpdriftio_register_rest_routes() {
 }
 
 add_action( 'rest_api_init', 'wpdriftio_register_rest_routes' );
-
-function call_for_validating_client_hosts()
-{
-}
 
 function wpdrit_validate_token($data)
 {
