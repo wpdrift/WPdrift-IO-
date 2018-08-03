@@ -440,15 +440,6 @@ function wo_is_core_valid()
 }
 
 /**
- * Retrieves the license key
- * @return [type] [description]
- */
-function wo_license_key()
-{
-	return get_option("wo_license_key");
-}
-
-/**
  * Determine is environment is development
  * @return [type] [description]
  *
