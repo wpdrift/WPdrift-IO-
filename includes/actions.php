@@ -106,17 +106,9 @@ function wpdriftio_register_rest_routes() {
 	 * [require_once description]
 	 * @var [type]
 	 */
-	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-clients-controller.php' );
-	$users_controller = new WPdrift_Clients_Controller();
-	$users_controller->register_routes();
-
-	/**
-	 * [require_once description]
-	 * @var [type]
-	 */
-	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-users-controller.php' );
-	$users_controller = new WPdrift_Users_Controller();
-	$users_controller->register_routes();
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-site-controller.php' );
+	$site_controller = new WPdrift_Site_Controller();
+	$site_controller->register_routes();
 
 	/**
 	 * [require_once description]
@@ -125,6 +117,22 @@ function wpdriftio_register_rest_routes() {
 	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-dashboard-controller.php' );
 	$dashboard_controller = new WPdrift_Dashboard_Controller();
 	$dashboard_controller->register_routes();
+
+	/**
+	 * [require_once description]
+	 * @var [type]
+	 */
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-clients-controller.php' );
+	$clients_controller = new WPdrift_Clients_Controller();
+	$clients_controller->register_routes();
+
+	/**
+	 * [require_once description]
+	 * @var [type]
+	 */
+	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-users-controller.php' );
+	$users_controller = new WPdrift_Users_Controller();
+	$users_controller->register_routes();
 
 	/**
 	 * [require_once description]
@@ -139,8 +147,8 @@ function wpdriftio_register_rest_routes() {
 	 * @var [type]
 	 */
 	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-controller.php' );
-	$recent_event_controller = new WPdrift_RecentEvents_Controller();
-	$recent_event_controller->register_routes();
+	$events_controller = new WPdrift_RecentEvents_Controller();
+	$events_controller->register_routes();
 }
 
 add_action( 'rest_api_init', 'wpdriftio_register_rest_routes' );

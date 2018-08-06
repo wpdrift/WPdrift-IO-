@@ -32,6 +32,41 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
+
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
+		register_rest_route($this->namespace, '/' . $this->rest_base . '/plugin-status', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_plugin_status' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+			),
+		));
+	}
+
+	/**
+	 * [public description]
+	 * @var [type]
+	 */
+	public function get_plugin_status() {
+		/**
+		 * Detect plugin.
+		 * @var [type]
+		 */
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+		// check for plugin using plugin name
+		if ( ! is_plugin_active( 'WPdrift-IO/wpdrift-io.php' ) ) {
+			return rest_ensure_response( array() );
+		}
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return [ 'version' => WPDRIFT_WORKER_VERSION ];
 	}
 
 	/**
