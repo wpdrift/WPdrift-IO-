@@ -25,6 +25,10 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function register_routes() {
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
 		register_rest_route( $this->namespace, '/' . $this->rest_base, array(
 			array(
 				'methods'             => WP_REST_Server::READABLE,
@@ -37,6 +41,18 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
+
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
+		register_rest_route($this->namespace, '/' . $this->rest_base . '/token', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_token' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+			),
+		));
 	}
 
 	/**
@@ -51,7 +67,7 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		return true;
 
 		if ( '167.99.167.87' != $_SERVER['REMOTE_ADDR'] ) {
-			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the post resource.' ), array( 'status' => $this->authorization_status_code() ) );
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
 	}
 
@@ -131,6 +147,30 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		return new WP_Error( 'error_creating_client', __( 'Error when creating client.', 'text-domain' ) );
+	}
+
+	/**
+	 * [get_token description]
+	 * @return [type] [description]
+	 */
+	public function get_token( $request ) {
+		/**
+		 * [$requested_token description]
+		 * @var [type]
+		 */
+		$requested_token = $request['token'];
+		$token           = wpdrift_worker_public_get_access_token( $requested_token );
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( ! $token ) {
+			return rest_ensure_response( array() );
+		}
+
+		// Return all of our token response data.
+		return $token;
 	}
 
 	/**
