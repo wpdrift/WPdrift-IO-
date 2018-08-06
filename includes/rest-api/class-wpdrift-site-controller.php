@@ -41,9 +41,38 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_plugin_status' ),
-				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		));
+	}
+
+	/**
+	 * Grabs site details.
+	 * @return [type] [description]
+	 */
+	public function get_items() {
+		/**
+		 * [$data description]
+		 * @var array
+		 */
+		$data = array(
+			'name'              => get_bloginfo( 'name' ),
+			'description'       => get_bloginfo( 'description' ),
+			'version'           => get_bloginfo( 'version' ),
+			'url'               => get_bloginfo( 'url' ),
+			'admin_email'       => get_bloginfo( 'admin_email' ),
+			'language'          => get_bloginfo( 'language' ),
+			'rss2_url'          => get_bloginfo( 'rss2_url' ),
+			'comments_rss2_url' => get_bloginfo( 'comments_rss2_url' ),
+			'admin_url'         => admin_url(),
+			'ajax_url'          => admin_url( 'admin-ajax.php' ),
+		);
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return rest_ensure_response( $data );
 	}
 
 	/**
@@ -83,32 +112,6 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Grabs the most recent users and outputs them as a rest response.
-	 *
-	 * @param WP_REST_Request $request Current request.
-	 */
-	public function get_items( $request ) {
-
-		/**
-		 * [global description]
-		 * @var [type]
-		 */
-		global $wpdb;
-
-		/**
-		 * [$data description]
-		 * @var array
-		 */
-		$data = array();
-
-		/**
-		 * Return all of our comment response data.
-		 * @var [type]
-		 */
-		return rest_ensure_response( $data );
 	}
 
 	/**
