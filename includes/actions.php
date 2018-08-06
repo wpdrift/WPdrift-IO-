@@ -96,12 +96,6 @@ if (!function_exists('_custlog')) {
  * @return [type] [description]
  */
 function wpdriftio_register_rest_routes() {
-	// New edn point to check that plugin is installed or not
-	register_rest_route('wpdriftsupporter/v1', '/check-plugin/', array(
-		'methods'  => 'GET',
-		'callback' => 'wpdrit_check_provide_plgn_ver',
-	));
-
 	/**
 	 * [require_once description]
 	 * @var [type]
