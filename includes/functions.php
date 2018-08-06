@@ -410,7 +410,7 @@ function wo_setting($key = null)
  */
 function wo_is_core_valid()
 {
-	if (WOCHECKSUM != strtoupper(md5_file(__FILE__))) {
+	if (WPDRIFT_WORKER_CHECKSUM != strtoupper(md5_file(__FILE__))) {
 		return false;
 	}
 

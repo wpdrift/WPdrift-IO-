@@ -90,8 +90,8 @@ class WO_Server {
 			define( 'WOURI', plugins_url( '/', __FILE__ ) );
 		}
 
-		if ( ! defined( 'WOCHECKSUM' ) ) {
-			define( 'WOCHECKSUM', 'F2B0D73C4BE99511D25BBAE6DF0BB28F' );
+		if ( ! defined( 'WPDRIFT_WORKER_CHECKSUM' ) ) {
+			define( 'WPDRIFT_WORKER_CHECKSUM', 'F2B0D73C4BE99511D25BBAE6DF0BB28F' );
 		}
 
 		/**

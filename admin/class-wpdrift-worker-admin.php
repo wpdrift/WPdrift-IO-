@@ -90,7 +90,7 @@ class WPdrift_Worker_Admin {
 		 * Looks good, exit.
 		 * @var [type]
 		 */
-		if ( WOCHECKSUM == strtoupper( md5_file( __FILE__ ) ) ) {
+		if ( WPDRIFT_WORKER_CHECKSUM == strtoupper( md5_file( __FILE__ ) ) ) {
 			return;
 		}
 
