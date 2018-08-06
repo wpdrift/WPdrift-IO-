@@ -177,21 +177,3 @@ function wh_save_login_activity($user_login, $user)
 	}
 }
 add_action('wp_login', 'wh_save_login_activity', 999, 2);
-// check plugin is installed and then add version of plugin
-function wpdrit_check_provide_plgn_ver()
-{
-	global $wpdb;
-	$host = $_SERVER['REMOTE_ADDR'];
-	if ('167.99.167.87' !== $host) {
-		return 'Invalid Host';
-	} else {
-		$plugin_directory = "WPdrift-IO/wpdrift-io.php";
-		$plugin_active = false;
-		$plugin_version = WPDRIFT_WORKER_VERSION;
-		include_once(ABSPATH . 'wp-admin/includes/plugin.php');
-		if (is_plugin_active($plugin_directory)) {
-			$plugin_active = true;
-		}
-		return array('plugin_version' => $plugin_version, 'plugin_active' => $plugin_active);
-	}
-}
