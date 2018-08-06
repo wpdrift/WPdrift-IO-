@@ -61,14 +61,14 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 	 */
 	public function get_items_permissions_check( $request ) {
 		/**
-		 * Dev only.
+		 * [if description]
 		 * @var [type]
 		 */
-		return true;
-
-		if ( '167.99.167.87' != $_SERVER['REMOTE_ADDR'] ) {
+		if ( ! current_user_can( 'list_users' ) ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
+
+		return true;
 	}
 
 	/**

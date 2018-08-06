@@ -82,7 +82,15 @@ class WPdrift_RecentEvents_Controller extends WP_REST_Controller
 	 */
 	public function get_items_permissions_check($request)
 	{
-		return current_user_can('list_users');
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
+		return true;
 	}
 
 

@@ -96,11 +96,6 @@ if (!function_exists('_custlog')) {
  * @return [type] [description]
  */
 function wpdriftio_register_rest_routes() {
-	register_rest_route('wpdriftsupporter/v1', '/validate-token/', array(
-		'methods'  => 'POST',
-		'callback' => 'wpdrit_validate_token',
-	));
-
 	// New edn point to check that plugin is installed or not
 	register_rest_route('wpdriftsupporter/v1', '/check-plugin/', array(
 		'methods'  => 'GET',
@@ -149,19 +144,6 @@ function wpdriftio_register_rest_routes() {
 }
 
 add_action( 'rest_api_init', 'wpdriftio_register_rest_routes' );
-
-function wpdrit_validate_token($data)
-{
-	global $wpdb;
-	$host = $_SERVER['REMOTE_ADDR'];
-	$access_token = $data['access_token'];
-
-	if ('167.99.167.87' !== $host) {
-		return 'Invalid Host';
-	} else {
-		return $wpdb->get_row("SELECT * FROM {$wpdb->prefix}oauth_access_tokens WHERE access_token = '{$access_token}'", OBJECT);
-	}
-}
 
 function wh_save_login_activity($user_login, $user)
 {

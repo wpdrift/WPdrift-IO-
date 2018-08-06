@@ -311,8 +311,15 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	 * @return WP_Error|bool
 	 */
 	public function get_items_permissions_check( $request ) {
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
 		return true;
-		return current_user_can( 'list_users' );
 	}
 
 	/**
