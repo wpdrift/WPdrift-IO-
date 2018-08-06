@@ -42,18 +42,6 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 				'args'                => array(),
 			),
 		));
-
-		/**
-		 * [register_rest_route description]
-		 * @var [type]
-		 */
-		register_rest_route($this->namespace, '/' . $this->rest_base . '/bloginfo', array(
-			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'get_bloginfo' ),
-				'args'     => array(),
-			),
-		));
 	}
 
 	/**
@@ -110,36 +98,6 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 			$itemdata     = $this->prepare_item_for_response( $item, $request );
 			$data[ $key ] = $this->prepare_response_for_collection( $itemdata );
 		}
-
-		/**
-		 * [return description]
-		 * @var [type]
-		 */
-		return rest_ensure_response( $data );
-	}
-
-	/**
-	 * [get_version description]
-	 * @return [type] [description]
-	 */
-	public function get_bloginfo() {
-
-		/**
-		 * [$data description]
-		 * @var array
-		 */
-		$data = array(
-			'name'              => get_bloginfo( 'name' ),
-			'description'       => get_bloginfo( 'description' ),
-			'version'           => get_bloginfo( 'version' ),
-			'url'               => get_bloginfo( 'url' ),
-			'admin_email'       => get_bloginfo( 'admin_email' ),
-			'language'          => get_bloginfo( 'language' ),
-			'rss2_url'          => get_bloginfo( 'rss2_url' ),
-			'comments_rss2_url' => get_bloginfo( 'comments_rss2_url' ),
-			'admin_url'         => admin_url(),
-			'ajax_url'          => admin_url( 'admin-ajax.php' ),
-		);
 
 		/**
 		 * [return description]
