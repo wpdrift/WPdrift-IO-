@@ -42,18 +42,6 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 				'args'                => array(),
 			),
 		));
-
-		/**
-		 * [register_rest_route description]
-		 * @var [type]
-		 */
-		register_rest_route($this->namespace, '/' . $this->rest_base . '/bloginfo', array(
-			array(
-				'methods'  => WP_REST_Server::READABLE,
-				'callback' => array( $this, 'get_bloginfo' ),
-				'args'     => array(),
-			),
-		));
 	}
 
 	/**
