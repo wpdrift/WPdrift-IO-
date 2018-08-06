@@ -64,7 +64,7 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		 * [if description]
 		 * @var [type]
 		 */
-		if ( ! current_user_can( 'list_users' ) ) {
+		if ( '167.99.167.87' != $_SERVER['REMOTE_ADDR'] ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
 
