@@ -102,6 +102,7 @@ class WO_Server {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+		$this->define_oauth_hooks();
 
 		if ( function_exists( '__autoload' ) ) {
 			spl_autoload_register( '__autoload' );
@@ -123,6 +124,11 @@ class WO_Server {
 		 * Load dependecies managed by composer.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
+
+		/**
+		 * Setup eloquent db connection
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -148,9 +154,10 @@ class WO_Server {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wpdrift-io-public.php';
 
 		/**
-		 * Setup eloquent db connection
+		 * The class responsible for defining all actions that occur in the oauth-facing
+		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'oauth/class-wpdrift-worker-oauth.php';
 
 		/**
 		 * [require_once description]
@@ -215,6 +222,22 @@ class WO_Server {
 	}
 
 	/**
+	 * Register all of the hooks related to the oauth-facing functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_oauth_hooks() {
+
+		$plugin_public = new WPdrift_Worker_Oauth( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'init', $plugin_public, 'server_register_query_vars' );
+		$this->loader->add_filter( 'template_include', $plugin_public, 'server_template_redirect_intercept', 100 );
+
+	}
+
+	/**
 	 * Awesomeness for 3rd party support
 	 *
 	 * Filter; determine_current_user
@@ -238,7 +261,7 @@ class WO_Server {
 			return (int) $user_id;
 		}
 
-		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/library/OAuth2/Autoloader.php' );
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/oauth/OAuth2/Autoloader.php' );
 		OAuth2\Autoloader::register();
 		$server  = new OAuth2\Server( new OAuth2\Storage\Wordpressdb() );
 		$request = OAuth2\Request::createFromGlobals();
@@ -276,7 +299,7 @@ class WO_Server {
 		$file  = 'class-' . str_replace( '_', '-', $class ) . '.php';
 
 		if ( strpos( $class, 'wo_' ) === 0 ) {
-			$path = plugin_dir_path( dirname( __FILE__ ) ) . '/library/' . trailingslashit( substr( str_replace( '_', '-', $class ), 18 ) );
+			$path = plugin_dir_path( dirname( __FILE__ ) ) . '/oauth/' . trailingslashit( substr( str_replace( '_', '-', $class ), 18 ) );
 		}
 
 		if ( $path && is_readable( $path . $file ) ) {

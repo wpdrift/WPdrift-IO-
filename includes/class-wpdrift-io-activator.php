@@ -88,7 +88,7 @@ class WPdrift_IO_Activator {
 				'implicit',
 				'password',
 				'client_credentials',
-				'refresh_token'
+				'refresh_token',
 			);
 
 			foreach ( $clients as $client ) {
@@ -103,7 +103,7 @@ class WPdrift_IO_Activator {
 						'client_secret' => $client->client_secret,
 						'grant_types'   => $grant_types,
 						'redirect_uri'  => $client->redirect_uri,
-						'user_id'       => $client->user_id
+						'user_id'       => $client->user_id,
 					)
 				);
 
@@ -233,11 +233,11 @@ class WPdrift_IO_Activator {
 				'private_key_type' => OPENSSL_KEYTYPE_RSA,
 			) );
 			openssl_pkey_export( $res, $privKey );
-			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/library/keys/private_key.pem', $privKey );
+			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/oauth/keys/private_key.pem', $privKey );
 
 			$pubKey = openssl_pkey_get_details( $res );
 			$pubKey = $pubKey['key'];
-			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/library/keys/public_key.pem', $pubKey );
+			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/oauth/keys/public_key.pem', $pubKey );
 
 			// Update plugin version
 			$plugin_data    = get_plugin_data( WPDRIFT_WORKER_FILE );

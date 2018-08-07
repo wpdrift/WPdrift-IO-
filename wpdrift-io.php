@@ -50,8 +50,19 @@ function deactivate_wpdrift_worker() {
 	WPdrift_IO_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_wpdrift_worker' );
-register_deactivation_hook( __FILE__, 'deactivate_wpdrift_worker' );
+// register_activation_hook( __FILE__, 'activate_wpdrift_worker' );
+// register_deactivation_hook( __FILE__, 'deactivate_wpdrift_worker' );
+
+/**
+ * [require_once description]
+ * @var [type]
+ */
+require_once( dirname( __FILE__ ) . '/includes/filters.php' );
+require_once( dirname( __FILE__ ) . '/includes/actions.php' );
+require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+require_once( dirname( __FILE__ ) . '/includes/public.php' );
+require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
+require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
 
 /**
  * The core plugin class that is used to define internationalization,
@@ -73,60 +84,6 @@ function run_wpdrift_worker() {
 }
 
 run_wpdrift_worker();
-
-/**
- * [require_once description]
- * @var [type]
- */
-require_once( dirname( __FILE__ ) . '/includes/functions.php' );
-require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
-require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
-
-/**
- * Adds/registers query vars
- *
- * @return void
- */
-function wpdrift_worker_server_register_query_vars() {
-	wpdrift_worker_server_register_rewrites();
-
-	global $wp;
-	$wp->add_query_var( 'oauth' );
-}
-
-add_action( 'init', 'wpdrift_worker_server_register_query_vars' );
-
-/**
- * Registers rewrites for OAuth2 Server
- *
- * - authorize
- * - token
- * - .well-known
- * - wpoauthincludes
- *
- * @return void
- */
-function wpdrift_worker_server_register_rewrites() {
-	add_rewrite_rule( '^oauth/(.+)', 'index.php?oauth=$matches[1]', 'top' );
-}
-
-/**
- * [template_redirect_intercept description]
- *
- * @return [type] [description]
- */
-function wpdrift_worker_server_template_redirect_intercept( $template ) {
-	global $wp_query;
-
-	if ( $wp_query->get( 'oauth' ) || $wp_query->get( 'well-known' ) ) {
-		require_once dirname( __FILE__ ) . '/library/class-wo-api.php';
-		exit;
-	}
-
-	return $template;
-}
-
-add_filter( 'template_include', 'wpdrift_worker_server_template_redirect_intercept', 100 );
 
 /**
  * OAuth2 Server Activation
