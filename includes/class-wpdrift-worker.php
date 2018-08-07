@@ -209,6 +209,7 @@ class WO_Server {
 		$this->loader->add_action( 'wp', $plugin_public, 'record_hit' );
 		$this->loader->add_action( 'wp_ajax_record_click', $plugin_public, 'record_click' );
 		$this->loader->add_action( 'wp_ajax_nopriv_record_click', $plugin_public, 'record_click' );
+		$this->loader->add_action( 'wp_login', $plugin_public, 'record_login_activity' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}

@@ -144,38 +144,14 @@ function wpdriftio_register_rest_routes() {
 	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-controller.php' );
 	$events_controller = new WPdrift_RecentEvents_Controller();
 	$events_controller->register_routes();
+
 	/**
 	 * Detect EDD plugin. Then add edd all api end points
 	 */
-	if(in_array( 'easy-digital-downloads/easy-digital-downloads.php', (array) get_option( 'active_plugins', array() ) )) {
-		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/edd-end-points.php' ); 
+	if ( in_array( 'easy-digital-downloads/easy-digital-downloads.php', (array) get_option( 'active_plugins', array() ) ) ) {
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/edd-end-points.php' );
 	}
-	
+
 }
 
 add_action( 'rest_api_init', 'wpdriftio_register_rest_routes' );
-
-function wh_save_login_activity($user_login, $user)
-{
-	$session_tokens = get_user_meta($user->ID, 'session_tokens', true);
-	$sessions = array();
-
-	if (! empty($session_tokens)) {
-		foreach ($session_tokens as $key => $session) {
-			$session['token'] = $key;
-			$sessions[] = $session;
-		}
-	}
-
-	update_user_meta($user->ID, 'last_login', $session);
-
-	$ip_data = wh_get_user_ip_data($session['ip']);
-	$ip_data = json_decode($ip_data, true);
-	if (! empty($ip_data)  && ('success' == $ip_data['status'])) {
-		update_user_meta($user->ID, 'ip_data', $ip_data);
-		foreach ($ip_data as $key => $value) {
-			update_user_meta($user->ID, 'ip_' . $key, $value);
-		}
-	}
-}
-add_action('wp_login', 'wh_save_login_activity', 999, 2);
