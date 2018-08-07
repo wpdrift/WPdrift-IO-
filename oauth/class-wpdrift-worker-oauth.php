@@ -391,8 +391,6 @@ class WPdrift_Worker_Oauth {
 			$response->setError( 400, 'invalid_request', __( 'unknown request', 'wpdrift-worker' ) );
 			$response->send();
 			exit;
-
-			exit;
 		}
 
 		return $template;

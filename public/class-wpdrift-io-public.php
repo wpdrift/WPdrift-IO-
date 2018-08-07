@@ -308,7 +308,7 @@ class WPdrift_IO_Public {
 	 * @param  [type] $user       [description]
 	 * @return [type]             [description]
 	 */
-	function record_login_activity( $user_login, $user ) {
+	public function record_login_activity( $user_login, $user ) {
 		/**
 		 * [$session_tokens description]
 		 * @var [type]
@@ -347,7 +347,7 @@ class WPdrift_IO_Public {
 	 * @param  [type] $ip [description]
 	 * @return [type]     [description]
 	 */
-	function ip_data( $ip ) {
+	public function ip_data( $ip ) {
 		$curl = curl_init();
 
 		curl_setopt_array($curl, array(

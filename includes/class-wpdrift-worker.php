@@ -216,7 +216,7 @@ class WO_Server {
 		$this->loader->add_action( 'wp', $plugin_public, 'record_hit' );
 		$this->loader->add_action( 'wp_ajax_record_click', $plugin_public, 'record_click' );
 		$this->loader->add_action( 'wp_ajax_nopriv_record_click', $plugin_public, 'record_click' );
-		$this->loader->add_action( 'wp_login', $plugin_public, 'record_login_activity' );
+		$this->loader->add_action( 'wp_login', $plugin_public, 'record_login_activity', 10, 2 );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 	}
@@ -230,10 +230,10 @@ class WO_Server {
 	 */
 	private function define_oauth_hooks() {
 
-		$plugin_public = new WPdrift_Worker_Oauth( $this->get_plugin_name(), $this->get_version() );
+		$plugin_oauth = new WPdrift_Worker_Oauth( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'init', $plugin_public, 'server_register_query_vars' );
-		$this->loader->add_filter( 'template_include', $plugin_public, 'server_template_redirect_intercept', 100 );
+		$this->loader->add_action( 'init', $plugin_oauth, 'server_register_query_vars' );
+		$this->loader->add_filter( 'template_include', $plugin_oauth, 'server_template_redirect_intercept', 100 );
 
 	}
 

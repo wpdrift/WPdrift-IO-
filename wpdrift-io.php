@@ -50,8 +50,8 @@ function deactivate_wpdrift_worker() {
 	WPdrift_IO_Deactivator::deactivate();
 }
 
-// register_activation_hook( __FILE__, 'activate_wpdrift_worker' );
-// register_deactivation_hook( __FILE__, 'deactivate_wpdrift_worker' );
+register_activation_hook( __FILE__, 'activate_wpdrift_worker' );
+register_deactivation_hook( __FILE__, 'deactivate_wpdrift_worker' );
 
 /**
  * [require_once description]
