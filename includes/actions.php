@@ -5,7 +5,8 @@
  * @author  WPdrift <kishore@upnrunn.com>
  * @package WPdrift Worker
  */
-
+// hide all error on api response
+error_reporting(0);
 /**
  * Invalidate any token and refresh tokens during password reset
  *
@@ -143,6 +144,13 @@ function wpdriftio_register_rest_routes() {
 	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-controller.php' );
 	$events_controller = new WPdrift_RecentEvents_Controller();
 	$events_controller->register_routes();
+	/**
+	 * Detect EDD plugin. Then add edd all api end points
+	 */
+	if(in_array( 'easy-digital-downloads/easy-digital-downloads.php', (array) get_option( 'active_plugins', array() ) )) {
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/edd-end-points.php' ); 
+	}
+	
 }
 
 add_action( 'rest_api_init', 'wpdriftio_register_rest_routes' );

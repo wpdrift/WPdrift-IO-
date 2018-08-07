@@ -1,0 +1,109 @@
+<?php
+/**
+* For adding all edd rest apis end points to setup the edd on app site.
+*/
+/**
+ * Register get edd downloads end points
+ * @var [type]
+ */
+
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-downloads-endpoint.php' );
+$recent_edd_downloads_controller = new EDD_GetDownloads_Endpoint();
+$recent_edd_downloads_controller->register_routes();
+
+/**
+ * Register get edd downloads metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-downloads-metas-endpoint.php' );
+$recent_edd_downloads_metas_controller = new EDD_GetDownloads_Metas_Endpoint();
+$recent_edd_downloads_metas_controller->register_routes();
+
+/**
+ * Register get edd customers end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-customers-endpoint.php' );
+$recent_edd_customers_controller = new EDD_GetCustomers_Endpoint();
+$recent_edd_customers_controller->register_routes();
+
+/**
+ * Register get edd customers metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-customers-metas-endpoint.php' );
+$recent_edd_customers_metas_controller = new EDD_GetCustomers_Metas_Endpoint();
+$recent_edd_customers_metas_controller->register_routes();
+
+/**
+ * Register get edd payments end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-payments-endpoint.php' );
+$recent_edd_payments_controller = new EDD_GetPayments_Endpoint();
+$recent_edd_payments_controller->register_routes();
+
+/**
+ * Register get edd payments metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-payments-metas-endpoint.php' );
+$recent_edd_payments_metas_controller = new EDD_GetPayments_Metas_Endpoint();
+$recent_edd_payments_metas_controller->register_routes();
+
+/**
+ * Register get edd discounts end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-discounts-endpoint.php' );
+$recent_edd_discounts_controller = new EDD_GetDiscounts_Endpoint();
+$recent_edd_discounts_controller->register_routes();
+
+/**
+ * Register get edd discounts metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-discounts-metas-endpoint.php' );
+$recent_edd_discounts_metas_controller = new EDD_GetDiscounts_Metas_Endpoint();
+$recent_edd_discounts_metas_controller->register_routes();
+
+/**
+ * Register get edd logs end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-edd-logs-endpoint.php' );
+$recent_edd_logs_controller = new EDD_GetLogs_Endpoint();
+$recent_edd_logs_controller->register_routes();
+
+/**
+ * Register get edd logs metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-edd-logs-metas-endpoint.php' );
+$recent_edd_logs_metas_controller = new EDD_GetLogs_Metas_Endpoint();
+$recent_edd_logs_metas_controller->register_routes();
+
+/**
+ * Register get downloads logs metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-downloads-logs-endpoint.php' );
+$recent_edd_dwnlds_logs_controller = new EDD_GetDownloads_Logs_Endpoint();
+$recent_edd_dwnlds_logs_controller->register_routes();
+
+/**
+ * Register get term taxonomy end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-term-taxonomy-endpoint.php' );
+$recent_edd_term_taxonomy_controller = new EDD_GetTerm_Taxonomy_Endpoint();
+$recent_edd_term_taxonomy_controller->register_routes();
+
+/**
+ * Register get term assigned end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-term-assigned-endpoint.php' );
+$recent_edd_term_assigned_controller = new EDD_GetTerm_Assigned_Endpoint();
+$recent_edd_term_assigned_controller->register_routes();
+?>
