@@ -17,7 +17,7 @@ class WPdrift_Example_Controller extends WP_REST_Controller {
 	 */
 	public function __construct() {
 		$this->namespace = 'wpdriftio/v1';
-		$this->rest_base = 'hits';
+		$this->rest_base = 'example';
 	}
 
 	/**
