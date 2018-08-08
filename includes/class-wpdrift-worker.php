@@ -110,7 +110,6 @@ class WO_Server {
 		spl_autoload_register( array( $this, 'autoload' ) );
 
 		add_filter( 'determine_current_user', array( $this, '_wo_authenicate_bypass' ), 9999 );
-		add_action( 'init', array( __CLASS__, 'includes' ) );
 
 	}
 
@@ -119,6 +118,17 @@ class WO_Server {
 	 * @return [type] [description]
 	 */
 	private function load_dependencies() {
+
+		/**
+		 * [require_once description]
+		 * @var [type]
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/filters.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/actions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/functions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/rest-api.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/hooks-users.php';
 
 		/**
 		 * Load dependecies managed by composer.
@@ -308,13 +318,6 @@ class WO_Server {
 			return;
 		}
 	}
-
-	/**
-	 * plugin includes called during load of plugin
-	 *
-	 * @return void
-	 */
-	public static function includes() {}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.

@@ -54,17 +54,6 @@ register_activation_hook( __FILE__, 'activate_wpdrift_worker' );
 register_deactivation_hook( __FILE__, 'deactivate_wpdrift_worker' );
 
 /**
- * [require_once description]
- * @var [type]
- */
-require_once( dirname( __FILE__ ) . '/includes/filters.php' );
-require_once( dirname( __FILE__ ) . '/includes/actions.php' );
-require_once( dirname( __FILE__ ) . '/includes/functions.php' );
-require_once( dirname( __FILE__ ) . '/includes/public.php' );
-require_once( dirname( __FILE__ ) . '/includes/rest-api/rest-api.php' );
-require_once( dirname( __FILE__ ) . '/includes/rest-api/hooks-users.php' );
-
-/**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
