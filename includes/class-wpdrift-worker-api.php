@@ -106,5 +106,5 @@ class WPdrift_Worker_Api {
 		}
 
 	}
-
+	
 }
