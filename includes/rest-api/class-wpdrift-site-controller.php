@@ -87,7 +87,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 		// check for plugin using plugin name
-		if ( ! is_plugin_active( 'WPdrift-IO/wpdrift-io.php' ) ) {
+		if ( ! is_plugin_active( 'WPdrift-IO/wpdrift-worker.php' ) ) {
 			return rest_ensure_response( array() );
 		}
 

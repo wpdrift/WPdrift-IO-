@@ -9,7 +9,7 @@
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-class WO_Server {
+class WPdrift_Worker {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -361,8 +361,8 @@ class WO_Server {
 
 }
 
-function _WO() {
-	return WO_Server::instance();
+function _WPDW() {
+	return WPdrift_Worker::instance();
 }
 
-$GLOBAL['WO'] = _WO();
+$GLOBAL['WPDW'] = _WPDW();

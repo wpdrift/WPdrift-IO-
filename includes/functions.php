@@ -319,7 +319,7 @@ function wo_os_is_win()
 
 /**
  * Return the private key for signing
- * @since 3.0.5
+ * @since 1.0.0
  * @return [type] [description]
  */
 function get_private_server_key()
@@ -335,7 +335,7 @@ function get_private_server_key()
 /**
  * Returns the public key
  * @return [type] [description]
- * @since 3.1.0
+ * @since 1.0.0
  */
 function get_public_server_key()
 {
@@ -353,7 +353,7 @@ function get_public_server_key()
  * @todo Possibly set this to be adjusted somewhere. The id_token calls for it to be set by each
  * client as a pref but we need to keep this simple.
  *
- * @since 3.1.93
+ * @since 1.0.0
  * @return String Type of algorithm used for encoding and decoding.
  */
 function wo_get_algorithm()
@@ -395,7 +395,7 @@ function wo_has_certificates()
  */
 function wo_setting($key = null)
 {
-	$default_settings = _WO()->defualt_settings;
+	$default_settings = _WPDW()->defualt_settings;
 	$settings         = get_option('wo_options');
 	$settings         = array_merge($default_settings, array_filter($settings, function ($value) {
 		return $value !== '';
@@ -433,7 +433,7 @@ function wo_is_core_valid()
  */
 function wo_is_dev()
 {
-	return _WO()->env == 'development' ? true : false;
+	return _WPDW()->env == 'development' ? true : false;
 }
 
 /**
