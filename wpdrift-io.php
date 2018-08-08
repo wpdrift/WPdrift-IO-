@@ -36,18 +36,18 @@ if ( ! defined( 'WPDRIFT_WORKER_FILE' ) ) {
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wpdrift-io-activator.php
  */
-function activate_wpdrift_worker() {
+function activate_wpdrift_worker( $network_wide ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-activator.php';
-	WPdrift_IO_Activator::activate();
+	WPdrift_IO_Activator::activate( $network_wide );
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-wpdrift-io-deactivator.php
  */
-function deactivate_wpdrift_worker() {
+function deactivate_wpdrift_worker( $network_wide ) {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-deactivator.php';
-	WPdrift_IO_Deactivator::deactivate();
+	WPdrift_IO_Deactivator::deactivate( $network_wide );
 }
 
 register_activation_hook( __FILE__, 'activate_wpdrift_worker' );
@@ -84,49 +84,3 @@ function run_wpdrift_worker() {
 }
 
 run_wpdrift_worker();
-
-/**
- * OAuth2 Server Activation
- *
- * @param  [type] $network_wide [description]
- *
- * @return [type]               [description]
- */
-function wpdrift_worker_server_activation( $network_wide ) {
-	if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
-		$mu_blogs = wp_get_sites();
-		foreach ( $mu_blogs as $mu_blog ) {
-			switch_to_blog( $mu_blog['blog_id'] );
-			wpdrift_worker_server_register_rewrites();
-			flush_rewrite_rules();
-		}
-		restore_current_blog();
-	} else {
-		wpdrift_worker_server_register_rewrites();
-		flush_rewrite_rules();
-	}
-}
-
-register_activation_hook( __FILE__, 'wpdrift_worker_server_activation' );
-
-/**
- * OAuth Server Deactivation
- *
- * @param  [type] $network_wide [description]
- *
- * @return [type]               [description]
- */
-function wpdrift_worker_server_deactivation( $network_wide ) {
-	if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
-		$mu_blogs = wp_get_sites();
-		foreach ( $mu_blogs as $mu_blog ) {
-			switch_to_blog( $mu_blog['blog_id'] );
-			flush_rewrite_rules();
-		}
-		restore_current_blog();
-	} else {
-		flush_rewrite_rules();
-	}
-}
-
-register_deactivation_hook( __FILE__, 'wpdrift_worker_server_deactivation' );

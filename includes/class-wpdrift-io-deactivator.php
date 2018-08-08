@@ -32,9 +32,38 @@ class WPdrift_IO_Deactivator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function deactivate() {
+	public static function deactivate( $network_wide ) {
+		self::drop_db_tables();
+		self::server_deactivation( $network_wide );
+	}
+
+	/**
+	 * [drop_db_tables description]
+	 * @return [type] [description]
+	 */
+	public function drop_db_tables() {
 		global $wpdb;
 		Capsule::schema()->drop( $wpdb->prefix . 'wpdriftio_hits' );
+	}
+
+	/**
+	 * OAuth Server Deactivation
+	 *
+	 * @param  [type] $network_wide [description]
+	 *
+	 * @return [type]               [description]
+	 */
+	public function server_deactivation( $network_wide ) {
+		if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+			$mu_blogs = wp_get_sites();
+			foreach ( $mu_blogs as $mu_blog ) {
+				switch_to_blog( $mu_blog['blog_id'] );
+				flush_rewrite_rules();
+			}
+			restore_current_blog();
+		} else {
+			flush_rewrite_rules();
+		}
 	}
 
 }

@@ -32,11 +32,34 @@ class WPdrift_IO_Activator {
 	 *
 	 * @since    1.0.0
 	 */
-	public static function activate() {
+	public static function activate( $network_wide ) {
 		self::setup();
 		self::install();
 		self::upgrade();
 		self::db();
+		self::server_activation( $network_wide );
+	}
+
+	/**
+	 * OAuth2 Server Activation
+	 *
+	 * @param  [type] $network_wide [description]
+	 *
+	 * @return [type]               [description]
+	 */
+	public function server_activation( $network_wide ) {
+		if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
+			$mu_blogs = wp_get_sites();
+			foreach ( $mu_blogs as $mu_blog ) {
+				switch_to_blog( $mu_blog['blog_id'] );
+				wpdrift_worker_server_register_rewrites();
+				flush_rewrite_rules();
+			}
+			restore_current_blog();
+		} else {
+			wpdrift_worker_server_register_rewrites();
+			flush_rewrite_rules();
+		}
 	}
 
 	/**
@@ -104,7 +127,7 @@ class WPdrift_IO_Activator {
 						'grant_types'   => $grant_types,
 						'redirect_uri'  => $client->redirect_uri,
 						'user_id'       => $client->user_id,
-					)
+					),
 				);
 
 				wp_insert_post( $client_data );
