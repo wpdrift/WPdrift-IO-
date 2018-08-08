@@ -103,6 +103,7 @@ class WPdrift_Worker {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->define_oauth_hooks();
+		$this->define_api_hooks();
 
 		if ( function_exists( '__autoload' ) ) {
 			spl_autoload_register( '__autoload' );
@@ -175,6 +176,12 @@ class WPdrift_Worker {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-date-query.php';
 
+		/**
+		 * The class responsible for defining all actions that occur in the api-facing
+		 * @var [type]
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-worker-api.php';
+
 		$this->loader = new WPdrift_IO_Loader();
 
 	}
@@ -244,6 +251,21 @@ class WPdrift_Worker {
 
 		$this->loader->add_action( 'init', $plugin_oauth, 'server_register_query_vars' );
 		$this->loader->add_filter( 'template_include', $plugin_oauth, 'server_template_redirect_intercept', 100 );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the api-facing functionality
+	 * of the plugin.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	private function define_api_hooks() {
+
+		$plugin_api = new WPdrift_Worker_Api( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'rest_api_init', $plugin_api, 'register_rest_routes' );
 
 	}
 
