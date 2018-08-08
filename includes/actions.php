@@ -5,8 +5,10 @@
  * @author  WPdrift <kishore@upnrunn.com>
  * @package WPdrift Worker
  */
+
 // hide all error on api response
 error_reporting(0);
+
 /**
  * Invalidate any token and refresh tokens during password reset
  *
@@ -15,7 +17,7 @@ error_reporting(0);
  *
  * @return Void
  *
- * @since 3.1.8
+ * @since 1.0.0
  */
 function wpdrift_worker_password_reset_action( $user, $new_pass ) {
 	global $wpdb;
@@ -69,7 +71,7 @@ function wpdrift_worker_only_allow_one_access_token( $object ) {
 
 /**
  * Restrict users to only have a single access token
- * @since 3.2.7
+ * @since 1.0.0
  */
 $wpdrift_worker_restrict_single_access_token = apply_filters( 'wpdrift_worker_restrict_single_access_token', false );
 if ( $wpdrift_worker_restrict_single_access_token ) {

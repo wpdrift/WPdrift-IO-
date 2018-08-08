@@ -41,7 +41,7 @@ class WPdrift_Worker_Oauth {
 			OAuth2\Autoloader::register();
 
 			$settings         = get_option( 'wo_options' );
-			$default_settings = _WO()->defualt_settings;
+			$default_settings = _WPDW()->defualt_settings;
 
 			if ( 0 == wo_setting( 'enabled' ) ) {
 				do_action( 'wo_before_unavailable_error' );
@@ -192,7 +192,7 @@ class WPdrift_Worker_Oauth {
 				 *
 				 * @link http://openid.net/specs/openid-connect-core-1_0.html#rfc.section.3.1.2.1
 				 *
-				 * @since 3.4.0
+				 * @since 1.0.0
 				 */
 				if ( ! isset( $_REQUEST['ignore_prompt'] ) ) {
 
@@ -223,7 +223,7 @@ class WPdrift_Worker_Oauth {
 				 *
 				 * @example add_filter('wpdrift_worker_use_grant_request', '__return_true');
 				 *
-				 * @since 3.5.0
+				 * @since 1.0.0
 				 */
 				if ( apply_filters( 'wpdrift_worker_use_grant_request', false ) ) {
 
@@ -266,7 +266,7 @@ class WPdrift_Worker_Oauth {
 			|--------------------------------------------------------------------------
 			|
 			| Presents the generic public key for signing.
-			|@since 3.0.5
+			|@since 1.0.0
 			*/
 			if ( 'keys' == $well_known ) {
 				$keys       = apply_filters( 'wpdrift_worker_server_keys', array(
@@ -355,7 +355,7 @@ class WPdrift_Worker_Oauth {
 				/**
 				 * Check if the user is logged in.
 				 *
-				 * @since 3.3.2
+				 * @since 1.0.0
 				 */
 				$current_user = apply_filters( 'determine_current_user', null );
 				if ( is_null( $current_user ) || empty( $current_user ) ) {
@@ -385,7 +385,7 @@ class WPdrift_Worker_Oauth {
 			/*
 			 * Server error response. End of line
 			 *
-			 * @since 3.1.0
+			 * @since 1.0.0
 			 */
 			$response = new OAuth2\Response();
 			$response->setError( 400, 'invalid_request', __( 'unknown request', 'wpdrift-worker' ) );

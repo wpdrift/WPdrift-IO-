@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPdrift IO - Worker
  * Plugin URI: http://wpdrift.io/
- * Version: 2.0.1
+ * Version: 1.0.0
  * Description: Analytics, automation, tools, and much more for WordPress.
  * Author: WPdrift
  * Author URI: https://wpdrift.com/
@@ -22,7 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WPDRIFT_WORKER_VERSION', '2.0.1' );
+define( 'WPDRIFT_WORKER_VERSION', '1.0.0' );
 
 /**
  * [if description]
@@ -69,7 +69,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-worker.php';
  * @since    1.0.0
  */
 function run_wpdrift_worker() {
-	_WO()->run();
+	_WPDW()->run();
 }
 
 run_wpdrift_worker();

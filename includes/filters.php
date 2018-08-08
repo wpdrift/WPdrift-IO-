@@ -16,7 +16,7 @@ add_filter( 'WO_API_Errors', 'wpdrift_worker_api_error_setup', 1 );
 /**
  * Default Method Filter for the resource server API calls
  *
- * @since  3.1.8 Endpoints now can accept public methods that bypass the token authorization
+ * @since  1.0.0 Endpoints now can accept public methods that bypass the token authorization
  */
 function wpdrift_worker_default_endpoints() {
 	$endpoints = array(
@@ -39,7 +39,7 @@ add_filter( 'wpdrift_worker_endpoints', 'wpdrift_worker_default_endpoints', 1 );
  * Token Introspection
  * Since spec call for the response to return even with an invalid token, this method
  * will be set to public.
- * @since 4.0
+ * @since 1.0.0
  *
  * @param null $token
  */
@@ -87,7 +87,7 @@ function _wo_method_introspection( $token = null ) {
 /**
  * DEFAULT DESTROY METHOD
  * This method has been added to help secure installs that want to manually destroy sessions (valid access tokens).
- * @since  3.1.5
+ * @since  1.0.0
  *
  * @param null $token
  */
@@ -139,7 +139,7 @@ function _wpdrift_worker_method_me( $token = null ) {
 	unset( $me_data['user_url'] );
 
 	/**
-	 * @since  3.0.5
+	 * @since  1.0.0
 	 * OpenID Connect looks for the field "email".asd
 	 * Sooooo. We shall provide it. (at least for Moodle)
 	 */
@@ -147,7 +147,7 @@ function _wpdrift_worker_method_me( $token = null ) {
 
 	/**
 	 * user information returned by the default me method is filtered
-	 * @since 3.3.7
+	 * @since 1.0.0
 	 * @filter wpdrift_worker_me_resource_return
 	 */
 	$me_data = apply_filters( 'wpdrift_worker_me_resource_return', $me_data );
