@@ -19,7 +19,7 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
-		$this->namespace = 'wpdriftsupporter/v1';
+		$this->namespace = 'wpdriftio/v1';
 		$this->rest_base = 'dashboard';
 	}
 
@@ -39,7 +39,6 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
 				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				'args'                => array(),
 			),
 		));
 	}
@@ -289,6 +288,21 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	 */
 	public function prepare_item_for_response( $item, $request ) {
 		return $item;
+	}
+
+	/**
+	 * Sets up the proper HTTP status code for authorization.
+	 * @return [type] [description]
+	 */
+	public function authorization_status_code() {
+
+		$status = 401;
+
+		if ( is_user_logged_in() ) {
+			$status = 403;
+		}
+
+		return $status;
 	}
 
 }

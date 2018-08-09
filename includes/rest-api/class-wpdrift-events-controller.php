@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
  *
  * @since 1.0.0
  */
-class WPdrift_RecentEvents_Controller extends WP_REST_Controller
+class WPdrift_Events_Controller extends WP_REST_Controller
 {
 	/**
 	 * Constructor.
@@ -19,8 +19,8 @@ class WPdrift_RecentEvents_Controller extends WP_REST_Controller
 	 */
 	public function __construct()
 	{
-		$this->namespace = 'wpdriftsupporter/v1';
-		$this->rest_base = 'recentevents';
+		$this->namespace = 'wpdriftio/v1';
+		$this->rest_base = 'events';
 	}
 
 	/**
@@ -202,5 +202,20 @@ class WPdrift_RecentEvents_Controller extends WP_REST_Controller
 	public function get_event_date($supplied_date)
 	{
 		return human_time_diff(strtotime($supplied_date), current_time('timestamp')) . " " . __('ago');
+	}
+
+	/**
+	 * Sets up the proper HTTP status code for authorization.
+	 * @return [type] [description]
+	 */
+	public function authorization_status_code() {
+
+		$status = 401;
+
+		if ( is_user_logged_in() ) {
+			$status = 403;
+		}
+
+		return $status;
 	}
 }

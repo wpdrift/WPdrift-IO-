@@ -94,8 +94,8 @@ class WPdrift_Worker_Api {
 		 * Register new recent events end points
 		 * @var [type]
 		 */
-		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-recentevents-controller.php' );
-		$events_controller = new WPdrift_RecentEvents_Controller();
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-events-controller.php' );
+		$events_controller = new WPdrift_Events_Controller();
 		$events_controller->register_routes();
 
 		/**
@@ -106,5 +106,5 @@ class WPdrift_Worker_Api {
 		}
 
 	}
-	
+
 }
