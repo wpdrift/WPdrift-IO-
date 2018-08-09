@@ -38,7 +38,7 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		));
 	}
@@ -79,11 +79,11 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		}
 
 		$items                   = array();
+		$items['users']          = $this->get_users( $date_args );
 		$items['count_users']    = count_users();
 		$items['count_posts']    = wp_count_posts();
 		$items['count_pages']    = wp_count_posts( 'page' );
 		$items['count_comments'] = wp_count_comments();
-		$items['users']          = $this->get_users( $date_args );
 		$items['posts']          = $this->get_posts( $date_args );
 		$items['pages']          = $this->get_posts( $date_args, 'page' );
 		$items['comments']       = $this->get_comments( $date_args );
@@ -111,6 +111,32 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	 */
 	public function get_users( $date_args ) {
 		/**
+		 * [$data description]
+		 * @var [type]
+		 */
+		$data               = $this->query_users( $date_args );
+		$date_args_compared = $this->date_args_compared( $date_args );
+		$data_compared      = empty( $date_args_compared ) ? [] : $this->query_users( $date_args_compared );
+		$progress           = $this->get_progress( $data, $data_compared );
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return [
+			'data'          => $data,
+			'data_compared' => $data_compared,
+			'progress'      => $progress,
+		];
+	}
+
+	/**
+	 * [query_users description]
+	 * @param  [type] $date_args [description]
+	 * @return [type]            [description]
+	 */
+	public function query_users( $date_args ) {
+		/**
 		 * [global description]
 		 * @var [type]
 		 */
@@ -126,7 +152,7 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		 * [$query_fields description]
 		 * @var string
 		 */
-		$query_fields  = "COUNT(*), user_registered, EXTRACT(DAY FROM user_registered) day, EXTRACT(MONTH FROM user_registered) month, EXTRACT(YEAR FROM user_registered) year";
+		$query_fields  = "COUNT(*), EXTRACT(DAY FROM user_registered) day, EXTRACT(MONTH FROM user_registered) month, EXTRACT(YEAR FROM user_registered) year";
 		$query_from    = "FROM $wpdb->users";
 		$query_where   = "WHERE 1=1";
 		$query_where  .= $date_query->get_sql();
@@ -137,25 +163,17 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		 * [$request description]
 		 * @var string
 		 */
-		$request             = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
-		$col                 = $wpdb->get_col( $request );
-		$col_user_registered = $wpdb->get_col( $request, 1 );
-
-		/**
-		 * [$data description]
-		 * @var array
-		 */
-		$data = [
-			'total'  => array_sum( $col ),
-			'data'   => $col,
-			'labels' => $col_user_registered,
-		];
+		$request = "SELECT $query_fields $query_from $query_where $query_groupby $query_orderby";
+		$col     = $wpdb->get_col( $request );
 
 		/**
 		 * [return description]
 		 * @var [type]
 		 */
-		return $data;
+		return [
+			'counts' => array_sum( $col ),
+			'data'   => $col,
+		];
 	}
 
 	/**
@@ -163,6 +181,32 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function get_posts( $date_args, $post_type = 'post' ) {
+		/**
+		 * [$data description]
+		 * @var [type]
+		 */
+		$data               = $this->query_posts( $date_args, $post_type );
+		$date_args_compared = $this->date_args_compared( $date_args );
+		$data_compared      = empty( $date_args_compared ) ? [] : $this->query_posts( $date_args_compared, $post_type );
+		$progress           = $this->get_progress( $data, $data_compared );
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return [
+			'data'          => $data,
+			'data_compared' => $data_compared,
+			'progress'      => $progress,
+		];
+	}
+
+	/**
+	 * [query_posts description]
+	 * @param  [type] $date_args [description]
+	 * @return [type]            [description]
+	 */
+	public function query_posts( $date_args, $post_type = 'post' ) {
 		/**
 		 * [global description]
 		 * @var [type]
@@ -194,19 +238,13 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		$col     = $wpdb->get_col( $request );
 
 		/**
-		 * [$data description]
-		 * @var array
-		 */
-		$data = [
-			'total' => array_sum( $col ),
-			'data'  => $col,
-		];
-
-		/**
 		 * [return description]
 		 * @var [type]
 		 */
-		return $data;
+		return [
+			'counts' => array_sum( $col ),
+			'data'   => $col,
+		];
 	}
 
 	/**
@@ -215,6 +253,31 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 	 * @return [type]            [description]
 	 */
 	public function get_comments( $date_args ) {
+		/**
+		 * [$data description]
+		 * @var [type]
+		 */
+		$data               = $this->query_comments( $date_args, $post_type );
+		$date_args_compared = $this->date_args_compared( $date_args );
+		$data_compared      = empty( $date_args_compared ) ? [] : $this->query_comments( $date_args_compared, $post_type );
+		$progress           = $this->get_progress( $data, $data_compared );
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return [
+			'data'          => $data,
+			'data_compared' => $data_compared,
+			'progress'      => $progress,
+		];
+	}
+
+	/**
+	 * [query_comments description]
+	 * @return [type] [description]
+	 */
+	public function query_comments( $date_args ) {
 		/**
 		 * [global description]
 		 * @var [type]
@@ -246,19 +309,102 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		$col     = $wpdb->get_col( $request );
 
 		/**
-		 * [$data description]
+		 * [return description]
 		 * @var array
 		 */
-		$data = [
-			'total' => array_sum( $col ),
-			'data'  => $col,
+		return [
+			'counts' => array_sum( $col ),
+			'data'   => $col,
 		];
+	}
+
+	/**
+	 * [date_args_compared description]
+	 * @return [type] [description]
+	 */
+	public function date_args_compared( $date_args ) {
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( ! isset( $date_args[0]['after'] ) ) {
+			return array();
+		}
+
+		/**
+		 * [$date_args_compared description]
+		 * @var array
+		 */
+		$date_args_compared = array();
+
+		/**
+		 * [$after description]
+		 * @var [type]
+		 */
+		$after    = Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['after'] );
+		$before   = isset( $date_args[0]['before'] ) ? Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['before'] ) : Carbon::now();
+		$diffdays = $after->diffInDays( $dt2, false );
+
+		/**
+		 * [$dt3 description]
+		 * @var [type]
+		 */
+		$previous_after  = Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['after'] );
+		$previous_before = Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['after'] );
+		$previous_after->subDays( $diffdays );
+
+		// $date_args_compared['after']  = $after->toFormattedDateString();
+		// $date_args_compared['before'] = $before->toFormattedDateString();
+		// $date_args_compared['diff']   = $diffdays;
+
+		$date_args_compared[0]['after']  = $previous_after->toFormattedDateString();
+		$date_args_compared[0]['before'] = $previous_before->toFormattedDateString();
 
 		/**
 		 * [return description]
 		 * @var [type]
 		 */
-		return $data;
+		return $date_args_compared;
+	}
+
+	/**
+	 * [get_progress description]
+	 * @param  [type] $data          [description]
+	 * @param  [type] $data_compared [description]
+	 * @return [type]                [description]
+	 */
+	public function get_progress( $data, $data_compared ) {
+		/**
+		 * [$progress description]
+		 * @var array
+		 */
+		$progress = array();
+
+		/**
+		 * [$data_list description]
+		 * @var array
+		 */
+		$progress['data']['current']    = $data['counts'];
+		$progress['data']['previously'] = isset( $data_compared['counts'] ) ? $data_compared['counts'] : 0;
+
+		/**
+		 * [$percentage description]
+		 * @var [type]
+		 */
+		$percentage = $progress['data']['previously'] ? ( 100 / $progress['data']['previously'] ) : 100;
+
+		/**
+		 * [$sum description]
+		 * @var array
+		 */
+		$progress['data']['diff'] = ( $progress['data']['current'] - $progress['data']['previously'] );
+		$progress['percentage']   = ( $percentage * $progress['data']['diff'] );
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return $progress;
 	}
 
 	/**
