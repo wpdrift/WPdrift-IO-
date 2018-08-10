@@ -79,14 +79,14 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		}
 
 		$items                   = array();
-		$items['users']          = $this->get_users( $date_args );
 		$items['count_users']    = count_users();
 		$items['count_posts']    = wp_count_posts();
 		$items['count_pages']    = wp_count_posts( 'page' );
 		$items['count_comments'] = wp_count_comments();
-		$items['posts']          = $this->get_posts( $date_args );
-		$items['pages']          = $this->get_posts( $date_args, 'page' );
-		$items['comments']       = $this->get_comments( $date_args );
+		$items['users']          = $this->get_users( $date_args );
+		// $items['posts']          = $this->get_posts( $date_args );
+		// $items['pages']          = $this->get_posts( $date_args, 'page' );
+		// $items['comments']       = $this->get_comments( $date_args );
 
 		/**
 		 * [$data description]
@@ -341,21 +341,17 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		 * [$after description]
 		 * @var [type]
 		 */
-		$after    = Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['after'] );
-		$before   = isset( $date_args[0]['before'] ) ? Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['before'] ) : Carbon::now();
+		$after    = Carbon::parse( $date_args[0]['after'] );
+		$before   = isset( $date_args[0]['before'] ) ? Carbon::parse( $date_args[0]['before'] ) : Carbon::now();
 		$diffdays = $after->diffInDays( $dt2, false );
 
 		/**
 		 * [$dt3 description]
 		 * @var [type]
 		 */
-		$previous_after  = Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['after'] );
-		$previous_before = Carbon::createFromFormat( 'Y-m-d H:i:s', $date_args[0]['after'] );
+		$previous_after  = Carbon::parse( $date_args[0]['after'] );
+		$previous_before = Carbon::parse( $date_args[0]['after'] );
 		$previous_after->subDays( $diffdays );
-
-		// $date_args_compared['after']  = $after->toFormattedDateString();
-		// $date_args_compared['before'] = $before->toFormattedDateString();
-		// $date_args_compared['diff']   = $diffdays;
 
 		$date_args_compared[0]['after']  = $previous_after->toFormattedDateString();
 		$date_args_compared[0]['before'] = $previous_before->toFormattedDateString();
