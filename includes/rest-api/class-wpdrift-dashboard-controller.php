@@ -394,7 +394,7 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		 * @var array
 		 */
 		$progress['data']['diff'] = ( $progress['data']['current'] - $progress['data']['previously'] );
-		$progress['percentage']   = ( $percentage * $progress['data']['diff'] );
+		$progress['percentage']   = number_format( ( $percentage * $progress['data']['diff'] ), 2, '.', '' );
 
 		/**
 		 * [return description]
