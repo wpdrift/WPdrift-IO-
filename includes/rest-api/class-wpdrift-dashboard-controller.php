@@ -84,9 +84,9 @@ class WPdrift_Dashboard_Controller extends WP_REST_Controller {
 		$items['count_pages']    = wp_count_posts( 'page' );
 		$items['count_comments'] = wp_count_comments();
 		$items['users']          = $this->get_users( $date_args );
-		// $items['posts']          = $this->get_posts( $date_args );
-		// $items['pages']          = $this->get_posts( $date_args, 'page' );
-		// $items['comments']       = $this->get_comments( $date_args );
+		$items['posts']          = $this->get_posts( $date_args );
+		$items['pages']          = $this->get_posts( $date_args, 'page' );
+		$items['comments']       = $this->get_comments( $date_args );
 
 		/**
 		 * [$data description]
