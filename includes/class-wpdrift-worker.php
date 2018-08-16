@@ -130,6 +130,7 @@ class WPdrift_Worker {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/rest-api.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/hooks-users.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/wpdrift-worker-deprecated.php';
 
 		/**
 		 * Load dependecies managed by composer.
