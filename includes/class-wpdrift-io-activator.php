@@ -34,8 +34,8 @@ class WPdrift_IO_Activator {
 	 */
 	public static function activate( $network_wide ) {
 		self::setup();
-		self::install();
-		self::upgrade();
+		self::oauth_db();
+		self::oauth_db_upgrade();
 		self::db();
 		self::server_activation( $network_wide );
 	}
@@ -77,7 +77,7 @@ class WPdrift_IO_Activator {
 	/**
 	 * Upgrade method
 	 */
-	public function upgrade() {
+	public function oauth_db_upgrade() {
 
 		// Fix
 		// https://github.com/justingreerbbi/wp-oauth-server/issues/7
@@ -143,7 +143,7 @@ class WPdrift_IO_Activator {
 	 *
 	 * @return [type] [description]
 	 */
-	public function install() {
+	public function oauth_db() {
 
 		global $wpdb;
 		$charset_collate = '';
@@ -281,11 +281,7 @@ class WPdrift_IO_Activator {
 		 */
 		global $wpdb;
 
-		/**
-		 * [Capsule description]
-		 * @var [type]
-		 */
-		Capsule::schema()->create( $wpdb->prefix . 'wpdriftio_hits', function ( $table ) {
+		Capsule::schema()->create( $wpdb->prefix . 'wpdriftio_hits', function( $table ) {
 			/**
 			 * [$table->increments description]
 			 * @var [type]
@@ -339,7 +335,7 @@ class WPdrift_IO_Activator {
 			 * [$table->ipAddress description]
 			 * @var [type]
 			 */
-			$table->ipAddress( 'ip' )->nullable();
+			$table->string( 'ip' )->nullable();
 			$table->timestamps();
 		});
 	}

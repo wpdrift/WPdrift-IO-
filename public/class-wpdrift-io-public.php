@@ -17,7 +17,6 @@
 use Models\Hit;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Device\DeviceParserAbstract;
-use League\Uri;
 
 /**
  * The public-facing functionality of the plugin.
@@ -264,7 +263,7 @@ class WPdrift_IO_Public {
 		 * @var [type]
 		 */
 		if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
-			$uri = Uri\parse( $_SERVER['HTTP_REFERER'] );
+			$uri = wp_parse_url( $_SERVER['HTTP_REFERER'] );
 
 			if ( $uri['host'] ) {
 				return $uri['host'];
