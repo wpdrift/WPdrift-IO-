@@ -110,7 +110,7 @@ class WPdrift_Worker {
 		}
 		spl_autoload_register( array( $this, 'autoload' ) );
 
-		add_filter( 'determine_current_user', array( $this, '_wo_authenicate_bypass' ), 9999 );
+		add_filter( 'determine_current_user', array( $this, '_wpdrift_worker_authenicate_bypass' ), 9999 );
 
 	}
 
@@ -126,6 +126,7 @@ class WPdrift_Worker {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/filters.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/actions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/post-types.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/functions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/public.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/rest-api.php';
@@ -285,12 +286,12 @@ class WPdrift_Worker {
 	 *
 	 * @return void
 	 */
-	public function _wo_authenicate_bypass( $user_id ) {
+	public function _wpdrift_worker_authenicate_bypass( $user_id ) {
 		if ( $user_id && $user_id > 0 ) {
 			return (int) $user_id;
 		}
 
-		if ( wo_setting( 'enabled' ) == 0 ) {
+		if ( wpdrift_worker_setting( 'enabled' ) == 0 ) {
 			return (int) $user_id;
 		}
 
@@ -331,7 +332,7 @@ class WPdrift_Worker {
 		$class = strtolower( $class );
 		$file  = 'class-' . str_replace( '_', '-', $class ) . '.php';
 
-		if ( strpos( $class, 'wo_' ) === 0 ) {
+		if ( strpos( $class, 'wpdrift_worker_' ) === 0 ) {
 			$path = plugin_dir_path( dirname( __FILE__ ) ) . '/oauth/' . trailingslashit( substr( str_replace( '_', '-', $class ), 18 ) );
 		}
 

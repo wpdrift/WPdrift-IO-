@@ -27,47 +27,8 @@ function wpdrift_worker_server_register_rewrites() {
 	add_rewrite_rule( '^oauth/(.+)', 'index.php?oauth=$matches[1]', 'top' );
 }
 
-add_action('init', 'wo_types');
-function wo_types() {
-	$labels = array(
-		'name'               => _x( 'Client', 'post type general name', 'wpdrift-worker' ),
-		'singular_name'      => _x( 'Client', 'post type singular name', 'wpdrift-worker' ),
-		'menu_name'          => _x( 'Clients', 'admin menu', 'wpdrift-worker' ),
-		'name_admin_bar'     => _x( 'Client', 'add new on admin bar', 'wpdrift-worker' ),
-		'add_new'            => _x( 'Add New', 'Client', 'wpdrift-worker' ),
-		'add_new_item'       => __( 'Add New BoClientok', 'wpdrift-worker' ),
-		'new_item'           => __( 'New Client', 'wpdrift-worker' ),
-		'edit_item'          => __( 'Edit Client', 'wpdrift-worker' ),
-		'view_item'          => __( 'View Client', 'wpdrift-worker' ),
-		'all_items'          => __( 'All Clients', 'wpdrift-worker' ),
-		'search_items'       => __( 'Search Clients', 'wpdrift-worker' ),
-		'parent_item_colon'  => __( 'Parent Clients:', 'wpdrift-worker' ),
-		'not_found'          => __( 'No clients found.', 'wpdrift-worker' ),
-		'not_found_in_trash' => __( 'No clients found in Trash.', 'wpdrift-worker' ),
-	);
-
-	$args = array(
-		'labels'              => $labels,
-		'description'         => __( 'Description.', 'wpdrift-worker' ),
-		'public'              => true,
-		'publicly_queryable'  => false,
-		'show_ui'             => true,
-		'show_in_menu'        => false,
-		'query_var'           => true,
-		'rewrite'             => array( 'slug' => 'wo_client' ),
-		'capability_type'     => 'post',
-		'has_archive'         => true,
-		'hierarchical'        => false,
-		'menu_position'       => null,
-		'supports'            => array( 'title' ),
-		'exclude_from_search' => true,
-	);
-
-	register_post_type( 'wo_client', $args );
-}
-
 /**
- * [wo_create_client description]
+ * [wpdrift_worker_create_client description]
  *
  * @param  [type] $user [description]
  *
@@ -75,7 +36,7 @@ function wo_types() {
  *
  * @todo Add role and permissions check
  */
-function wo_insert_client($client_data = null)
+function wpdrift_worker_insert_client($client_data = null)
 {
 
 	// @todo Look into changing capabilities to create_clients after proper mapping has been done
@@ -85,11 +46,11 @@ function wo_insert_client($client_data = null)
 		return false;
 	}
 
-	do_action('wo_before_create_client', array( $client_data ));
+	do_action('wpdrift_worker_before_create_client', array( $client_data ));
 
 	// Generate the keys
-	$client_id     = wo_gen_key();
-	$client_secret = wo_gen_key();
+	$client_id     = wpdrift_worker_gen_key();
+	$client_secret = wpdrift_worker_gen_key();
 
 	$grant_types = isset($client_data['grant_types']) ? $client_data['grant_types'] : array();
 
@@ -97,7 +58,7 @@ function wo_insert_client($client_data = null)
 		'post_title'     => wp_strip_all_tags($client_data['name']),
 		'post_status'    => 'publish',
 		'post_author'    => get_current_user_id(),
-		'post_type'      => 'wo_client',
+		'post_type'      => 'wpdrift_worker_client',
 		'comment_status' => 'closed',
 		'meta_input'     => array(
 			'client_id'     => $client_id,
@@ -126,7 +87,7 @@ function wo_insert_client($client_data = null)
  *
  * @return false|int|void
  */
-function wo_update_client($client = null)
+function wpdrift_worker_update_client($client = null)
 {
 	if (is_null($client)) {
 		return;
@@ -156,7 +117,7 @@ function get_client_by_client_id($client_id)
 {
 	$query   = new \WP_Query();
 	$clients = $query->query(array(
-		'post_type'   => 'wo_client',
+		'post_type'   => 'wpdrift_worker_client',
 		'post_status' => 'any',
 		'meta_query'  => array(
 			array(
@@ -186,7 +147,7 @@ function get_client_by_client_id($client_id)
  *
  * @return array|null|object|void
  */
-function wo_get_client($id = null)
+function wpdrift_worker_get_client($id = null)
 {
 	if (is_null($id)) {
 		return;
@@ -212,11 +173,11 @@ function wo_get_client($id = null)
  *
  * @todo Allow more characters to be added to the character list to provide complex keys
  */
-function wo_gen_key($length = 40)
+function wpdrift_worker_gen_key($length = 40)
 {
 
 	// Gather the settings
-	$user_defined_length = wo_setting('token_length');
+	$user_defined_length = wpdrift_worker_setting('token_length');
 
 	/**
 	 * Temp Fix for https://github.com/justingreerbbi/wp-oauth-server/issues/3
@@ -250,7 +211,7 @@ function wo_gen_key($length = 40)
 function has_a_client()
 {
 	global $wpdb;
-	$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'wo_client'");
+	$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'wpdrift_worker_client'");
 
 	if (intval($count) >= 1) {
 		return true;
@@ -296,7 +257,7 @@ function get_public_server_key()
  * @since 1.0.0
  * @return String Type of algorithm used for encoding and decoding.
  */
-function wo_get_algorithm()
+function wpdrift_worker_get_algorithm()
 {
 	return 'RS256';
 }
@@ -308,10 +269,10 @@ function wo_get_algorithm()
  *
  * @return [type]      [description]
  */
-function wo_setting($key = null)
+function wpdrift_worker_setting($key = null)
 {
 	$default_settings = _WPDW()->defualt_settings;
-	$settings         = get_option('wo_options');
+	$settings         = get_option('wpdrift_worker_options');
 	$settings         = array_merge($default_settings, array_filter($settings, function ($value) {
 		return $value !== '';
 	}));
@@ -331,7 +292,7 @@ function wo_setting($key = null)
  * Returns if the core is valid
  * @return [type] [description]
  */
-function wo_is_core_valid()
+function wpdrift_worker_is_core_valid()
 {
 	if (WPDRIFT_WORKER_CHECKSUM != strtoupper(md5_file(__FILE__))) {
 		return false;
@@ -346,7 +307,7 @@ function wo_is_core_valid()
  *
  * @todo Need to make this more extendable by using __return_false
  */
-function wo_is_dev()
+function wpdrift_worker_is_dev()
 {
 	return _WPDW()->env == 'development' ? true : false;
 }

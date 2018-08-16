@@ -76,7 +76,7 @@ class IdToken implements IdTokenInterface {
 	}
 
 	protected function createAtHash( $access_token, $client_id = null ) {
-		$algorithm      = wo_get_algorithm();
+		$algorithm      = wpdrift_worker_get_algorithm();
 		$hash_algorithm = 'sha' . substr( $algorithm, 2 );
 		$hash           = hash( $hash_algorithm, $access_token );
 		$at_hash        = substr( $hash, 0, strlen( $hash ) / 2 );
@@ -86,7 +86,7 @@ class IdToken implements IdTokenInterface {
 
 	protected function encodeToken( array $token, $client_id = null ) {
 		$private_key = get_private_server_key();
-		$algorithm   = wo_get_algorithm();
+		$algorithm   = wpdrift_worker_get_algorithm();
 
 		return $this->encryptionUtil->encode( $token, $private_key, $algorithm );
 	}

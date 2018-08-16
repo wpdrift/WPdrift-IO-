@@ -73,7 +73,7 @@ class WPdrift_Worker_Admin {
 	}
 
 	/**
-	 * [wo_incompatibility_with_wp_version description]
+	 * [verifiy_authenticity_of_plugin_core description]
 	 * @return [type] [description]
 	 */
 	function verifiy_authenticity_of_plugin_core() {
@@ -82,7 +82,7 @@ class WPdrift_Worker_Admin {
 		 * Exit early.
 		 * @var [type]
 		 */
-		if ( wo_is_dev() ) {
+		if ( wpdrift_worker_is_dev() ) {
 			return;
 		}
 

@@ -63,7 +63,7 @@ class Wordpressdb implements
 	 */
 	public function checkClientCredentials( $client_id, $client_secret = null ) {
 		$client = new \WP_Query( array(
-			'post_type'   => 'wo_client',
+			'post_type'   => 'wpdrift_worker_client',
 			'post_status' => 'any',
 			'meta_query'  => array(
 				array(
@@ -95,7 +95,7 @@ class Wordpressdb implements
 	public function isPublicClient( $client_id ) {
 		$query   = new \WP_Query();
 		$clients = $query->query( array(
-			'post_type'   => 'wo_client',
+			'post_type'   => 'wpdrift_worker_client',
 			'post_status' => 'any',
 			'meta_query'  => array(
 				array(
@@ -125,7 +125,7 @@ class Wordpressdb implements
 	public function getClientDetails( $client_id ) {
 		$query   = new \WP_Query();
 		$clients = $query->query( array(
-			'post_type'   => 'wo_client',
+			'post_type'   => 'wpdrift_worker_client',
 			'post_status' => 'any',
 			'meta_query'  => array(
 				array(
@@ -201,14 +201,14 @@ class Wordpressdb implements
 	public function setAccessToken( $access_token, $client_id, $user_id, $expires, $scope = null ) {
 
 		/**
-		 * wo_set_access_token Action
+		 * wpdrift_worker_set_access_token Action
 		 * Returns access_token, client_id, $user_id
 		 * @since  3.1.9
 		 */
-		do_action( 'wo_set_access_token', array(
+		do_action( 'wpdrift_worker_set_access_token', array(
 			'access_token' => $access_token,
 			'client_id'    => $client_id,
-			'user_id'      => $user_id
+			'user_id'      => $user_id,
 		) );
 
 		$expires = date( 'Y-m-d H:i:s', $expires );
@@ -368,15 +368,15 @@ class Wordpressdb implements
 
 			// @since 3.1.94 the parameter $user is being passed
 			if ( ! $login_check ) {
-				do_action( 'wo_failed_login', $user );
+				do_action( 'wpdrift_worker_failed_login', $user );
 
 				return $login_check;
 			} else {
 
-				return apply_filters( 'wo_login_check', $login_check, $user['user_id'] );
+				return apply_filters( 'wpdrift_worker_login_check', $login_check, $user['user_id'] );
 			}
 		}
-		do_action( 'wo_user_not_found' );
+		do_action( 'wpdrift_worker_user_not_found' );
 
 		return false;
 	}

@@ -40,11 +40,11 @@ class WPdrift_Worker_Oauth {
 			require_once dirname( __FILE__ ) . '/OAuth2/Autoloader.php';
 			OAuth2\Autoloader::register();
 
-			$settings         = get_option( 'wo_options' );
+			$settings         = get_option( 'wpdrift_worker_options' );
 			$default_settings = _WPDW()->defualt_settings;
 
-			if ( 0 == wo_setting( 'enabled' ) ) {
-				do_action( 'wo_before_unavailable_error' );
+			if ( 0 == wpdrift_worker_setting( 'enabled' ) ) {
+				do_action( 'wpdrift_worker_before_unavailable_error' );
 				$response = new OAuth2\Response();
 				$response->setError( 503, 'error', __( 'temporarily unavailable', 'wpdrift-worker' ) );
 				$response->send();
@@ -52,7 +52,7 @@ class WPdrift_Worker_Oauth {
 			}
 
 			$wpdrift_worker_strict_api_lockdown = apply_filters( 'wpdrift_worker_strict_api_lockdown', false );
-			if ( $wpdrift_worker_strict_api_lockdown && ! wo_is_core_valid() && ! wo_is_dev() ) {
+			if ( $wpdrift_worker_strict_api_lockdown && ! wpdrift_worker_is_core_valid() && ! wpdrift_worker_is_dev() ) {
 				$response = new OAuth2\Response();
 				$response->setError( 403, 'security_risk', __( 'plugin core is not authenticate', 'wpdrift-worker' ) );
 				$response->send();
@@ -66,17 +66,17 @@ class WPdrift_Worker_Oauth {
 			$config     = array(
 				'use_crypto_tokens'                 => false,
 				'store_encrypted_token_string'      => false,
-				'use_openid_connect'                => wo_setting( 'use_openid_connect' ),
+				'use_openid_connect'                => wpdrift_worker_setting( 'use_openid_connect' ),
 				'issuer'                            => home_url( null, 'https' ),
-				'id_lifetime'                       => wo_setting( 'id_token_lifetime' ),
-				'access_lifetime'                   => wo_setting( 'access_token_lifetime' ),
-				'refresh_token_lifetime'            => wo_setting( 'refresh_token_lifetime' ),
+				'id_lifetime'                       => wpdrift_worker_setting( 'id_token_lifetime' ),
+				'access_lifetime'                   => wpdrift_worker_setting( 'access_token_lifetime' ),
+				'refresh_token_lifetime'            => wpdrift_worker_setting( 'refresh_token_lifetime' ),
 				'www_realm'                         => 'Service',
 				'token_param_name'                  => 'access_token',
 				'token_bearer_header_name'          => 'Bearer',
-				'enforce_state'                     => wo_setting( 'enforce_state' ),
-				'require_exact_redirect_uri'        => wo_setting( 'require_exact_redirect_uri' ),
-				'allow_implicit'                    => wo_setting( 'implicit_enabled' ),
+				'enforce_state'                     => wpdrift_worker_setting( 'enforce_state' ),
+				'require_exact_redirect_uri'        => wpdrift_worker_setting( 'require_exact_redirect_uri' ),
+				'allow_implicit'                    => wpdrift_worker_setting( 'implicit_enabled' ),
 				'allow_credentials_in_request_body' => apply_filters( 'wpdrift_worker_allow_credentials_in_request_body', true ),
 				'allow_public_clients'              => apply_filters( 'wpdrift_worker_allow_public_clients', false ),
 				'always_issue_new_refresh_token'    => apply_filters( 'wpdrift_worker_always_issue_new_refresh_token', true ),
@@ -97,7 +97,7 @@ class WPdrift_Worker_Oauth {
 			 */
 			$support_grant_types = array();
 
-			if ( '1' == wo_setting( 'auth_code_enabled' ) ) {
+			if ( '1' == wpdrift_worker_setting( 'auth_code_enabled' ) ) {
 				$server->addGrantType( new OAuth2\GrantType\AuthorizationCode( $storage ) );
 			}
 
@@ -138,7 +138,7 @@ class WPdrift_Worker_Oauth {
 			|
 			 */
 			if ( 'token' == $method ) {
-				do_action( 'wo_before_token_method', array( $_REQUEST ) );
+				do_action( 'wpdrift_worker_before_token_method', array( $_REQUEST ) );
 				$server->handleTokenRequest( OAuth2\Request::createFromGlobals() )->send();
 				exit;
 			}
@@ -158,7 +158,7 @@ class WPdrift_Worker_Oauth {
 			*/
 			if ( 'authorize' == $method ) {
 
-				do_action( 'wo_before_authorize_method', array( $_REQUEST ) );
+				do_action( 'wpdrift_worker_before_authorize_method', array( $_REQUEST ) );
 				$request  = OAuth2\Request::createFromGlobals();
 				$response = new OAuth2\Response();
 
@@ -229,7 +229,7 @@ class WPdrift_Worker_Oauth {
 
 					$current_user = get_current_user_id();
 
-					$grant_status = get_user_meta( $current_user, 'wo_grant_' . $_REQUEST['client_id'], true );
+					$grant_status = get_user_meta( $current_user, 'wpdrift_worker_grant_' . $_REQUEST['client_id'], true );
 
 					if ( $grant_status == '' || $prompt == 'consent' ) {
 
@@ -253,7 +253,7 @@ class WPdrift_Worker_Oauth {
 				}
 
 				$user_id = get_current_user_id();
-				do_action( 'wo_authorization_code_authorize', array( $user_id ) );
+				do_action( 'wpdrift_worker_authorization_code_authorize', array( $user_id ) );
 
 				$server->handleAuthorizeRequest( $request, $response, $is_authorized, $user_id );
 				$response->send();
@@ -376,7 +376,7 @@ class WPdrift_Worker_Oauth {
 					exit;
 				}
 
-				do_action( 'wo_endpoint_user_authenticated', array( $token ) );
+				do_action( 'wpdrift_worker_endpoint_user_authenticated', array( $token ) );
 				call_user_func_array( $resource_server_methods[ $method ]['func'], array( $token ) );
 
 				exit;
