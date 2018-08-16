@@ -75,7 +75,7 @@ function wpdrift_worker_only_allow_one_access_token( $object ) {
  */
 $wpdrift_worker_restrict_single_access_token = apply_filters( 'wpdrift_worker_restrict_single_access_token', false );
 if ( $wpdrift_worker_restrict_single_access_token ) {
-	add_action( 'wo_set_access_token', 'wpdrift_worker_only_allow_one_access_token' );
+	add_action( 'wpdrift_worker_set_access_token', 'wpdrift_worker_only_allow_one_access_token' );
 }
 
 // Debugging part

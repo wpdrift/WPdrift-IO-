@@ -113,7 +113,7 @@ class AccessToken implements AccessTokenInterface {
 	 * @ingroup oauth2_section_4
 	 */
 	protected function generateAccessToken() {
-		$token_length = wo_setting( 'token_length' );
+		$token_length = wpdrift_worker_setting( 'token_length' );
 
 		return strtolower( wp_generate_password( $token_length, false, $extra_special_chars = false ) );
 	}

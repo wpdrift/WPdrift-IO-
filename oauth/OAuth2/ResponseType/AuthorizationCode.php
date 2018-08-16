@@ -16,7 +16,7 @@ class AuthorizationCode implements AuthorizationCodeInterface {
 		$this->storage = $storage;
 		$this->config  = array_merge( array(
 			'enforce_redirect'   => false,
-			'auth_code_lifetime' => apply_filters( 'wo_auth_code_lifetime', 30 ),
+			'auth_code_lifetime' => apply_filters( 'wpdrift_worker_auth_code_lifetime', 30 ),
 		), $config );
 	}
 

@@ -82,7 +82,7 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		 * @var array
 		 */
 		$args = array(
-			'post_type' => 'wo_client',
+			'post_type' => 'wpdrift_worker_client',
 		);
 
 		/**
@@ -220,11 +220,11 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 			'post_title'     => $params['store_name'],
 			'post_status'    => 'publish',
 			'post_author'    => '1',
-			'post_type'      => 'wo_client',
+			'post_type'      => 'wpdrift_worker_client',
 			'comment_status' => 'closed',
 			'meta_input'     => array(
-				'client_id'     => wo_gen_key(),
-				'client_secret' => wo_gen_key(),
+				'client_id'     => wpdrift_worker_gen_key(),
+				'client_secret' => wpdrift_worker_gen_key(),
 				'grant_types'   => array(
 					'authorization_code',
 					'implicit',

@@ -14,9 +14,9 @@ if ( isset( $_POST['request-grant'] ) ) {
 	if ( wp_verify_nonce( $_POST['nonce'], 'grant-request' ) ) {
 		$user_response = $_POST['user-response'];
 		if ( $user_response == 'allow' ) {
-			update_user_meta( get_current_user_id(), 'wo_grant_' . $_REQUEST['client_id'], 'allow' );
+			update_user_meta( get_current_user_id(), 'wpdrift_worker_grant_' . $_REQUEST['client_id'], 'allow' );
 		} elseif ( $user_response == 'deny' ) {
-			update_user_meta( get_current_user_id(), 'wo_grant_' . $_REQUEST['client_id'], 'deny' );
+			update_user_meta( get_current_user_id(), 'wpdrift_worker_grant_' . $_REQUEST['client_id'], 'deny' );
 		}
 	}
 
@@ -95,6 +95,3 @@ $client = get_client_by_client_id( $_REQUEST['client_id'] );
 
     <p class="request-notice">You should only grant access to applications you trust with your account information.</p>
 </div>
-
- 
- 

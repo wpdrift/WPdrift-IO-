@@ -203,7 +203,7 @@ class Request implements RequestInterface {
 		$contentType   = $request->server( 'CONTENT_TYPE', '' );
 		$requestMethod = $request->server( 'REQUEST_METHOD', 'GET' );
 		if ( 0 === strpos( $contentType, 'application/x-www-form-urlencoded' )
-		     && in_array( strtoupper( $requestMethod ), apply_filters( 'wo_create_from_globals_urlencoded', array(
+		     && in_array( strtoupper( $requestMethod ), apply_filters( 'wpdrift_worker_create_from_globals_urlencoded', array(
 				'PUT',
 				'DELETE'
 			) ) )
@@ -211,7 +211,7 @@ class Request implements RequestInterface {
 			parse_str( $request->getContent(), $data );
 			$request->request = $data;
 		} elseif ( 0 === strpos( $contentType, 'application/json' )
-		           && in_array( strtoupper( $requestMethod ), apply_filters( 'wo_create_from_globals_json', array(
+		           && in_array( strtoupper( $requestMethod ), apply_filters( 'wpdrift_worker_create_from_globals_json', array(
 				'POST',
 				'PUT',
 				'DELETE'

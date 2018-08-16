@@ -43,7 +43,7 @@ add_filter( 'wpdrift_worker_endpoints', 'wpdrift_worker_default_endpoints', 1 );
  *
  * @param null $token
  */
-function _wo_method_introspection( $token = null ) {
+function _wpdrift_worker_method_introspection( $token = null ) {
 	$access_token = &$token['access_token'];
 
 	$request = OAuth2\Request::createFromGlobals();
@@ -73,7 +73,7 @@ function _wo_method_introspection( $token = null ) {
 		$user     = get_userdata( $valid['user_id'] );
 		$username = $user->user_login;
 	}
-	$introspection = apply_filters( 'wo_introspection_response', array(
+	$introspection = apply_filters( 'wpdrift_worker_introspection_response', array(
 		'active'    => true,
 		'scope'     => $valid['scope'],
 		'client_id' => $valid['client_id']

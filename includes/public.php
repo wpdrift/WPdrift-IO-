@@ -61,10 +61,10 @@ function wpdrift_worker_public_get_access_token( $access_token, $return_type = A
  */
 function wpdrift_worker_public_insert_client( $client_data = null ) {
 
-	do_action( 'wo_before_create_client', array( $client_data ) );
+	do_action( 'wpdrift_worker_before_create_client', array( $client_data ) );
 
-	$client_id     = wo_gen_key();
-	$client_secret = wo_gen_key();
+	$client_id     = wpdrift_worker_gen_key();
+	$client_secret = wpdrift_worker_gen_key();
 
 	$grant_types = isset( $client_data['grant_types'] ) ? $client_data['grant_types'] : array();
 	$user_id     = isset( $client_data['user_id'] ) ? intval( $client_data['user_id'] ) : 0;
@@ -73,7 +73,7 @@ function wpdrift_worker_public_insert_client( $client_data = null ) {
 		'post_title'     => wp_strip_all_tags( $client_data['name'] ),
 		'post_status'    => 'publish',
 		'post_author'    => 1,
-		'post_type'      => 'wo_client',
+		'post_type'      => 'wpdrift_worker_client',
 		'comment_status' => 'closed',
 		'meta_input'     => array(
 			'client_id'     => $client_id,

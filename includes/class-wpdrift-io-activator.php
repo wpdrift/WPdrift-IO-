@@ -68,9 +68,9 @@ class WPdrift_IO_Activator {
 	 * @return [type] [description]
 	 */
 	public function setup() {
-		$options = get_option( 'wo_options' );
+		$options = get_option( 'wpdrift_worker_options' );
 		if ( ! isset( $options['enabled'] ) ) {
-			update_option( 'wo_options', _WPDW()->defualt_settings );
+			update_option( 'wpdrift_worker_options', _WPDW()->defualt_settings );
 		}
 	}
 
@@ -119,7 +119,7 @@ class WPdrift_IO_Activator {
 					'post_title'     => $client->name,
 					'post_status'    => 'publish',
 					'post_author'    => get_current_user_id(),
-					'post_type'      => 'wo_client',
+					'post_type'      => 'wpdrift_worker_client',
 					'comment_status' => 'closed',
 					'meta_input'     => array(
 						'client_id'     => $client->client_id,
