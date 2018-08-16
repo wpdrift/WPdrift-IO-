@@ -119,7 +119,7 @@ class WPdrift_IO_Activator {
 					'post_title'     => $client->name,
 					'post_status'    => 'publish',
 					'post_author'    => get_current_user_id(),
-					'post_type'      => 'wpdrift_worker_client',
+					'post_type'      => 'oauth_client',
 					'comment_status' => 'closed',
 					'meta_input'     => array(
 						'client_id'     => $client->client_id,

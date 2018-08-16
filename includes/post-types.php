@@ -30,7 +30,7 @@ function wpdrift_worker_types() {
 		'show_ui'             => true,
 		'show_in_menu'        => false,
 		'query_var'           => true,
-		'rewrite'             => array( 'slug' => 'wpdrift_worker_client' ),
+		'rewrite'             => array( 'slug' => 'oauth_client' ),
 		'capability_type'     => 'post',
 		'has_archive'         => true,
 		'hierarchical'        => false,
@@ -39,5 +39,5 @@ function wpdrift_worker_types() {
 		'exclude_from_search' => true,
 	);
 
-	register_post_type( 'wpdrift_worker_client', $args );
+	register_post_type( 'oauth_client', $args );
 }

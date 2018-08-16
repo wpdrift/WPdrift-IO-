@@ -58,7 +58,7 @@ function wpdrift_worker_insert_client($client_data = null)
 		'post_title'     => wp_strip_all_tags($client_data['name']),
 		'post_status'    => 'publish',
 		'post_author'    => get_current_user_id(),
-		'post_type'      => 'wpdrift_worker_client',
+		'post_type'      => 'oauth_client',
 		'comment_status' => 'closed',
 		'meta_input'     => array(
 			'client_id'     => $client_id,
@@ -117,7 +117,7 @@ function get_client_by_client_id($client_id)
 {
 	$query   = new \WP_Query();
 	$clients = $query->query(array(
-		'post_type'   => 'wpdrift_worker_client',
+		'post_type'   => 'oauth_client',
 		'post_status' => 'any',
 		'meta_query'  => array(
 			array(
@@ -211,7 +211,7 @@ function wpdrift_worker_gen_key($length = 40)
 function has_a_client()
 {
 	global $wpdb;
-	$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'wpdrift_worker_client'");
+	$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'oauth_client'");
 
 	if (intval($count) >= 1) {
 		return true;

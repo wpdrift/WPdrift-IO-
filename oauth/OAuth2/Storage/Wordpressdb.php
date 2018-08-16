@@ -63,7 +63,7 @@ class Wordpressdb implements
 	 */
 	public function checkClientCredentials( $client_id, $client_secret = null ) {
 		$client = new \WP_Query( array(
-			'post_type'   => 'wpdrift_worker_client',
+			'post_type'   => 'oauth_client',
 			'post_status' => 'any',
 			'meta_query'  => array(
 				array(
@@ -95,7 +95,7 @@ class Wordpressdb implements
 	public function isPublicClient( $client_id ) {
 		$query   = new \WP_Query();
 		$clients = $query->query( array(
-			'post_type'   => 'wpdrift_worker_client',
+			'post_type'   => 'oauth_client',
 			'post_status' => 'any',
 			'meta_query'  => array(
 				array(
@@ -125,7 +125,7 @@ class Wordpressdb implements
 	public function getClientDetails( $client_id ) {
 		$query   = new \WP_Query();
 		$clients = $query->query( array(
-			'post_type'   => 'wpdrift_worker_client',
+			'post_type'   => 'oauth_client',
 			'post_status' => 'any',
 			'meta_query'  => array(
 				array(

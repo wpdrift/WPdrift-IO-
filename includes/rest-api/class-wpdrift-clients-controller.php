@@ -38,7 +38,7 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'create_item' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 
@@ -82,7 +82,7 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 		 * @var array
 		 */
 		$args = array(
-			'post_type' => 'wpdrift_worker_client',
+			'post_type' => 'oauth_client',
 		);
 
 		/**
@@ -220,7 +220,7 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 			'post_title'     => $params['store_name'],
 			'post_status'    => 'publish',
 			'post_author'    => '1',
-			'post_type'      => 'wpdrift_worker_client',
+			'post_type'      => 'oauth_client',
 			'comment_status' => 'closed',
 			'meta_input'     => array(
 				'client_id'     => wpdrift_worker_gen_key(),
