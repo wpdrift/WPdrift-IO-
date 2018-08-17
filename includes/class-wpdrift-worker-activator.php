@@ -336,7 +336,8 @@ class WPdrift_IO_Activator {
 			 * @var [type]
 			 */
 			$table->string( 'ip' )->nullable();
-			$table->timestamps();
+			$table->dateTime( 'created_at' );
+			$table->dateTime( 'updated_at' );
 		});
 	}
 

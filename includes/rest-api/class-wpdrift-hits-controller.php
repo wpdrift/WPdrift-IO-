@@ -8,7 +8,6 @@
  */
 
 use Carbon\Carbon;
-use League\Uri;
 
 /**
  * [WPdrift_Hits_Controller description]
@@ -36,7 +35,7 @@ class WPdrift_Hits_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 
@@ -121,7 +120,7 @@ class WPdrift_Hits_Controller extends WP_REST_Controller {
 		 * [$query_fields description]
 		 * @var string
 		 */
-		$uri    = Uri\parse( get_site_url() );
+		$uri    = wp_parse_url( get_site_url() );
 		$domain = $uri['host'];
 
 		/**
@@ -151,7 +150,7 @@ class WPdrift_Hits_Controller extends WP_REST_Controller {
 		$referers = array();
 		foreach ( $results as $result ) {
 			$data = array();
-			$uri  = Uri\parse( $result->referer );
+			$uri  = wp_parse_url( $result->referer );
 
 			$data['counts'] = $result->counts;
 			$data['domain'] = $result->domain;
