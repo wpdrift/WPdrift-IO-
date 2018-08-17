@@ -394,7 +394,7 @@ class WPdrift_IO_Public {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdrift-io-public.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wpdrift-worker-public.js', array( 'jquery' ), $this->version, true );
 
 		/**
 		 * [$localize_script_data description]

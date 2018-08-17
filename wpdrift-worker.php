@@ -34,19 +34,19 @@ if ( ! defined( 'WPDRIFT_WORKER_FILE' ) ) {
 
 /**
  * The code that runs during plugin activation.
- * This action is documented in includes/class-wpdrift-io-activator.php
+ * This action is documented in includes/class-wpdrift-worker-activator.php
  */
 function activate_wpdrift_worker( $network_wide ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-worker-activator.php';
 	WPdrift_IO_Activator::activate( $network_wide );
 }
 
 /**
  * The code that runs during plugin deactivation.
- * This action is documented in includes/class-wpdrift-io-deactivator.php
+ * This action is documented in includes/class-wpdrift-worker-deactivator.php
  */
 function deactivate_wpdrift_worker( $network_wide ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-io-deactivator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-worker-deactivator.php';
 	WPdrift_IO_Deactivator::deactivate( $network_wide );
 }
 
