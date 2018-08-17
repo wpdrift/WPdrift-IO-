@@ -187,7 +187,7 @@ class WPdrift_Events_Controller extends WP_REST_Controller
 	// get user avatar by applied $email_address
 	public function get_user_avatar_by_email($email_address)
 	{
-		if (wh_has_gravatar($email_address)) {
+		if (wpdrift_worker_has_gravatar($email_address)) {
 			$user_avatar = 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($email_address))) . '?s=48&d=404';
 			;
 		} else {
