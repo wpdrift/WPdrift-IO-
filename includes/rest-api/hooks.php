@@ -51,7 +51,7 @@ function wpdrift_worker_user_meta_fields() {
 		array(
 			'get_callback' => 'wpdrift_worker_get_user_ip_location_data',
 			'schema'       => null,
-		),
+		)
 	);
 
 	register_rest_field(
