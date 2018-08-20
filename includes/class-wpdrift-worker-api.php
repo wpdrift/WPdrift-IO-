@@ -99,6 +99,14 @@ class WPdrift_Worker_Api {
 		$events_controller->register_routes();
 
 		/**
+		 * Register new recent events end points
+		 * @var [type]
+		 */
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-statistics-controller.php' );
+		$statistics_controller = new WPdrift_Statistics_Controller();
+		$statistics_controller->register_routes();
+
+		/**
 		 * Detect EDD plugin. Then add edd all api end points
 		 */
 		if ( in_array( 'easy-digital-downloads/easy-digital-downloads.php', (array) get_option( 'active_plugins', array() ) ) ) {

@@ -5,7 +5,6 @@
 
 defined( 'ABSPATH' ) || exit;
 use Carbon\Carbon;
-use League\Uri;
 
 /**
  * Dashboard endpoints.
