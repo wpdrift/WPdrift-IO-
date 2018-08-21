@@ -29,7 +29,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				//'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 

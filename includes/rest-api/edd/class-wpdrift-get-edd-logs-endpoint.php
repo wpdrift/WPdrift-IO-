@@ -94,13 +94,26 @@ class EDD_GetLogs_Endpoint extends WP_REST_Controller
     public function retrieve_edd_logs($parameters)
     {
         global $wpdb;
-        $edd_discounts = get_posts( array(
-            'post_type'              => 'edd_logs',
+        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
+        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
+        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+        $args = array(
+            'post_type'              => 'edd_log',
             'post_status'            => 'any',
-            'posts_per_page'         => -1,
+            'posts_per_page'         => $posts_per_page,
             'orderby'                => 'ID',
             'order'                  => 'ASC',
-        ) );
-        return $edd_discounts;
+            );
+
+        if($task == "get_totals") {
+            $logs = new WP_Query( $args );
+            $edd_logs['found_posts'] = $logs->found_posts;
+            $edd_logs['max_num_pages'] = $logs->max_num_pages;
+        } else {
+            $args['offset'] = $offset;
+            $edd_logs = get_posts( $args );
+        }
+
+        return $edd_logs;
     }
 }

@@ -94,7 +94,19 @@ class EDD_GetDownloads_Logs_Endpoint extends WP_REST_Controller
     public function retrieve_edd_downloads_logs($parameters)
     {
         global $wpdb;
-        $download_log = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."download_log");
+
+        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
+        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
+        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+
+        if($task == "get_totals") {
+            $found_posts = $wpdb->get_var( "SELECT count(`ID`) FROM ".$wpdb->prefix."download_log" );
+            $download_log['found_posts'] = $found_posts;
+            $max_num_pages = ceil($found_posts / $posts_per_page);
+            $download_log['max_num_pages'] = $max_num_pages;
+        } else {
+            $download_log = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."download_log LIMIT %d,%d", $offset, $posts_per_page ));
+        }
         return $download_log;
     }
 }

@@ -93,14 +93,25 @@ class EDD_GetDiscounts_Endpoint extends WP_REST_Controller
     */
     public function retrieve_edd_discounts($parameters)
     {
-        global $wpdb;
-        $edd_discounts = get_posts( array(
+        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
+        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
+        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+
+        $args = array(
             'post_type'              => 'edd_discount',
             'post_status'            => 'any',
-            'posts_per_page'         => -1,
+            'posts_per_page'         => $posts_per_page,
             'orderby'                => 'ID',
             'order'                  => 'ASC',
-        ) );
+        );
+        if($task == "get_totals") {
+            $discounts = new WP_Query( $args );
+            $edd_discounts['found_posts'] = $discounts->found_posts;
+            $edd_discounts['max_num_pages'] = $discounts->max_num_pages;
+        } else {
+            $args['offset'] = $offset;
+            $edd_discounts = get_posts( $args );
+        }
         return $edd_discounts;
     }
 }

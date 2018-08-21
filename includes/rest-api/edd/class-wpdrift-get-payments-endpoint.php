@@ -93,14 +93,25 @@ class EDD_GetPayments_Endpoint extends WP_REST_Controller
     */
     public function retrieve_edd_payments($parameters)
     {
-        global $wpdb;
-        $edd_payments = get_posts( array(
+        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
+        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
+        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+
+        $args = array(
             'post_type'              => 'edd_payment',
             'post_status'            => 'any',
-            'posts_per_page'         => -1,
+            'posts_per_page'         => $posts_per_page,
             'orderby'                => 'ID',
             'order'                  => 'ASC',
-        ) );
+        );
+        if($task == "get_totals") {
+            $payments = new WP_Query( $args );
+            $edd_payments['found_posts'] = $payments->found_posts;
+            $edd_payments['max_num_pages'] = $payments->max_num_pages;
+        } else {
+            $args['offset'] = $offset;
+            $edd_payments = get_posts( $args );
+        }
         return $edd_payments;
     }
 }

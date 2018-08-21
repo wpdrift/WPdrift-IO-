@@ -94,14 +94,17 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
     public function retrieve_edd_customers_metas($parameters)
     {
         global $wpdb;
-        $edd_customers = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."edd_customers");
-        $new_array = array();
-        $i = 0;
-        foreach ($edd_customers as $edd_customer) {
-            $new_array[$i]['customer_id'] = $edd_customer->id;
-            // get posts meta
-            $customers_metas = $wpdb->get_results( "SELECT * FROM ".$wpdb->prefix."edd_customermeta");
-            $i++;
+        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
+        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
+        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+
+        if($task == "get_totals") {
+            $found_posts = $wpdb->get_var( "SELECT count(`meta_id`) FROM ".$wpdb->prefix."edd_customermeta" );
+            $customers_metas['found_posts'] = $found_posts;
+            $max_num_pages = ceil($found_posts / $posts_per_page);
+            $customers_metas['max_num_pages'] = $max_num_pages;
+        } else {
+            $customers_metas = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."edd_customermeta LIMIT %d,%d", $offset, $posts_per_page ));
         }
         return $customers_metas;
     }

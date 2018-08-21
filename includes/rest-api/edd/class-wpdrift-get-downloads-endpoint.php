@@ -93,30 +93,25 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
     */
     public function retrieve_edd_downlads($parameters)
     {
-        global $wpdb;
-        
-        $edd_downloads = get_posts( array(
+        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
+        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
+        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+
+        $args = array(
             'post_type'              => 'download',
             'post_status'            => 'any',
-            'posts_per_page'         => -1,
+            'posts_per_page'         => $posts_per_page,
             'orderby'                => 'ID',
             'order'                  => 'ASC',
-        ) );
-        
-        $new_array = array();
-        $i = 0;
-        foreach ($edd_downloads as $edd_download) {
-            $new_array[$i]['post_id'] = $edd_download->ID;
-            $new_array[$i]['post_author'] = $edd_download->post_author;
-            $new_array[$i]['post_date'] = $edd_download->post_date;
-            $new_array[$i]['post_title'] = $edd_download->post_title;
-            $new_array[$i]['post_status'] = $edd_download->post_status;
-            $new_array[$i]['post_name'] = $edd_download->post_name;
-            $new_array[$i]['post_modified'] = $edd_download->post_modified;
-            // get posts meta
-            $new_array[$i]['post_metas'] = get_metadata('post', $edd_download->ID, '', false);
-            $i++;
+        );
+        if($task == "get_totals") {
+            $downloads = new WP_Query( $args );
+            $edd_downloads['found_posts'] = $downloads->found_posts;
+            $edd_downloads['max_num_pages'] = $downloads->max_num_pages;
+        } else {
+            $args['offset'] = $offset;
+            $edd_downloads = get_posts( $args );
         }
-        return $new_array;
+        return $edd_downloads;
     }
 }

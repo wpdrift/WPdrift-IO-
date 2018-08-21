@@ -93,28 +93,15 @@ class EDD_GetDiscounts_Metas_Endpoint extends WP_REST_Controller
     */
     public function retrieve_edd_discounts_metas($parameters)
     {
-        global $wpdb;
-        $edd_discounts = get_posts( array(
-            'post_type'              => 'edd_discount',
-            'post_status'            => 'any',
-            'posts_per_page'         => -1,
-            'orderby'                => 'ID',
-            'order'                  => 'ASC',
-        ) );
-
-        $new_array = array();
+        $post_id = trim($parameters['post_id']) != "" ? trim($parameters['post_id']) : 0;
+        $meta_array = array();
+        $post_meta_arry = get_metadata('post', $post_id, '', false);
+        // add post metas as main array elements
         $i = 0;
-        foreach ($edd_discounts as $edd_payment) {
-            $new_array[$i]['post_id'] = $edd_payment->ID;
-            // get posts meta
-            $post_meta_arry = get_metadata('post', $edd_payment->ID, '', false);
-            // add post metas as main array elements
-            foreach ($post_meta_arry as $post_meta_key => $post_meta_value) {
-                $new_array[$i][$post_meta_key] = $post_meta_value[0];
-            }
-
+        foreach ($post_meta_arry as $post_meta_key => $post_meta_value) {
+            $meta_array[$i][$post_meta_key] = $post_meta_value[0];
             $i++;
         }
-        return $new_array;
+        return $meta_array;
     }
 }
