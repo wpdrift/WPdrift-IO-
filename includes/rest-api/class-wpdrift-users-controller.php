@@ -8,7 +8,6 @@
  */
 
 use Carbon\Carbon;
-// use SebastianBergmann\Timer\Timer;
 
 /**
  * [WPdrift_Users_Controller description]
@@ -113,11 +112,10 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		$response = [
-			// 'query'   => $query,
-			'total'    => array_sum( $col ),
-			'datasets' => $col,
-			'labels'   => $this->prepare_labels( $col_user_registered, $mode ),
-			'filters'  => $this->get_filters( $date_args, $mode ),
+			'total'   => array_sum( $col ),
+			'data'    => $col,
+			'labels'  => $this->prepare_labels( $col_user_registered, $mode ),
+			'filters' => $this->get_filters( $date, $mode ),
 		];
 
 		/**
@@ -125,13 +123,6 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		$data['results'] = $this->prepare_response_for_collection( $response );
-
-		/**
-		 * [$time description]
-		 * @var [type]
-		 */
-		// $time         = Timer::stop();
-		// $data['time'] = Timer::secondsToTimeString( $time );
 
 		/**
 		 * Return all of our comment response data.
@@ -263,16 +254,58 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 	 * @param  [type] $mode  [description]
 	 * @return [type]        [description]
 	 */
-	public function get_filters( $dates, $mode ) {
+	public function get_filters( $date, $mode ) {
+		/**
+		 * [$diffdays description]
+		 * @var integer
+		 */
+		$diff_minutes = 0;
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( isset( $date[0]['after'] ) ) {
+			$after        = Carbon::parse( $date[0]['after'] );
+			$before       = isset( $date[0]['before'] ) ? Carbon::parse( $date[0]['before'] ) : Carbon::now();
+			$diff_minutes = $after->diffInMinutes( $before, false );
+		}
+
+		/**
+		 * [$filters description]
+		 * @var array
+		 */
 		$filters = [
-			'minute' => __( 'Minute', 'wpdrift-worker' ),
-			'hour'   => __( 'hour', 'wpdrift-worker' ),
-			'day'    => __( 'Day', 'wpdrift-worker' ),
-			'week'   => __( 'Week', 'wpdrift-worker' ),
-			'month'  => __( 'Month', 'wpdrift-worker' ),
-			'year'   => __( 'Year', 'wpdrift-worker' ),
+			'minute' => [
+				'active' => ( $diff_minutes > 1 ) ? true : false,
+				'label'  => __( 'Minute', 'wpdrift-worker' ),
+			],
+			'hour'   => [
+				'active' => ( $diff_minutes > 60 ) ? true : false,
+				'label'  => __( 'Hour', 'wpdrift-worker' ),
+			],
+			'day'    => [
+				'active' => ( $diff_minutes > ( 60 * 60 * 24 ) ) ? true : false,
+				'label'  => __( 'Day', 'wpdrift-worker' ),
+			],
+			'week'   => [
+				'active' => ( $diff_minutes > ( 60 * 60 * 24 * 7 ) ) ? true : false,
+				'label'  => __( 'Week', 'wpdrift-worker' ),
+			],
+			'month'  => [
+				'active' => ( $diff_minutes > ( 60 * 60 * 24 * 30 ) ) ? true : false,
+				'label'  => __( 'Month', 'wpdrift-worker' ),
+			],
+			'year'   => [
+				'active' => ( $diff_minutes > ( 60 * 60 * 24 * 365 ) ) ? true : false,
+				'label'  => __( 'Year', 'wpdrift-worker' ),
+			],
 		];
 
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
 		return $filters;
 	}
 
