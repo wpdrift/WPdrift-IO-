@@ -285,19 +285,19 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 				'label'  => __( 'Hour', 'wpdrift-worker' ),
 			],
 			'day'    => [
-				'active' => ( $diff_minutes > ( 60 * 60 * 24 ) ) ? true : false,
+				'active' => ( $diff_minutes > ( 60 * 24 ) ) ? true : false,
 				'label'  => __( 'Day', 'wpdrift-worker' ),
 			],
 			'week'   => [
-				'active' => ( $diff_minutes > ( 60 * 60 * 24 * 7 ) ) ? true : false,
+				'active' => ( $diff_minutes > ( 60 * 24 * 7 ) ) ? true : false,
 				'label'  => __( 'Week', 'wpdrift-worker' ),
 			],
 			'month'  => [
-				'active' => ( $diff_minutes > ( 60 * 60 * 24 * 30 ) ) ? true : false,
+				'active' => ( $diff_minutes > ( 60 * 24 * 30 ) ) ? true : false,
 				'label'  => __( 'Month', 'wpdrift-worker' ),
 			],
 			'year'   => [
-				'active' => ( $diff_minutes > ( 60 * 60 * 24 * 365 ) ) ? true : false,
+				'active' => ( $diff_minutes > ( 60 * 24 * 365 ) ) ? true : false,
 				'label'  => __( 'Year', 'wpdrift-worker' ),
 			],
 		];
