@@ -32,7 +32,7 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 	}
@@ -59,14 +59,6 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 	 * @param WP_REST_Request $request Current request.
 	 */
 	public function get_items( $request ) {
-		// return array();
-
-		/**
-		 * [Timer description]
-		 * @var [type]
-		 */
-		// Timer::start();
-
 		/**
 		 * [global description]
 		 * @var [type]
@@ -74,39 +66,22 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		global $wpdb;
 
 		/**
-		 * [$data description]
-		 * @var array
-		 */
-		$data = array();
-
-		/**
-		 * [$date_args description]
-		 * @var array
-		 */
-		$date_args = array();
-		$mode      = isset( $request['mode'] ) ? $request['mode'] : 'day';
-
-		/**
-		 * [if description]
+		 * [$date description]
 		 * @var [type]
 		 */
-		if ( isset( $request['after'] ) ) {
-			$date_args[0]['after'] = $request['after'];
-		}
+		$date = $this->prepare_date( $request );
 
 		/**
-		 * [if description]
+		 * [$mode description]
 		 * @var [type]
 		 */
-		if ( isset( $request['before'] ) ) {
-			$date_args[0]['before'] = $request['before'];
-		}
+		$mode = isset( $request['mode'] ) ? $request['mode'] : 'day';
 
 		/**
 		 * [$date_query description]
 		 * @var WP_Date_Query
 		 */
-		$date_query = new WP_Date_Query( $date_args, 'user_registered' );
+		$date_query = new WP_Date_Query( $date, 'user_registered' );
 
 		/**
 		 * [$query_fields description]
@@ -139,10 +114,10 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 */
 		$response = [
 			// 'query'   => $query,
-			'total'   => array_sum( $col ),
-			'data'    => $col,
-			'labels'  => $this->prepare_labels( $col_user_registered, $mode ),
-			'filters' => $this->get_filters( $date_args, $mode ),
+			'total'    => array_sum( $col ),
+			'datasets' => $col,
+			'labels'   => $this->prepare_labels( $col_user_registered, $mode ),
+			'filters'  => $this->get_filters( $date_args, $mode ),
 		];
 
 		/**
@@ -163,6 +138,40 @@ class WPdrift_Users_Controller extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		return rest_ensure_response( $data );
+	}
+
+	/**
+	 * [prepare_date description]
+	 * @return [type] [description]
+	 */
+	public function prepare_date( $request ) {
+		/**
+		 * [$date description]
+		 * @var array
+		 */
+		$date = array();
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( isset( $request['after'] ) ) {
+			$date[0]['after'] = $request['after'];
+		}
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( isset( $request['before'] ) ) {
+			$date[0]['before'] = $request['before'];
+		}
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return $date;
 	}
 
 	/**
