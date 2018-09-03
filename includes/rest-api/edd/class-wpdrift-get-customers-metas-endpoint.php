@@ -97,12 +97,15 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
         $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
         $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
         $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+        $post_id = trim($parameters['id']) != "" ? trim($parameters['id']) : "";
 
         if($task == "get_totals") {
             $found_posts = $wpdb->get_var( "SELECT count(`meta_id`) FROM ".$wpdb->prefix."edd_customermeta" );
             $customers_metas['found_posts'] = $found_posts;
             $max_num_pages = ceil($found_posts / $posts_per_page);
             $customers_metas['max_num_pages'] = $max_num_pages;
+        } else if($task == "get_single") {
+            $customers_metas = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."edd_customermeta WHERE customer_id = %d", $post_id ));
         } else {
             $customers_metas = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."edd_customermeta LIMIT %d,%d", $offset, $posts_per_page ));
         }
