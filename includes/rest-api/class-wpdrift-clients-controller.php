@@ -127,6 +127,12 @@ class WPdrift_Clients_Controller extends WP_REST_Controller {
 	 */
 	public function create_item( $request ) {
 		/**
+		 * [$params description]
+		 * @var [type]
+		 */
+		$params = $request->get_params();
+
+		/**
 		 * [$client_data description]
 		 * @var [type]
 		 */
