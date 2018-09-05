@@ -118,7 +118,7 @@ class WPdrift_Statistics_Controller extends WP_REST_Controller {
 		$query_arguments_compared = array(
 			'post_type'  => 'post',
 			'date_query' => $date_query_compared,
-		)
+		);
 		$data_compared            = empty( $date_query_compared ) ? [] : $this->query_posts( $query_arguments_compared );
 		$progress                 = $this->get_progress( $data, $data_compared );
 
