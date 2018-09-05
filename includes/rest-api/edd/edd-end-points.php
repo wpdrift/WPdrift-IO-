@@ -106,4 +106,21 @@ $recent_edd_term_taxonomy_controller->register_routes();
 require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-get-term-assigned-endpoint.php' );
 $recent_edd_term_assigned_controller = new EDD_GetTerm_Assigned_Endpoint();
 $recent_edd_term_assigned_controller->register_routes();
+
+/**
+ * Get Users end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-users-endpoint.php' );
+$recent_edd_users_controller = new EDD_Users_Endpoint();
+$recent_edd_users_controller->register_routes();
+
+/**
+ * Get Users Metas end points
+ * @var [type]
+ */
+require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-users-metas-endpoint.php' );
+$recent_edd_users_metas_controller = new EDD_GetUsers_Metas_Endpoint();
+$recent_edd_users_metas_controller->register_routes();
+
 ?>
