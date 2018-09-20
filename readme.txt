@@ -1,5 +1,5 @@
 === WPdrift IO - Worker ===
-Contributors: WPdrift, upnrunn, kishores, bhoot
+Contributors: WPdrift, upnrunn, kishores, bhoot, bankerrajendra
 Tags: analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage multiple sites
 Requires at least: 4.7
 Tested up to: 4.9
