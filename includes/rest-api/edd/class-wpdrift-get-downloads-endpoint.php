@@ -96,6 +96,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
         $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
         $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
         $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+        $post_id = trim($parameters['id']) != "" ? trim($parameters['id']) : "";
 
         $args = array(
             'post_type'              => 'download',
@@ -108,6 +109,8 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
             $downloads = new WP_Query( $args );
             $edd_downloads['found_posts'] = $downloads->found_posts;
             $edd_downloads['max_num_pages'] = $downloads->max_num_pages;
+        } else if($task == "get_single") {
+            $edd_downloads = get_post( (int) $post_id );
         } else {
             $args['offset'] = $offset;
             $edd_downloads = get_posts( $args );

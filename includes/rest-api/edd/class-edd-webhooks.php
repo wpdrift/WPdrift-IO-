@@ -36,6 +36,21 @@ class EDD_WebHooks {
 	function send_term_assigned($object_id)  {
 		$this->send_webhook('handle_term_assign', array( 'object_id' => $object_id ));
 	}
+	// TERM CREATE
+	function send_create_term($term_id, $tt_id, $taxonomy) {
+		if($taxonomy != 'download_category' && $taxonomy != "download_tag") return
+		$this->send_webhook('handle_term_create', array($term_id, $tt_id, $taxonomy));
+	}
+	// TERM EDIT
+	function send_edit_term($term_id, $tt_id, $taxonomy) {
+		if($taxonomy != 'download_category' && $taxonomy != "download_tag") return
+		$this->send_webhook('handle_term_update', array($term_id, $tt_id, $taxonomy));
+	}
+	// TERM DELETE
+	function send_delete_term($term, $tt_id, $taxonomy, $deleted_term) {
+		if($taxonomy != 'download_category' && $taxonomy != "download_tag") return
+		$this->send_webhook('handle_term_delete', array($term, $tt_id, $taxonomy, $deleted_term));
+	}
 	// ALL POST TYPES INSERTS
 	function send_post_created($post_id)  {
 		$post_type = get_post_type($post_id);
@@ -44,16 +59,16 @@ class EDD_WebHooks {
 		if ( !in_array($post_type, array('edd_discount', 'download', 'edd_log', 'edd_payment')) ) return;
 		switch ($post_type) {
 			case 'edd_discount':
-				$this->send_webhook('handle_discount_created', $params);
+				$this->send_webhook('handle_discount_create', $params);
 				break;
 			case 'download':
-				$this->send_webhook('handle_download_created', $params);
+				$this->send_webhook('handle_download_create', $params);
 				break;
 			case 'edd_log':
-				$this->send_webhook('handle_eddlog_created', $params);
+				$this->send_webhook('handle_eddlog_create', $params);
 				break;
 			case 'edd_payment':
-				$this->send_webhook('handle_payment_created', $params);
+				$this->send_webhook('handle_payment_create', $params);
 				break;
 		}
 	}
@@ -65,16 +80,16 @@ class EDD_WebHooks {
 		if ( !in_array($post_type, array('edd_discount', 'download', 'edd_log', 'edd_payment')) ) return;
 		switch ($post_type) {
 			case 'edd_discount':
-				$this->send_webhook('handle_discount_created', $params);
+				$this->send_webhook('handle_discount_update', $params);
 				break;
 			case 'download':
-				$this->send_webhook('handle_download_created', $params);
+				$this->send_webhook('handle_download_update', $params);
 				break;
 			case 'edd_log':
-				$this->send_webhook('handle_eddlog_created', $params);
+				$this->send_webhook('handle_eddlog_update', $params);
 				break;
 			case 'edd_payment':
-				$this->send_webhook('handle_payment_created', $params);
+				$this->send_webhook('handle_payment_update', $params);
 				break;
 		}
 	}
@@ -144,4 +159,12 @@ add_action( 'edd_post_insert_log', array($edd_webhook_obj, 'send_eddlog_deleted'
 
 // taxonmy assigned
 add_action( 'set_object_terms', array($edd_webhook_obj, 'send_term_assigned'), 10, 1 );
+
+// term created
+add_action( "create_term",  array($edd_webhook_obj, 'send_create_term'), 10, 3 );
+// term edit
+add_action( "edit_term", array($edd_webhook_obj, 'send_edit_term'), 10, 3 );
+// term deleted
+add_action( 'delete_term', array($edd_webhook_obj, 'send_delete_term'), 10, 4 );
+
 ?>
