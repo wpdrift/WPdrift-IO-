@@ -1,5 +1,6 @@
 # WPdrift IO - Worker #
 **Contributors:** [WPdrift](https://profiles.wordpress.org/WPdrift), [upnrunn](https://profiles.wordpress.org/upnrunn), [kishores](https://profiles.wordpress.org/kishores), [bhoot](https://profiles.wordpress.org/bhoot), [bankerrajendra](https://profiles.wordpress.org/bankerrajendra)
+
 **Tags:** analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage multiple sites  
 **Requires at least:** 4.7  
 **Tested up to:** 4.9  
