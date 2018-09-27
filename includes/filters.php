@@ -1,17 +1,4 @@
 <?php
-/**
- * WordPress OAuth Server Error Filter
- * @deprecated Schedule for removal. The PHP server handles all these now.
- */
-function wpdrift_worker_api_error_setup( $errors ) {
-	$errors['invalid_access_token']  = __( 'The access token is invalid or has expired', 'wpdrift-worker' );
-	$errors['invalid_refresh_token'] = __( 'The refresh token is invalid or has expired', 'wpdrift-worker' );
-	$errors['invalid_credentials']   = __( 'Invalid user credentials', 'wpdrift-worker' );
-
-	return $errors;
-}
-
-add_filter( 'WO_API_Errors', 'wpdrift_worker_api_error_setup', 1 );
 
 /**
  * Default Method Filter for the resource server API calls
