@@ -405,7 +405,7 @@ class WPdrift_IO_Public {
 			'hit'     => $this->get_hit(),
 		];
 
-		wp_localize_script( $this->plugin_name, 'wpdrift_io', $localize_script_data );
+		wp_localize_script( $this->plugin_name, 'wpdrift_worker', $localize_script_data );
 	}
 
 }
