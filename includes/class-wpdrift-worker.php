@@ -126,7 +126,6 @@ class WPdrift_Worker {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/filters.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/actions.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/post-types.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/functions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/hooks.php';
 
@@ -215,6 +214,7 @@ class WPdrift_Worker {
 
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'incompatibility_with_wp_version' );
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'verifiy_authenticity_of_plugin_core' );
+		$this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
 
 	}
 
