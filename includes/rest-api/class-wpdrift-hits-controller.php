@@ -204,7 +204,7 @@ class WPdrift_Hits_Controller extends WP_REST_Controller {
 		 * [$date_query description]
 		 * @var WP_Date_Query
 		 */
-		$date_query = new WPdrift_Date_Query( $date_args, 'created_at' );
+		$date_query = new WPdrift_Worker_Date_Query( $date_args, 'created_at' );
 
 		/**
 		 * [$query_fields description]

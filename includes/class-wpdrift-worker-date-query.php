@@ -1,8 +1,8 @@
 <?php
 /**
- * [WPdrift_Date_Query description]
+ * [WPdrift_Worker_Date_Query description]
  */
-class WPdrift_Date_Query extends WP_Date_Query {
+class WPdrift_Worker_Date_Query extends WP_Date_Query {
 
 	/**
 	 * [validate_column description]
