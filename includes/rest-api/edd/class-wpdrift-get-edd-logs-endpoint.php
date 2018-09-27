@@ -1,6 +1,12 @@
 <?php
 /**
  * EDD_GetLogs_Endpoint class
+ *
+ * @category Edd
+ * @package  Edd
+ * @author   Rajendra Banker <bankerrajendra@upnrunn.com>
+ * @license  GNU
+ * @link     NA
  */
 
 defined('ABSPATH') || exit;
@@ -8,7 +14,12 @@ defined('ABSPATH') || exit;
 /**
  * EDD Logs endpoints.
  *
- * @since 1.0.0
+ * @category Edd
+ * @package  Edd
+ * @author   Rajendra Banker <bankerrajendra@upnrunn.com>
+ * @license  GNU
+ * @link     NA
+ * @since    1.0.0
  */
 class EDD_GetLogs_Endpoint extends WP_REST_Controller
 {
@@ -26,36 +37,45 @@ class EDD_GetLogs_Endpoint extends WP_REST_Controller
     /**
      * Register the component routes.
      *
-     * @since 1.0.0
+     * @since  1.0.0
+     * @return return
      */
-    public function register_routes()
+    public function registerRoutes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base, array(
+        register_rest_route(
+            $this->namespace, 
+            '/' . $this->rest_base, 
             array(
-                'methods'             => WP_REST_Server::READABLE,
-                'callback'            => array( $this, 'get_items' ),
-                'permission_callback' => array( $this, 'get_items_permissions_check' ),
-                'args'                => array(
+                array(
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => array( $this, 'getItems' ),
+                    'permission_callback' => array( 
+                                                $this, 
+                                                'getItemsPermissionsCheck' 
+                                            ),
+                    'args'                => array(
 
-                ),
+                    ),
+                )
             )
-        ));
+        );
     }
 
     /**
      * Get a collection of items
      *
      * @param WP_REST_Request $request Full data about the request.
+     *
      * @return WP_Error|WP_REST_Response
      */
-    public function get_items($request)
+    public function getItems($request)
     {
         $parameters = $request->get_params();
         $items = array();
-        $items['edd_logs'] = $this->retrieve_edd_logs($parameters);
+        $items['edd_logs'] = $this->retrieveEddLogs($parameters);
         $data = array();
         foreach ($items as $key => $item) {
-            $itemdata = $this->prepare_item_for_response($item, $request);
+            $itemdata = $this->prepareItemForResponse($item, $request);
             $data[$key] = $this->prepare_response_for_collection($itemdata);
         }
 
@@ -65,11 +85,12 @@ class EDD_GetLogs_Endpoint extends WP_REST_Controller
     /**
      * Prepare the item for the REST response
      *
-     * @param mixed $item WordPress representation of the item.
+     * @param mixed           $item    WordPress representation of the item.
      * @param WP_REST_Request $request Request object.
+     *
      * @return mixed
      */
-    public function prepare_item_for_response($item, $request)
+    public function prepareItemForResponse($item, $request)
     {
         return $item;
     }
@@ -78,20 +99,22 @@ class EDD_GetLogs_Endpoint extends WP_REST_Controller
      * Check if a given request has access to get items
      *
      * @param WP_REST_Request $request Full data about the request.
+     *
      * @return WP_Error|bool
      */
-    public function get_items_permissions_check($request)
+    public function getItemsPermissionsCheck($request)
     {
         return current_user_can('list_users');
     }
 
-
     /**
-    * Retrieve EDD Logs
-    *
-    * @since 1.0.0
-    */
-    public function retrieve_edd_logs($parameters)
+     * Retrieve EDD Logs
+     *
+     * @param string $parameters params
+     *
+     * @return Logs
+     */
+    public function retrieveEddLogs($parameters)
     {
         global $wpdb;
         $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
@@ -105,13 +128,13 @@ class EDD_GetLogs_Endpoint extends WP_REST_Controller
             'order'                  => 'ASC',
             );
 
-        if($task == "get_totals") {
-            $logs = new WP_Query( $args );
+        if ($task == "get_totals") {
+            $logs = new WP_Query($args);
             $edd_logs['found_posts'] = $logs->found_posts;
             $edd_logs['max_num_pages'] = $logs->max_num_pages;
         } else {
             $args['offset'] = $offset;
-            $edd_logs = get_posts( $args );
+            $edd_logs = get_posts($args);
         }
 
         return $edd_logs;

@@ -1,6 +1,12 @@
 <?php
 /**
  * EDD_GetCustomers_Metas_Endpoint class
+ *
+ * @category Edd
+ * @package  Edd
+ * @author   Rajendra Banker <bankerrajendra@upnrunn.com>
+ * @license  GNU
+ * @link     NA
  */
 
 defined('ABSPATH') || exit;
@@ -8,7 +14,12 @@ defined('ABSPATH') || exit;
 /**
  * EDD Get Customers Meta endpoints.
  *
- * @since 1.0.0
+ * @category Edd
+ * @package  Edd
+ * @author   Rajendra Banker <bankerrajendra@upnrunn.com>
+ * @license  GNU
+ * @link     NA
+ * @since    1.0.0
  */
 class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
 {
@@ -26,36 +37,44 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
     /**
      * Register the component routes.
      *
-     * @since 1.0.0
+     * @since  1.0.0
+     * @return return
      */
-    public function register_routes()
+    public function registerRoutes()
     {
-        register_rest_route($this->namespace, '/' . $this->rest_base, array(
-            array(
-                'methods'             => WP_REST_Server::READABLE,
-                'callback'            => array( $this, 'get_items' ),
-                'permission_callback' => array( $this, 'get_items_permissions_check' ),
-                'args'                => array(
+        register_rest_route(
+            $this->namespace, '/' . $this->rest_base, array(
+                array(
+                    'methods'             => WP_REST_Server::READABLE,
+                    'callback'            => array( $this, 'getItems' ),
+                    'permission_callback' => array( 
+                                                $this, 
+                                                'getItemsPermissionsCheck'
+                                            ),
+                    'args'                => array(
 
-                ),
+                    ),
+                )
             )
-        ));
+        );
     }
 
     /**
      * Get a collection of items
      *
      * @param WP_REST_Request $request Full data about the request.
+     *
      * @return WP_Error|WP_REST_Response
      */
-    public function get_items($request)
+    public function getItems($request)
     {
         $parameters = $request->get_params();
         $items = array();
-        $items['edd_customers_metas'] = $this->retrieve_edd_customers_metas($parameters);
+        $items['edd_customers_metas'] 
+            = $this->retrieveEddCustomersMetas($parameters);
         $data = array();
         foreach ($items as $key => $item) {
-            $itemdata = $this->prepare_item_for_response($item, $request);
+            $itemdata = $this->prepareItemForResponse($item, $request);
             $data[$key] = $this->prepare_response_for_collection($itemdata);
         }
 
@@ -65,11 +84,12 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
     /**
      * Prepare the item for the REST response
      *
-     * @param mixed $item WordPress representation of the item.
+     * @param mixed           $item    WordPress representation of the item.
      * @param WP_REST_Request $request Request object.
+     *
      * @return mixed
      */
-    public function prepare_item_for_response($item, $request)
+    public function prepareItemForResponse($item, $request)
     {
         return $item;
     }
@@ -78,20 +98,22 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
      * Check if a given request has access to get items
      *
      * @param WP_REST_Request $request Full data about the request.
+     *
      * @return WP_Error|bool
      */
-    public function get_items_permissions_check($request)
+    public function getItemsPermissionsCheck($request)
     {
         return current_user_can('list_users');
     }
 
-
     /**
-    * Retrieve EDD Customers Meta
-    *
-    * @since 1.0.0
-    */
-    public function retrieve_edd_customers_metas($parameters)
+     * Retrieve EDD Customers Meta
+     *
+     * @param string $parameters parameters.
+     *
+     * @return WP_Error|bool
+     */
+    public function retrieveEddCustomersMetas($parameters)
     {
         global $wpdb;
         $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
@@ -99,15 +121,29 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
         $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
         $post_id = trim($parameters['id']) != "" ? trim($parameters['id']) : "";
 
-        if($task == "get_totals") {
-            $found_posts = $wpdb->get_var( "SELECT count(`meta_id`) FROM ".$wpdb->prefix."edd_customermeta" );
+        if ($task == "get_totals") {
+            $found_posts = $wpdb->get_var( 
+                "SELECT count(`meta_id`) FROM ".$wpdb->prefix."edd_customermeta" 
+            );
             $customers_metas['found_posts'] = $found_posts;
             $max_num_pages = ceil($found_posts / $posts_per_page);
             $customers_metas['max_num_pages'] = $max_num_pages;
-        } else if($task == "get_single") {
-            $customers_metas = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."edd_customermeta WHERE customer_id = %d", $post_id ));
+        } else if ($task == "get_single") {
+            $customers_metas = $wpdb->get_results( 
+                $wpdb->prepare(
+                    "SELECT * FROM 
+                    ".$wpdb->prefix."edd_customermeta 
+                    WHERE customer_id = %d", $post_id
+                )
+            );
         } else {
-            $customers_metas = $wpdb->get_results( $wpdb->prepare("SELECT * FROM ".$wpdb->prefix."edd_customermeta LIMIT %d,%d", $offset, $posts_per_page ));
+            $customers_metas = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM 
+                    ".$wpdb->prefix."edd_customermeta 
+                    LIMIT %d,%d", $offset, $posts_per_page 
+                )
+            );
         }
         return $customers_metas;
     }
