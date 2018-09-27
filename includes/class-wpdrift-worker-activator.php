@@ -70,7 +70,7 @@ class WPdrift_IO_Activator {
 	public function setup() {
 		$options = get_option( 'wpdrift_worker_options' );
 		if ( ! isset( $options['enabled'] ) ) {
-			update_option( 'wpdrift_worker_options', _WPDW()->defualt_settings );
+			update_option( 'wpdrift_worker_options', _wpdw()->defualt_settings );
 		}
 	}
 

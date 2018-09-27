@@ -28,7 +28,7 @@ use DeviceDetector\Parser\Device\DeviceParserAbstract;
  * @subpackage WPdrift_IO/public
  * @author     Your Name <email@example.com>
  */
-class WPdrift_IO_Public {
+class WPdrift_Worker_Public {
 
 	/**
 	 * The ID of this plugin.

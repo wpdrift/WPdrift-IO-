@@ -228,7 +228,7 @@ class WPdrift_Worker {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new WPdrift_IO_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new WPdrift_Worker_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp', $plugin_public, 'record_hit' );
 		$this->loader->add_action( 'wp_ajax_wpdrift_worker_record_click', $plugin_public, 'record_click' );
@@ -385,11 +385,9 @@ class WPdrift_Worker {
 
 }
 
-function _WPDW() {
+function _wpdw() {
 	return WPdrift_Worker::instance();
 }
-
-$GLOBAL['WPDW'] = _WPDW();
 
 /**
  * Detect EDD plugin. Then add edd webhooks

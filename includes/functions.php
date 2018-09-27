@@ -266,7 +266,7 @@ function wpdrift_worker_get_algorithm() {
  * @return [type]      [description]
  */
 function wpdrift_worker_setting( $key = null ) {
-	$default_settings = _WPDW()->defualt_settings;
+	$default_settings = _wpdw()->defualt_settings;
 	$settings         = get_option( 'wpdrift_worker_options' );
 	$settings         = array_merge($default_settings, array_filter( $settings, function ( $value ) {
 		return '' !== $value;
@@ -303,7 +303,7 @@ function wpdrift_worker_is_core_valid() {
  * @todo Need to make this more extendable by using __return_false
  */
 function wpdrift_worker_is_dev() {
-	return _WPDW()->env == 'development' ? true : false;
+	return _wpdw()->env == 'development' ? true : false;
 }
 
 /**

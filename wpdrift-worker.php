@@ -69,7 +69,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-wpdrift-worker.php';
  * @since    1.0.0
  */
 function run_wpdrift_worker() {
-	_WPDW()->run();
+	_wpdw()->run();
 }
 
 run_wpdrift_worker();

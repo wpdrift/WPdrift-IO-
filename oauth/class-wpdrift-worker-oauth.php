@@ -41,7 +41,7 @@ class WPdrift_Worker_Oauth {
 			OAuth2\Autoloader::register();
 
 			$settings         = get_option( 'wpdrift_worker_options' );
-			$default_settings = _WPDW()->defualt_settings;
+			$default_settings = _wpdw()->defualt_settings;
 
 			if ( 0 == wpdrift_worker_setting( 'enabled' ) ) {
 				do_action( 'wpdrift_worker_before_unavailable_error' );
