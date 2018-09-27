@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WPdrift IO - Worker 1.0.0\n"
 "Report-Msgid-Bugs-To: https://github.com/wpdrift/WPdrift-IO/issues\n"
-"POT-Creation-Date: 2018-09-14 06:31:30+00:00\n"
+"POT-Creation-Date: 2018-09-27 10:52:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,60 +23,48 @@ msgstr ""
 msgid "Update Now"
 msgstr ""
 
-#: includes/filters.php:7
-msgid "The access token is invalid or has expired"
-msgstr ""
-
-#: includes/filters.php:8
-msgid "The refresh token is invalid or has expired"
-msgstr ""
-
-#: includes/filters.php:9
-msgid "Invalid user credentials"
-msgstr ""
-
-#: includes/filters.php:108
-msgid "Session destroyed successfully"
-msgstr ""
-
-#: includes/post-types.php:14
+#: admin/class-wpdrift-worker-admin.php:115
 msgid "Add New BoClientok"
 msgstr ""
 
-#: includes/post-types.php:15
+#: admin/class-wpdrift-worker-admin.php:116
 msgid "New Client"
 msgstr ""
 
-#: includes/post-types.php:16
+#: admin/class-wpdrift-worker-admin.php:117
 msgid "Edit Client"
 msgstr ""
 
-#: includes/post-types.php:17
+#: admin/class-wpdrift-worker-admin.php:118
 msgid "View Client"
 msgstr ""
 
-#: includes/post-types.php:18
+#: admin/class-wpdrift-worker-admin.php:119
 msgid "All Clients"
 msgstr ""
 
-#: includes/post-types.php:19
+#: admin/class-wpdrift-worker-admin.php:120
 msgid "Search Clients"
 msgstr ""
 
-#: includes/post-types.php:20
+#: admin/class-wpdrift-worker-admin.php:121
 msgid "Parent Clients:"
 msgstr ""
 
-#: includes/post-types.php:21
+#: admin/class-wpdrift-worker-admin.php:122
 msgid "No clients found."
 msgstr ""
 
-#: includes/post-types.php:22
+#: admin/class-wpdrift-worker-admin.php:123
 msgid "No clients found in Trash."
 msgstr ""
 
-#: includes/post-types.php:27
+#: admin/class-wpdrift-worker-admin.php:128
 msgid "Description."
+msgstr ""
+
+#: includes/filters.php:95
+msgid "Session destroyed successfully"
 msgstr ""
 
 #: includes/rest-api/class-wpdrift-clients-controller.php:68
@@ -138,7 +126,7 @@ msgstr ""
 msgid "plugin core is not authenticate"
 msgstr ""
 
-#: oauth/class-wpdrift-worker-oauth.php:391
+#: oauth/class-wpdrift-worker-oauth.php:379
 msgid "unknown request"
 msgstr ""
 
@@ -168,27 +156,27 @@ msgstr ""
 msgid "https://wpdrift.com/"
 msgstr ""
 
-#: includes/post-types.php:9
+#: admin/class-wpdrift-worker-admin.php:110
 msgctxt "post type general name"
 msgid "Client"
 msgstr ""
 
-#: includes/post-types.php:10
+#: admin/class-wpdrift-worker-admin.php:111
 msgctxt "post type singular name"
 msgid "Client"
 msgstr ""
 
-#: includes/post-types.php:11
+#: admin/class-wpdrift-worker-admin.php:112
 msgctxt "admin menu"
 msgid "Clients"
 msgstr ""
 
-#: includes/post-types.php:12
+#: admin/class-wpdrift-worker-admin.php:113
 msgctxt "add new on admin bar"
 msgid "Client"
 msgstr ""
 
-#: includes/post-types.php:13
+#: admin/class-wpdrift-worker-admin.php:114
 msgctxt "Client"
 msgid "Add New"
 msgstr ""

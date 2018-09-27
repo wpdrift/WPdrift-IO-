@@ -149,6 +149,18 @@ class WPdrift_Worker_Api {
 			require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/edd-end-points.php' );
 		}
 
+		/**
+		 * Detect EDD plugin. Then add edd webhooks
+		 */
+		if ( in_array( 'easy-digital-downloads/easy-digital-downloads.php', (array) get_option( 'active_plugins', array() ) ) ) {
+			/**
+			 * EDD Web Hooks for wpdrift, so that whenever any records added/updated/deleted then
+			 * intimation go to app site.
+			 * @var [type]
+			 */
+			require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-edd-webhooks.php' );
+		}
+
 	}
 
 }

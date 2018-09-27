@@ -124,7 +124,6 @@ class WPdrift_Worker {
 		 * [require_once description]
 		 * @var [type]
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/filters.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/functions.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/hooks.php';
 
@@ -171,7 +170,7 @@ class WPdrift_Worker {
 		 * [require_once description]
 		 * @var [type]
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-date-query.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wpdrift-worker-date-query.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the api-facing
@@ -250,8 +249,9 @@ class WPdrift_Worker {
 		$plugin_oauth = new WPdrift_Worker_Oauth( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'init', $plugin_oauth, 'server_register_query_vars' );
-		$this->loader->add_filter( 'template_include', $plugin_oauth, 'server_template_redirect_intercept', 100 );
 		$this->loader->add_action( 'wpdrift_worker_set_access_token', $plugin_oauth, 'only_allow_one_access_token' );
+		$this->loader->add_filter( 'template_include', $plugin_oauth, 'server_template_redirect_intercept', 100 );
+		$this->loader->add_filter( 'wpdrift_worker_endpoints', $plugin_oauth, 'server_default_endpoints', 1 );
 
 	}
 
@@ -387,16 +387,4 @@ class WPdrift_Worker {
 
 function _wpdw() {
 	return WPdrift_Worker::instance();
-}
-
-/**
- * Detect EDD plugin. Then add edd webhooks
- */
-if ( in_array( 'easy-digital-downloads/easy-digital-downloads.php', (array) get_option( 'active_plugins', array() ) ) ) {
-	/**
-	 * EDD Web Hooks for wpdrift, so that whenever any records added/updated/deleted then
-	 * intimation go to app site.
-	 * @var [type]
-	 */
-	require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-edd-webhooks.php' );
 }

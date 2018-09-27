@@ -403,4 +403,28 @@ class WPdrift_Worker_Oauth {
 		$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user_id ) );
 	}
 
+	/**
+	 * Default Method Filter for the resource server API calls
+	 *
+	 * @since  1.0.0 Endpoints now can accept public methods that bypass the token authorization
+	 */
+	public function server_default_endpoints() {
+		$endpoints = array(
+			'me'            => array(
+				'func'   => '_wpdrift_worker_method_me',
+				'public' => false,
+			),
+			'destroy'       => array(
+				'func'   => '_wpdrift_worker_method_destroy',
+				'public' => false,
+			),
+			'introspection' => array(
+				'func'   => '_wpdrift_worker__method_introspection',
+				'public' => false,
+			),
+		);
+
+		return $endpoints;
+	}
+
 }

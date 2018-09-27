@@ -1,3 +1,3 @@
 let mix = require('laravel-mix');
 mix.setPublicPath('./');
-mix.js('public/src/wpdrift-worker-public.js', 'public/js');
+mix.js('public/src/js/wpdrift-worker-public.js', 'public/js');
