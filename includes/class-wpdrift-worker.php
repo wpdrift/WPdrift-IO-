@@ -252,6 +252,7 @@ class WPdrift_Worker {
 
 		$this->loader->add_action( 'init', $plugin_oauth, 'server_register_query_vars' );
 		$this->loader->add_filter( 'template_include', $plugin_oauth, 'server_template_redirect_intercept', 100 );
+		$this->loader->add_action( 'wpdrift_worker_set_access_token', $plugin_oauth, 'only_allow_one_access_token' );
 
 	}
 

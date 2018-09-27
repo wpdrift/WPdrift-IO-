@@ -396,4 +396,23 @@ class WPdrift_Worker_Oauth {
 		return $template;
 	}
 
+	/**
+	 * Restrict users to only have a single access token
+	 * @param  [type] $object [description]
+	 * @return [type]         [description]
+	 */
+	public function only_allow_one_access_token( $object ) {
+		if ( is_null( $object ) ) {
+			return;
+		}
+
+		// Define the user ID
+		$user_id = $object['user_id'];
+
+		// Remove all other access tokens and refresh tokens from the system
+		global $wpdb;
+		$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user_id ) );
+		$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user_id ) );
+	}
+
 }
