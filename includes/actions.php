@@ -10,43 +10,6 @@
 error_reporting( 0 );
 
 /**
- * Invalidate any token and refresh tokens during password reset
- *
- * @param  object $user WP_User Object
- * @param  String $new_pass New Password
- *
- * @return Void
- *
- * @since 1.0.0
- */
-function wpdrift_worker_password_reset_action( $user, $new_pass ) {
-	global $wpdb;
-	$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user->ID ) );
-	$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user->ID ) );
-}
-
-add_action( 'password_reset', 'wpdrift_worker_password_reset_action', 10, 2 );
-
-/**
- * [wpdrift_worker_profile_update_action description]
- *
- * @param  int $user_id WP User ID
- *
- * @return Void
- */
-function wpdrift_worker_profile_update_action( $user_id ) {
-	if ( ! isset( $_POST['pass1'] ) || '' == $_POST['pass1'] ) {
-		return;
-	}
-
-	global $wpdb;
-	$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user_id ) );
-	$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user_id ) );
-}
-
-add_action( 'profile_update', 'wpdrift_worker_profile_update_action' );
-
-/**
  * Only allow 1 acces_token at a time
  *
  * @param  [type] $results [description]

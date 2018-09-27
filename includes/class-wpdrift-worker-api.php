@@ -46,6 +46,42 @@ class WPdrift_Worker_Api {
 	}
 
 	/**
+	 * Adds OAuth2 to the WP-JSON index
+	 *
+	 * @param $response_object
+	 *
+	 * @return mixed
+	 */
+	public function register_server_routes( $response_object ) {
+
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( empty( $response_object->data['authentication'] ) ) {
+			$response_object->data['authentication'] = [];
+		}
+
+		/**
+		 * [$response_object->data description]
+		 * @var [type]
+		 */
+		$response_object->data['authentication']['oauth2'] = [
+			'authorize' => site_url( 'oauth/authorize' ),
+			'token'     => site_url( 'oauth/token' ),
+			'me'        => site_url( 'oauth/me' ),
+			'version'   => '2.0',
+			'software'  => 'WPdrift IO - Worker',
+		];
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return $response_object;
+	}
+
+	/**
 	 * Function to register our new routes from the controller.
 	 * @return [type] [description]
 	 */

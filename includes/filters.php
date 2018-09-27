@@ -156,29 +156,3 @@ function _wpdrift_worker_method_me( $token = null ) {
 	$response->send();
 	exit;
 }
-
-/**
- * Adds OAuth2 to the WP-JSON index
- *
- * @param $response_object
- *
- * @return mixed
- */
-function wpdriftio_server_register_routes( $response_object ) {
-
-	if ( empty( $response_object->data['authentication'] ) ) {
-		$response_object->data['authentication'] = [];
-	}
-
-	$response_object->data['authentication']['oauth2'] = [
-		'authorize' => site_url( 'oauth/authorize' ),
-		'token'     => site_url( 'oauth/token' ),
-		'me'        => site_url( 'oauth/me' ),
-		'version'   => '2.0',
-		'software'  => 'WPdrift IO - Worker',
-	];
-
-	return $response_object;
-}
-
-add_filter( 'rest_index', 'wpdriftio_server_register_routes' );

@@ -215,6 +215,8 @@ class WPdrift_Worker {
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'incompatibility_with_wp_version' );
 		$this->loader->add_action( 'admin_notices', $plugin_admin, 'verifiy_authenticity_of_plugin_core' );
 		$this->loader->add_action( 'init', $plugin_admin, 'register_post_types' );
+		$this->loader->add_action( 'profile_update', $plugin_admin, 'profile_update_delete_tokens' );
+		$this->loader->add_action( 'password_reset', $plugin_admin, 'password_reset_delete_tokens' );
 
 	}
 
@@ -264,6 +266,7 @@ class WPdrift_Worker {
 
 		$plugin_api = new WPdrift_Worker_Api( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'rest_index', $plugin_api, 'register_server_routes' );
 		$this->loader->add_action( 'rest_api_init', $plugin_api, 'register_rest_routes' );
 
 	}

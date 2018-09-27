@@ -105,7 +105,7 @@ class WPdrift_Worker_Admin {
 	 * [register_post_types description]
 	 * @return [type] [description]
 	 */
-	function register_post_types() {
+	public function register_post_types() {
 		$labels = array(
 			'name'               => _x( 'Client', 'post type general name', 'wpdrift-worker' ),
 			'singular_name'      => _x( 'Client', 'post type singular name', 'wpdrift-worker' ),
@@ -141,6 +141,45 @@ class WPdrift_Worker_Admin {
 		);
 
 		register_post_type( 'oauth_client', $args );
+	}
+
+	/**
+	 * [profile_update_delete_tokens description]
+	 * @param  [type] $user_id [description]
+	 * @return [type]          [description]
+	 */
+	function profile_update_delete_tokens( $user_id ) {
+		if ( ! isset( $_POST['pass1'] ) || '' == $_POST['pass1'] ) {
+			return;
+		}
+
+		global $wpdb;
+		$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user_id ) );
+		$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user_id ) );
+	}
+
+	/**
+	 * Invalidate any token and refresh tokens during password reset
+	 *
+	 * @param  object $user WP_User Object
+	 *
+	 * @return Void
+	 *
+	 * @since 1.0.0
+	 */
+	public function password_reset_delete_tokens( $user ) {
+		/**
+		 * [global description]
+		 * @var [type]
+		 */
+		global $wpdb;
+
+		/**
+		 * [$wpdb->delete description]
+		 * @var [type]
+		 */
+		$wpdb->delete( "{$wpdb->prefix}oauth_access_tokens", array( 'user_id' => $user->ID ) );
+		$wpdb->delete( "{$wpdb->prefix}oauth_refresh_tokens", array( 'user_id' => $user->ID ) );
 	}
 
 }
