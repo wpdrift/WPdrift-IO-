@@ -195,21 +195,15 @@ class WPdrift_Worker_Oauth {
 				 * @since 1.0.0
 				 */
 				if ( ! isset( $_REQUEST['ignore_prompt'] ) ) {
-
 					if ( isset( $_REQUEST['prompt'] ) ) {
-
 						$prompt = isset( $_REQUEST['prompt'] ) ? $_REQUEST['prompt'] : 'consent';
 
-						if ( $prompt == 'none' ) {
-
+						if ( 'none' == $prompt ) {
 							$is_authorized = false;
-
-						} elseif ( $prompt == 'login' ) {
-
+						} elseif ( 'login' == $prompt ) {
 							wp_logout();
 							wp_redirect( site_url( add_query_arg( array( 'ignore_prompt' => '' ) ) ) );
 							exit;
-
 						}
 					}
 				}
@@ -231,7 +225,7 @@ class WPdrift_Worker_Oauth {
 
 					$grant_status = get_user_meta( $current_user, 'wpdrift_worker_grant_' . $_REQUEST['client_id'], true );
 
-					if ( $grant_status == '' || $prompt == 'consent' ) {
+					if ( '' == $grant_status || 'consent' == $prompt ) {
 
 						// @todo Add documenation for this feature
 						$request_template = dirname( __FILE__ ) . '/templates/grant-request.php';
@@ -241,11 +235,11 @@ class WPdrift_Worker_Oauth {
 
 						include $request_template;
 						exit;
-					} elseif ( $grant_status == 'allow' ) {
+					} elseif ( 'allow' == $grant_status ) {
 
 						$is_authorized = true;
 
-					} elseif ( $grant_status == 'deny' ) {
+					} elseif ( 'deny' == $grant_status ) {
 
 						$is_authorized = false;
 
@@ -298,26 +292,20 @@ class WPdrift_Worker_Oauth {
 			*/
 			if ( 'openid-configuration' == $well_known ) {
 				$openid_discovery_values = array(
-					'issuer'                                => home_url( null, 'https' ),
-					'authorization_endpoint'                => home_url( '/oauth/authorize/' ),
-					'token_endpoint'                        => home_url( '/oauth/token/' ),
-					'userinfo_endpoint'                     => home_url( '/oauth/me/' ),
-					'jwks_uri'                              => home_url( '/.well-known/keys' ),
-					'response_types_supported'              => array(
+					'issuer'                   => home_url( null, 'https' ),
+					'authorization_endpoint'   => home_url( '/oauth/authorize/' ),
+					'token_endpoint'           => home_url( '/oauth/token/' ),
+					'userinfo_endpoint'        => home_url( '/oauth/me/' ),
+					'jwks_uri'                 => home_url( '/.well-known/keys' ),
+					'response_types_supported' => array(
 						'code',
 						'id_token',
 						'token id_token',
-						'code id_token'
+						'code id_token',
 					),
-					'subject_types_supported'               => array(
-						'public'
-					),
-					'id_token_signing_alg_values_supported' => array(
-						'RS256'
-					),
-					'token_endpoint_auth_methods_supported' => array(
-						'client_secret_basic'
-					)
+					'subject_types_supported'  => array( 'public' ),
+					'id_token_signing_alg_values_supported' => array( 'RS256' ),
+					'token_endpoint_auth_methods_supported' => array( 'client_secret_basic' ),
 				);
 
 				$openid_discovery_configuration = apply_filters( 'wpdrift_worker_openid_discovery', $openid_discovery_values );
