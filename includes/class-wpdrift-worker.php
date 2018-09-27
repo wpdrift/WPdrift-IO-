@@ -121,13 +121,6 @@ class WPdrift_Worker {
 	private function load_dependencies() {
 
 		/**
-		 * [require_once description]
-		 * @var [type]
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/functions.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/hooks.php';
-
-		/**
 		 * Load dependecies managed by composer.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
@@ -136,6 +129,13 @@ class WPdrift_Worker {
 		 * Setup eloquent db connection
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
+
+		/**
+		 * [require_once description]
+		 * @var [type]
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/functions.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . '/includes/rest-api/functions.php';
 
 		/**
 		 * The class responsible for orchestrating the actions and filters of the
@@ -268,6 +268,10 @@ class WPdrift_Worker {
 
 		$this->loader->add_action( 'rest_index', $plugin_api, 'register_server_routes' );
 		$this->loader->add_action( 'rest_api_init', $plugin_api, 'register_rest_routes' );
+		$this->loader->add_action( 'rest_api_init', $plugin_api, 'user_meta_fields' );
+
+		$this->loader->add_filter( 'rest_user_collection_params', $plugin_api, 'rest_user_collection_params' );
+		$this->loader->add_filter( 'rest_user_query', $plugin_api, 'rest_user_query', 10, 2 );
 
 	}
 

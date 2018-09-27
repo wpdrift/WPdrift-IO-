@@ -163,4 +163,97 @@ class WPdrift_Worker_Api {
 
 	}
 
+	/**
+	 * [rest_user_collection_params description]
+	 * @param  [type] $query_params [description]
+	 * @return [type]               [description]
+	 */
+	public function rest_user_collection_params( $query_params ) {
+		$query_params['after'] = array(
+			'description' => __( 'Limit response to users registered after a given ISO8601 compliant date.' ),
+			'type'        => 'string',
+			'format'      => 'date-time',
+		);
+
+		$query_params['before'] = array(
+			'description' => __( 'Limit response to users registered before a given ISO8601 compliant date.' ),
+			'type'        => 'string',
+			'format'      => 'date-time',
+		);
+
+		return $query_params;
+	}
+
+	/**
+	 * [rest_user_query description]
+	 * @param  [type] $prepared_args [description]
+	 * @param  [type] $request       [description]
+	 * @return [type]                [description]
+	 */
+	public function rest_user_query( $prepared_args, $request ) {
+		$prepared_args['date_query'] = array();
+
+		if ( isset( $request['before'] ) ) {
+			$prepared_args['date_query'][0]['before'] = $request['before'];
+		}
+
+		if ( isset( $request['after'] ) ) {
+			$prepared_args['date_query'][0]['after'] = $request['after'];
+		}
+
+		return $prepared_args;
+	}
+
+	/**
+	 * [user_meta_fields description]
+	 * @return [type] [description]
+	 */
+	public function user_meta_fields() {
+		register_rest_field(
+			'user',
+			'ip_data',
+			array(
+				'get_callback' => 'wpdrift_worker_get_user_ip_location_data',
+				'schema'       => null,
+			)
+		);
+
+		register_rest_field(
+			'user',
+			'last_login',
+			array(
+				'get_callback' => 'wpdrift_worker_get_user_last_login',
+				'schema'       => null,
+			)
+		);
+
+		register_rest_field(
+			'user',
+			'has_avatar',
+			array(
+				'get_callback' => 'wpdrift_worker_get_check_user_avatar',
+				'schema'       => null,
+			)
+		);
+
+		// user registered date formatted
+		register_rest_field(
+			'user',
+			'joined_date',
+			array(
+				'get_callback' => 'wpdrift_worker_get_user_joined_date',
+				'schema'       => null,
+			)
+		);
+		// user total comments, posts, pages count
+		register_rest_field(
+			'user',
+			'posted_content_count',
+			array(
+				'get_callback' => 'wpdrift_worker_get_user_posted_content_count',
+				'schema'       => null,
+			)
+		);
+	}
+
 }
