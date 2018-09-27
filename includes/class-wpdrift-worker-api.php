@@ -8,7 +8,7 @@
  *
  * @package    WPdrift_Worker
  * @subpackage WPdrift_Worker/includes
- * @author     WPdrift <kishore@upnrunn.com>
+ * @author     Support HQ <support@upnrunn.com>
  */
 
 class WPdrift_Worker_Api {

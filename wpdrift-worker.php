@@ -8,7 +8,7 @@
  * Author URI: https://wpdrift.com/
  * Text Domain: wpdrift-worker
  *
- * @author  WPdrift <kishore@upnrunn.com>
+ * @author  Support HQ <support@upnrunn.com>
  * @package WPdrift Worker
  */
 

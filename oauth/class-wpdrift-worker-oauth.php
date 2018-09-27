@@ -6,7 +6,7 @@
  * @since      1.0.0
  * @package    WPdrift_Worker
  * @subpackage WPdrift_Worker/oauth
- * @author     WPdrift <kishore@upnrunn.com>
+ * @author     Support HQ <support@upnrunn.com>
  */
 
 /**

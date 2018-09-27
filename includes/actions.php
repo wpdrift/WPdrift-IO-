@@ -2,12 +2,12 @@
 /**
  * WPdrift Worker actions
  *
- * @author  WPdrift <kishore@upnrunn.com>
+ * @author  Support HQ <support@upnrunn.com>
  * @package WPdrift Worker
  */
 
 // hide all error on api response
-error_reporting(0);
+error_reporting( 0 );
 
 /**
  * Invalidate any token and refresh tokens during password reset
