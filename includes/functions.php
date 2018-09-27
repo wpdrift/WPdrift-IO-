@@ -9,9 +9,7 @@
  * manipulation.
  */
 
-// phpinfo();
-
-defined('ABSPATH') or die('No script kiddies please!');
+defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
 /**
  * Registers rewrites for OAuth2 Server
@@ -36,26 +34,25 @@ function wpdrift_worker_server_register_rewrites() {
  *
  * @todo Add role and permissions check
  */
-function wpdrift_worker_insert_client($client_data = null)
-{
+function wpdrift_worker_insert_client( $client_data = null ) {
 
 	// @todo Look into changing capabilities to create_clients after proper mapping has been done
-	if (! current_user_can('manage_options') || is_null($client_data) || has_a_client()) {
-		exit('Not Allowed');
+	if ( ! current_user_can( 'manage_options' ) || is_null( $client_data ) || has_a_client() ) {
+		exit( 'Not Allowed' );
 
 		return false;
 	}
 
-	do_action('wpdrift_worker_before_create_client', array( $client_data ));
+	do_action( 'wpdrift_worker_before_create_client', array( $client_data ) );
 
 	// Generate the keys
 	$client_id     = wpdrift_worker_gen_key();
 	$client_secret = wpdrift_worker_gen_key();
 
-	$grant_types = isset($client_data['grant_types']) ? $client_data['grant_types'] : array();
+	$grant_types = isset( $client_data['grant_types'] ) ? $client_data['grant_types'] : array();
 
 	$client = array(
-		'post_title'     => wp_strip_all_tags($client_data['name']),
+		'post_title'     => wp_strip_all_tags( $client_data['name'] ),
 		'post_status'    => 'publish',
 		'post_author'    => get_current_user_id(),
 		'post_type'      => 'oauth_client',
@@ -66,17 +63,20 @@ function wpdrift_worker_insert_client($client_data = null)
 			'grant_types'   => $grant_types,
 			'redirect_uri'  => $client_data['redirect_uri'],
 			'user_id'       => $client_data['user_id'],
-			'scope'         => $client_data['scope']
-		)
-
+			'scope'         => $client_data['scope'],
+		),
 	);
 
 	// Insert the post into the database
-	$client_insert = wp_insert_post($client);
-	if (is_wp_error($client_insert)) {
-		exit($client_insert->get_error_message());
+	$client_insert = wp_insert_post( $client );
+	if ( is_wp_error( $client_insert ) ) {
+		exit( $client_insert->get_error_message() );
 	}
 
+	/**
+	 * [return description]
+	 * @var [type]
+	 */
 	return $client_insert;
 }
 
@@ -87,25 +87,25 @@ function wpdrift_worker_insert_client($client_data = null)
  *
  * @return false|int|void
  */
-function wpdrift_worker_update_client($client = null)
-{
-	if (is_null($client)) {
+function wpdrift_worker_update_client( $client = null ) {
+	if ( is_null( $client ) ) {
 		return;
 	}
 
 	$client_data = array(
 		'ID'         => $client['edit_client'],
-		'post_title' => $client['name']
+		'post_title' => $client['name'],
 	);
-	wp_update_post($client_data, true);
 
-	$grant_types = isset($client['grant_types']) ? $client['grant_types'] : array();
-	update_post_meta($client['edit_client'], 'client_id', $client['client_id']);
-	update_post_meta($client['edit_client'], 'client_secret', $client['client_secret']);
-	update_post_meta($client['edit_client'], 'grant_types', $grant_types);
-	update_post_meta($client['edit_client'], 'redirect_uri', $client['redirect_uri']);
-	update_post_meta($client['edit_client'], 'user_id', $client['user_id']);
-	update_post_meta($client['edit_client'], 'scope', $client['scope']);
+	wp_update_post( $client_data, true );
+
+	$grant_types = isset( $client['grant_types'] ) ? $client['grant_types'] : array();
+	update_post_meta( $client['edit_client'], 'client_id', $client['client_id'] );
+	update_post_meta( $client['edit_client'], 'client_secret', $client['client_secret'] );
+	update_post_meta( $client['edit_client'], 'grant_types', $grant_types );
+	update_post_meta( $client['edit_client'], 'redirect_uri', $client['redirect_uri'] );
+	update_post_meta( $client['edit_client'], 'user_id', $client['user_id'] );
+	update_post_meta( $client['edit_client'], 'scope', $client['scope'] );
 }
 
 /**
@@ -113,8 +113,7 @@ function wpdrift_worker_update_client($client = null)
  *
  * @param $client_id
  */
-function get_client_by_client_id($client_id)
-{
+function get_client_by_client_id( $client_id ) {
 	$query   = new \WP_Query();
 	$clients = $query->query(array(
 		'post_type'   => 'oauth_client',
@@ -123,18 +122,22 @@ function get_client_by_client_id($client_id)
 			array(
 				'key'   => 'client_id',
 				'value' => $client_id,
-			)
+			),
 		),
 	));
 
-	if ($clients) {
+	/**
+	 * [if description]
+	 * @var [type]
+	 */
+	if ( $clients ) {
 		$client                = $clients[0];
-		$client->client_secret = get_post_meta($client->ID, 'client_secret', true);
-		$client->redirect_uri  = get_post_meta($client->ID, 'redirect_uri', true);
-		$client->grant_types   = get_post_meta($client->ID, 'grant_types', true);
-		$client->user_id       = get_post_meta($client->ID, 'user_id', true);
-		$client->scope         = get_post_meta($client->ID, 'scope', true);
-		$client->meta          = get_post_meta($client->ID);
+		$client->client_secret = get_post_meta( $client->ID, 'client_secret', true );
+		$client->redirect_uri  = get_post_meta( $client->ID, 'redirect_uri', true );
+		$client->grant_types   = get_post_meta( $client->ID, 'grant_types', true );
+		$client->user_id       = get_post_meta( $client->ID, 'user_id', true );
+		$client->scope         = get_post_meta( $client->ID, 'scope', true );
+		$client->meta          = get_post_meta( $client->ID );
 
 		return (array) $client;
 	}
@@ -147,22 +150,20 @@ function get_client_by_client_id($client_id)
  *
  * @return array|null|object|void
  */
-function wpdrift_worker_get_client($id = null)
-{
-	if (is_null($id)) {
+function wpdrift_worker_get_client( $id = null ) {
+	if ( is_null( $id ) ) {
 		return;
 	}
 
 	global $wpdb;
-	$prep = $wpdb->prepare("SELECT * FROM {$wpdb->prefix}posts WHERE ID = %s", array( $id ));
 
-	$client = $wpdb->get_row($prep);
-	if (! $client) {
+	$client = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}posts WHERE ID = %s", array( $id ) ) );
+	if ( ! $client ) {
 		return false;
 	}
 
-	$client->grant_types = maybe_unserialize(get_post_meta($client->ID, 'grant_types', true));
-	$client->user_id     = get_post_meta($client->ID, 'user_id', true);
+	$client->grant_types = maybe_unserialize( get_post_meta( $client->ID, 'grant_types', true ) );
+	$client->user_id     = get_post_meta( $client->ID, 'user_id', true );
 
 	return $client;
 }
@@ -173,33 +174,31 @@ function wpdrift_worker_get_client($id = null)
  *
  * @todo Allow more characters to be added to the character list to provide complex keys
  */
-function wpdrift_worker_gen_key($length = 40)
-{
-
+function wpdrift_worker_gen_key( $length = 40 ) {
 	// Gather the settings
-	$user_defined_length = wpdrift_worker_setting('token_length');
+	$user_defined_length = wpdrift_worker_setting( 'token_length' );
 
 	/**
 	 * Temp Fix for https://github.com/justingreerbbi/wp-oauth-server/issues/3
 	 * @todo Remove this check on next standard release
 	 */
-	if ($user_defined_length > 255) {
+	if ( $user_defined_length > 255 ) {
 		$user_defined_length = 255;
 	}
 
 	// If user setting is larger than 0, then define it
-	if ($user_defined_length > 0) {
+	if ( $user_defined_length > 0 ) {
 		$length = $user_defined_length;
 	}
 
-	$characters   = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	$randomString = '';
+	$characters    = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$random_string = '';
 
-	for ($i = 0; $i < $length; $i ++) {
-		$randomString .= $characters[ rand(0, strlen($characters) - 1) ];
+	for ( $i = 0; $i < $length; $i ++ ) {
+		$random_string .= $characters[ rand( 0, strlen( $characters ) - 1 ) ];
 	}
 
-	return $randomString;
+	return $random_string;
 }
 
 /**
@@ -208,29 +207,28 @@ function wpdrift_worker_gen_key($length = 40)
  *
  * @todo Optimize query
  */
-function has_a_client()
-{
+function has_a_client() {
 	global $wpdb;
-	$count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'oauth_client'");
+	$count = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}posts WHERE post_type = 'oauth_client'" );
 
-	if (intval($count) >= 1) {
+	if ( intval( $count ) >= 1 ) {
 		return true;
 	}
 }
+
 
 /**
  * Return the private key for signing
  * @since 1.0.0
  * @return [type] [description]
  */
-function get_private_server_key()
-{
+function get_private_server_key() {
 	$keys = apply_filters('wpdrift_worker_server_keys', array(
 		'public'  => WOABSPATH . '/oauth/keys/public_key.pem',
 		'private' => WOABSPATH . '/oauth/keys/private_key.pem',
 	));
 
-	return file_get_contents($keys['private']);
+	return file_get_contents( $keys['private'] );
 }
 
 /**
@@ -238,14 +236,13 @@ function get_private_server_key()
  * @return [type] [description]
  * @since 1.0.0
  */
-function get_public_server_key()
-{
+function get_public_server_key() {
 	$keys = apply_filters('wpdrift_worker_server_keys', array(
 		'public'  => WOABSPATH . '/oauth/keys/public_key.pem',
 		'private' => WOABSPATH . '/oauth/keys/private_key.pem',
 	));
 
-	return file_get_contents($keys['public']);
+	return file_get_contents( $keys['public'] );
 }
 
 /**
@@ -257,8 +254,7 @@ function get_public_server_key()
  * @since 1.0.0
  * @return String Type of algorithm used for encoding and decoding.
  */
-function wpdrift_worker_get_algorithm()
-{
+function wpdrift_worker_get_algorithm() {
 	return 'RS256';
 }
 
@@ -269,19 +265,19 @@ function wpdrift_worker_get_algorithm()
  *
  * @return [type]      [description]
  */
-function wpdrift_worker_setting($key = null)
-{
+function wpdrift_worker_setting( $key = null ) {
 	$default_settings = _WPDW()->defualt_settings;
-	$settings         = get_option('wpdrift_worker_options');
-	$settings         = array_merge($default_settings, array_filter($settings, function ($value) {
-		return $value !== '';
+	$settings         = get_option( 'wpdrift_worker_options' );
+	$settings         = array_merge($default_settings, array_filter( $settings, function ( $value ) {
+		return '' !== $value;
 	}));
+
 	// No key is provided, let return the entire options table
-	if (is_null($key)) {
+	if ( is_null( $key ) ) {
 		return $settings;
 	}
 
-	if (! isset($settings[ $key ])) {
+	if ( ! isset( $settings[ $key ] ) ) {
 		return;
 	}
 
@@ -292,9 +288,8 @@ function wpdrift_worker_setting($key = null)
  * Returns if the core is valid
  * @return [type] [description]
  */
-function wpdrift_worker_is_core_valid()
-{
-	if (WPDRIFT_WORKER_CHECKSUM != strtoupper(md5_file(__FILE__))) {
+function wpdrift_worker_is_core_valid() {
+	if ( WPDRIFT_WORKER_CHECKSUM != strtoupper( md5_file( __FILE__ ) ) ) {
 		return false;
 	}
 
@@ -307,8 +302,7 @@ function wpdrift_worker_is_core_valid()
  *
  * @todo Need to make this more extendable by using __return_false
  */
-function wpdrift_worker_is_dev()
-{
+function wpdrift_worker_is_dev() {
 	return _WPDW()->env == 'development' ? true : false;
 }
 
@@ -344,7 +338,8 @@ function wpdrift_worker_public_get_access_token( $access_token, $return_type = A
 	}
 
 	global $wpdb;
-	$prepare_query = $wpdb->prepare(
+
+	$access_token = $wpdb->get_row( $wpdb->prepare(
 		"
 		SELECT *
 		FROM {$wpdb->prefix}oauth_access_tokens
@@ -352,9 +347,8 @@ function wpdrift_worker_public_get_access_token( $access_token, $return_type = A
 		LIMIT 1
 		",
 		array( $access_token )
-	);
+	), $return_type );
 
-	$access_token = $wpdb->get_row( $prepare_query, $return_type );
 	if ( $access_token ) {
 		$expires = strtotime( $access_token['expires'] );
 		if ( current_time( 'timestamp' ) > $expires ) {
@@ -406,17 +400,3 @@ function wpdrift_worker_public_insert_client( $client_data = null ) {
 
 	return $client_insert;
 }
-
-// print_r(wpdrift_worker_public_insert_client( array(
-// 	'name'         => __( 'Example', 'wpdrift-worker' ),
-// 	'user_id'      => 1,
-// 	'grant_types'  => array(
-// 		'authorization_code',
-// 		'implicit',
-// 		'password',
-// 		'client_credentials',
-// 		'refresh_token',
-// 	),
-// 	'scope'        => 'basic',
-// 	'redirect_uri' => 'http://localhost/php/files/cb.php',
-// )));
