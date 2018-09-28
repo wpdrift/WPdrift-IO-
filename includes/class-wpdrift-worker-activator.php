@@ -251,21 +251,25 @@ class WPdrift_IO_Activator {
 		 * @todo Add pure PHP library to handle openSSL functionality if the server does not support it.
 		 */
 		if ( function_exists( 'openssl_pkey_new' ) ) {
-			$res = openssl_pkey_new( array(
-				'private_key_bits' => 2048,
-				'private_key_type' => OPENSSL_KEYTYPE_RSA,
-			) );
-			openssl_pkey_export( $res, $privKey );
-			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/oauth/keys/private_key.pem', $privKey );
 
-			$pubKey = openssl_pkey_get_details( $res );
-			$pubKey = $pubKey['key'];
-			file_put_contents( dirname( WPDRIFT_WORKER_FILE ) . '/oauth/keys/public_key.pem', $pubKey );
+			if ( ! self::has_certificates() ) {
+				$res = openssl_pkey_new( array(
+					'private_key_bits' => 2048,
+					'private_key_type' => OPENSSL_KEYTYPE_RSA,
+				) );
+				openssl_pkey_export( $res, $privKey );
+				file_put_contents( WPDRIFT_WORKER_PATH . 'oauth/keys/private_key.pem', $privKey );
 
-			// Update plugin version
-			$plugin_data    = get_plugin_data( WPDRIFT_WORKER_FILE );
-			$plugin_version = $plugin_data['Version'];
-			update_option( 'wpdrift_helper_version', $plugin_version );
+				$pubKey = openssl_pkey_get_details( $res );
+				$pubKey = $pubKey['key'];
+				file_put_contents( WPDRIFT_WORKER_PATH . 'oauth/keys/public_key.pem', $pubKey );
+
+				// Update plugin version
+				$plugin_data    = get_plugin_data( WPDRIFT_WORKER_FILE );
+				$plugin_version = $plugin_data['Version'];
+				update_option( 'wpdrift_helper_version', $plugin_version );
+			}
+
 		}
 
 	}
@@ -281,64 +285,112 @@ class WPdrift_IO_Activator {
 		 */
 		global $wpdb;
 
-		Capsule::schema()->create( $wpdb->prefix . 'wpdriftio_hits', function( $table ) {
-			/**
-			 * [$table->increments description]
-			 * @var [type]
-			 */
-			$table->increments( 'id' );
-			$table->string( 'type' )->nullable();
+		/**
+		 * [$table description]
+		 * @var [type]
+		 */
+		$table = $wpdb->prefix . 'wpdriftio_hits';
 
-			/**
-			 * [$table->integer description]
-			 * @var [type]
-			 */
-			$table->integer( 'page_id' )->nullable();
-			$table->integer( 'user_id' )->nullable();
+		/**
+		 * [if description]
+		 * @var [type]
+		 */
+		if ( ! Capsule::schema()->hasTable( $table ) ) {
+			Capsule::schema()->create( $table, function( $table ) {
+				/**
+				 * [$table->increments description]
+				 * @var [type]
+				 */
+				$table->increments( 'id' );
+				$table->string( 'type' )->nullable();
 
-			/**
-			 * [$table->string description]
-			 * @var [type]
-			 */
-			$table->string( 'referer' )->nullable();
-			$table->string( 'host' )->nullable();
-			$table->string( 'domain' )->nullable();
-			$table->string( 'uri' )->nullable();
-			$table->string( 'agent' )->nullable();
+				/**
+				 * [$table->integer description]
+				 * @var [type]
+				 */
+				$table->integer( 'page_id' )->nullable();
+				$table->integer( 'user_id' )->nullable();
 
-			/**
-			 * [$table->string description]
-			 * @var [type]
-			 */
-			$table->string( 'client_type' )->nullable();
-			$table->string( 'client_name' )->nullable();
-			$table->string( 'client_short_name' )->nullable();
-			$table->string( 'client_version' )->nullable();
-			$table->string( 'client_engine' )->nullable();
+				/**
+				 * [$table->string description]
+				 * @var [type]
+				 */
+				$table->string( 'referer' )->nullable();
+				$table->string( 'host' )->nullable();
+				$table->string( 'domain' )->nullable();
+				$table->string( 'uri' )->nullable();
+				$table->string( 'agent' )->nullable();
 
-			/**
-			 * [$table->string description]
-			 * @var [type]
-			 */
-			$table->string( 'os_name' )->nullable();
-			$table->string( 'os_short_name' )->nullable();
-			$table->string( 'os_version' )->nullable();
-			$table->string( 'os_platform' )->nullable();
+				/**
+				 * [$table->string description]
+				 * @var [type]
+				 */
+				$table->string( 'client_type' )->nullable();
+				$table->string( 'client_name' )->nullable();
+				$table->string( 'client_short_name' )->nullable();
+				$table->string( 'client_version' )->nullable();
+				$table->string( 'client_engine' )->nullable();
 
-			/**
-			 * [$table->string description]
-			 * @var [type]
-			 */
-			$table->string( 'device_name' )->nullable();
+				/**
+				 * [$table->string description]
+				 * @var [type]
+				 */
+				$table->string( 'os_name' )->nullable();
+				$table->string( 'os_short_name' )->nullable();
+				$table->string( 'os_version' )->nullable();
+				$table->string( 'os_platform' )->nullable();
 
-			/**
-			 * [$table->ipAddress description]
-			 * @var [type]
-			 */
-			$table->string( 'ip' )->nullable();
-			$table->dateTime( 'created_at' );
-			$table->dateTime( 'updated_at' );
-		});
+				/**
+				 * [$table->string description]
+				 * @var [type]
+				 */
+				$table->string( 'device_name' )->nullable();
+
+				/**
+				 * [$table->ipAddress description]
+				 * @var [type]
+				 */
+				$table->string( 'ip' )->nullable();
+				$table->dateTime( 'created_at' );
+				$table->dateTime( 'updated_at' );
+			});
+		}
+	}
+
+	/**
+	 * Retireve the server keys location
+	 *
+	 * @return array
+	 */
+	public function get_server_certs() {
+		$keys = apply_filters( 'wpdrift_worket_server_keys', array(
+			'public'  => WPDRIFT_WORKER_PATH . 'oauth/keys/public_key.pem',
+			'private' => WPDRIFT_WORKER_PATH . 'oauth/keys/private_key.pem',
+		) );
+
+		return $keys;
+	}
+
+	/**
+	 * Check to see if there is certificates that have been generated
+	 *
+	 * @return boolean [description]
+	 */
+	public function has_certificates() {
+		$keys = self::get_server_certs();
+
+		if ( is_array( $keys ) ) {
+			foreach ( $keys as $key ) {
+				if ( ! file_exists( $key ) ) {
+					return false;
+				}
+			}
+
+			return true;
+		} else {
+
+			return false;
+		}
 	}
 
 }

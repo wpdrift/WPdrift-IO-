@@ -346,8 +346,8 @@ function has_a_client() {
  */
 function get_private_server_key() {
 	$keys = apply_filters('wpdrift_worker_server_keys', array(
-		'public'  => WOABSPATH . '/oauth/keys/public_key.pem',
-		'private' => WOABSPATH . '/oauth/keys/private_key.pem',
+		'public'  => WPDRIFT_WORKER_PATH . 'oauth/keys/public_key.pem',
+		'private' => WPDRIFT_WORKER_PATH . 'oauth/keys/private_key.pem',
 	));
 
 	return file_get_contents( $keys['private'] );
@@ -360,8 +360,8 @@ function get_private_server_key() {
  */
 function get_public_server_key() {
 	$keys = apply_filters('wpdrift_worker_server_keys', array(
-		'public'  => WOABSPATH . '/oauth/keys/public_key.pem',
-		'private' => WOABSPATH . '/oauth/keys/private_key.pem',
+		'public'  => WPDRIFT_WORKER_PATH . 'oauth/keys/public_key.pem',
+		'private' => WPDRIFT_WORKER_PATH . 'oauth/keys/private_key.pem',
 	));
 
 	return file_get_contents( $keys['public'] );

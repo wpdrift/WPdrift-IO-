@@ -82,14 +82,6 @@ class WPdrift_Worker {
 		}
 		$this->plugin_name = 'wpdrift-worker';
 
-		if ( ! defined( 'WOABSPATH' ) ) {
-			define( 'WOABSPATH', dirname( __FILE__ ) );
-		}
-
-		if ( ! defined( 'WOURI' ) ) {
-			define( 'WOURI', plugins_url( '/', __FILE__ ) );
-		}
-
 		if ( ! defined( 'WPDRIFT_WORKER_CHECKSUM' ) ) {
 			define( 'WPDRIFT_WORKER_CHECKSUM', '1B5E38652C118CB005E3CE7619F83E09' );
 		}

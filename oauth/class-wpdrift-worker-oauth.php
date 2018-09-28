@@ -264,8 +264,8 @@ class WPdrift_Worker_Oauth {
 			*/
 			if ( 'keys' == $well_known ) {
 				$keys       = apply_filters( 'wpdrift_worker_server_keys', array(
-					'public'  => WOABSPATH . '/oauth/keys/public_key.pem',
-					'private' => WOABSPATH . '/oauth/keys/private_key.pem',
+					'public'  => WPDRIFT_WORKER_PATH . 'oauth/keys/public_key.pem',
+					'private' => WPDRIFT_WORKER_PATH . 'oauth/keys/private_key.pem',
 				) );
 				$public_key = openssl_pkey_get_public( file_get_contents( $keys['public'] ) );
 				$public_key = openssl_pkey_get_details( $public_key );

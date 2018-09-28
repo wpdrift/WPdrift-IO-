@@ -41,9 +41,9 @@ class WPdrift_IO_Deactivator {
 	 * [drop_db_tables description]
 	 * @return [type] [description]
 	 */
-	public function drop_db_tables() {
+	public static function drop_db_tables() {
 		global $wpdb;
-		Capsule::schema()->drop( $wpdb->prefix . 'wpdriftio_hits' );
+		Capsule::schema()->dropIfExists( $wpdb->prefix . 'wpdriftio_hits' );
 	}
 
 	/**
@@ -53,7 +53,7 @@ class WPdrift_IO_Deactivator {
 	 *
 	 * @return [type]               [description]
 	 */
-	public function server_deactivation( $network_wide ) {
+	public static function server_deactivation( $network_wide ) {
 		if ( function_exists( 'is_multisite' ) && is_multisite() && $network_wide ) {
 			$mu_blogs = wp_get_sites();
 			foreach ( $mu_blogs as $mu_blog ) {
