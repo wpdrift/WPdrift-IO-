@@ -50,7 +50,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 	 * Grabs site details.
 	 * @return [type] [description]
 	 */
-	public function get_items() {
+	public function get_items( $request ) {
 		/**
 		 * [$data description]
 		 * @var array
@@ -79,7 +79,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 	 * [public description]
 	 * @var [type]
 	 */
-	public function get_plugin_status() {
+	public function get_plugin_status( $request ) {
 		/**
 		 * Detect plugin.
 		 * @var [type]
