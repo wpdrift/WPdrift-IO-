@@ -115,14 +115,14 @@ class EDD_GetTerm_Assigned_Endpoint extends WP_REST_Controller
     public function retrieveEddTermAssigned($parameters)
     {
         global $wpdb;
-        $per_page = trim($parameters['per_page']) != "" 
+        $per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") 
                         ? trim($parameters['per_page']) 
                         : 1;
-        $offset = trim($parameters['offset']) != "" 
+        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "") 
                     ? trim($parameters['offset']) 
                     : 0;
-        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
-        $term_id = trim($parameters['term_id']) != "" 
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $term_id = (isset($parameters['term_id']) && trim($parameters['term_id']) != "") 
                     ? trim($parameters['term_id']) 
                     : 0;
         if ($task == "get_totals") {

@@ -113,14 +113,15 @@ class EDD_GetDiscounts_Endpoint extends WP_REST_Controller
      */
     public function retrieveEddDiscounts($parameters)
     {
-        $posts_per_page = trim($parameters['per_page']) != "" 
+        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") 
                             ? trim($parameters['per_page']) 
                             : 1;
-        $offset = trim($parameters['offset']) != "" 
+        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "") 
                     ? trim($parameters['offset']) 
                     : 0;
-        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
-
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
+        
         $args = array(
             'post_type'              => 'edd_discount',
             'post_status'            => 'any',
@@ -132,6 +133,8 @@ class EDD_GetDiscounts_Endpoint extends WP_REST_Controller
             $discounts = new WP_Query($args);
             $edd_discounts['found_posts'] = $discounts->found_posts;
             $edd_discounts['max_num_pages'] = $discounts->max_num_pages;
+        } else if ($task == "get_single") {
+            $edd_discounts = get_post((int) $post_id);
         } else {
             $args['offset'] = $offset;
             $edd_discounts = get_posts($args);

@@ -115,7 +115,7 @@ class EDD_GetDownloads_Metas_Endpoint extends WP_REST_Controller
      */
     public function retrieveEddDownladsMetas($parameters)
     {
-        $post_id = trim($parameters['post_id']) != "" 
+        $post_id = (isset($parameters['post_id']) && trim($parameters['post_id']) != "") 
                     ? trim($parameters['post_id']) 
                     : 0;
         $meta_array = array();

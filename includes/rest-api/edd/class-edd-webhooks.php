@@ -239,6 +239,47 @@ class EDD_WebHooks
             break;
         }
     }
+
+    /**
+     * ALL POST TYPES UPDATES
+     * 
+     * @param int $post_id - created customer id
+     *
+     * @return return
+     */
+    function sendDiscountUpdated($meta, $post_id) 
+    {
+        $post_type = get_post_type($post_id);
+        $params = array( 'post_id' => $post_id );
+        // if not any required post type return
+        if (!in_array(
+            $post_type, 
+            array(
+                'edd_discount', 
+                'download', 
+                'edd_log', 
+                'edd_payment'
+            )
+        )
+        ) {
+            return;
+        }
+        switch ($post_type) {
+        case 'edd_discount':
+            $this->sendWebhook('handle_discount_update', $params);
+            break;
+        case 'download':
+            $this->sendWebhook('handle_download_update', $params);
+            break;
+        case 'edd_log':
+            $this->sendWebhook('handle_eddlog_update', $params);
+            break;
+        case 'edd_payment':
+            $this->sendWebhook('handle_payment_update', $params);
+            break;
+        }
+    }
+
     /**
      * ALL POST TYPES DELETES
      * 
@@ -336,7 +377,10 @@ add_action('delete_user', array($edd_webhook_obj, 'sendUserDeleted'));
 // post type created
 add_action('wp_insert_post', array($edd_webhook_obj, 'sendPostCreated'), 10, 1);
 // post type updated
-add_action('post_updated', array($edd_webhook_obj, 'sendPostUpdated'), 10, 1);
+//add_action('post_updated', array($edd_webhook_obj, 'sendPostUpdated'), 10, 1);
+
+add_action('edd_post_update_discount', array($edd_webhook_obj, 'sendDiscountUpdated'), 10, 2);
+
 // post type delete
 add_action('before_delete_post', array($edd_webhook_obj, 'sendPostDeleted'));
 // edd logs add

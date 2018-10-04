@@ -116,10 +116,10 @@ class EDD_GetCustomers_Metas_Endpoint extends WP_REST_Controller
     public function retrieveEddCustomersMetas($parameters)
     {
         global $wpdb;
-        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
-        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
-        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
-        $post_id = trim($parameters['id']) != "" ? trim($parameters['id']) : "";
+        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") ? trim($parameters['per_page']) : 1;
+        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "") ? trim($parameters['offset']) : 0;
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
 
         if ($task == "get_totals") {
             $found_posts = $wpdb->get_var( 

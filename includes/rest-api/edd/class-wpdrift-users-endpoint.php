@@ -115,14 +115,14 @@ class EDD_Users_Endpoint extends WP_REST_Controller
     public function retrieveEddUsers($parameters)
     {
         global $wpdb;
-        $posts_per_page = trim($parameters['per_page']) != "" 
+        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") 
                             ? trim($parameters['per_page']) 
                             : 1;
-        $offset = trim($parameters['offset']) != "" 
+        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "") 
                     ? trim($parameters['offset']) 
                     : 0;
-        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
-        $post_id = trim($parameters['id']) != "" ? trim($parameters['id']) : "";
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
 
         if ($task == "get_totals") {
             $found_posts = $wpdb->get_var(

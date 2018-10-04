@@ -115,7 +115,9 @@ class EDD_GetDiscounts_Metas_Endpoint extends WP_REST_Controller
      */
     public function retrieveEddDiscountsMetas($parameters)
     {
-        $post_id = trim($parameters['post_id']) != "" ? trim($parameters['post_id']) : 0;
+        $post_id = (isset($parameters['post_id']) && trim($parameters['post_id']) != "") 
+                    ? trim($parameters['post_id']) 
+                    : 0;
         $meta_array = array();
         $post_meta_arry = get_metadata('post', $post_id, '', false);
         // add post metas as main array elements

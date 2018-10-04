@@ -49,10 +49,10 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
                 array(
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => array( $this, 'getItems' ),
-                    'permission_callback' => array( 
-                                                $this, 
-                                                'getItemsPermissionsCheck' 
-                                            ),
+                    // 'permission_callback' => array( 
+                    //                             $this, 
+                    //                             'getItemsPermissionsCheck' 
+                    //                         ),
                     'args'                => array(
 
                     ),
@@ -116,14 +116,14 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
      */
     public function retrieveEddDownlads($parameters)
     {
-        $posts_per_page = trim($parameters['per_page']) != "" 
+        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") 
                             ? trim($parameters['per_page']) 
                             : 1;
-        $offset = trim($parameters['offset']) != "" 
+        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "")
                     ? trim($parameters['offset']) 
                     : 0;
-        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
-        $post_id = trim($parameters['id']) != "" ? trim($parameters['id']) : "";
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
 
         $args = array(
             'post_type'              => 'download',

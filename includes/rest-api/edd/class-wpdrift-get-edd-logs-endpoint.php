@@ -117,9 +117,9 @@ class EDD_GetLogs_Endpoint extends WP_REST_Controller
     public function retrieveEddLogs($parameters)
     {
         global $wpdb;
-        $posts_per_page = trim($parameters['per_page']) != "" ? trim($parameters['per_page']) : 1;
-        $offset = trim($parameters['offset']) != "" ? trim($parameters['offset']) : 0;
-        $task = trim($parameters['task']) != "" ? trim($parameters['task']) : "";
+        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") ? trim($parameters['per_page']) : 1;
+        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "") ? trim($parameters['offset']) : 0;
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
         $args = array(
             'post_type'              => 'edd_log',
             'post_status'            => 'any',

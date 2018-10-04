@@ -159,4 +159,14 @@ require_once dirname(WPDRIFT_WORKER_FILE) .
 $recent_edd_users_metas_controller = new EDD_GetUsers_Metas_Endpoint();
 $recent_edd_users_metas_controller->registerRoutes();
 
+/**
+ * Get Users Metas end points
+ *
+ * @var [type]
+ */
+require_once dirname(WPDRIFT_WORKER_FILE) . 
+'/includes/rest-api/edd/class-wp-rest-users-controller.php';
+$wpdrift_new_user = new WPdrift_New_Users_Controller();
+$wpdrift_new_user->registerRoutes();
+
 ?>
