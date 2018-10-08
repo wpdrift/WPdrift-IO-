@@ -161,6 +161,14 @@ class WPdrift_Worker_Api {
 			require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-edd-webhooks.php' );
 		}
 
+		/**
+		 * New rest end points for users listing
+		 * @var [type]
+		 */
+		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-rest-users-controller.php' );
+		$wpdrift_user_list = new WPdrift_Users_List_Controller();
+		$wpdrift_user_list->registerRoutes();
+
 	}
 
 	/**
