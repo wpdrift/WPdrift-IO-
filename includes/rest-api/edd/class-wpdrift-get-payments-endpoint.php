@@ -117,7 +117,8 @@ class EDD_GetPayments_Endpoint extends WP_REST_Controller
         $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") ? trim($parameters['per_page']) : 1;
         $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "") ? trim($parameters['offset']) : 0;
         $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
-
+        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
+        
         $args = array(
             'post_type'              => 'edd_payment',
             'post_status'            => 'any',
@@ -129,6 +130,8 @@ class EDD_GetPayments_Endpoint extends WP_REST_Controller
             $payments = new WP_Query($args);
             $edd_payments['found_posts'] = $payments->found_posts;
             $edd_payments['max_num_pages'] = $payments->max_num_pages;
+        } else if ($task == "get_single") {
+            $edd_payments = get_post((int) $post_id);
         } else {
             $args['offset'] = $offset;
             $edd_payments = get_posts($args);

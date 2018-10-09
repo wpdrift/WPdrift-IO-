@@ -207,50 +207,10 @@ class EDD_WebHooks
      *
      * @return return
      */
-    function sendPostUpdated($post_id) 
+    function sendPostUpdated($meta, $postObj) 
     {
-        $post_type = get_post_type($post_id);
-        $params = array( 'post_id' => $post_id );
-        // if not any required post type return
-        if (!in_array(
-            $post_type, 
-            array(
-                'edd_discount', 
-                'download', 
-                'edd_log', 
-                'edd_payment'
-            )
-        )
-        ) {
-            return;
-        }
-        switch ($post_type) {
-        case 'edd_discount':
-            $this->sendWebhook('handle_discount_update', $params);
-            break;
-        case 'download':
-            $this->sendWebhook('handle_download_update', $params);
-            break;
-        case 'edd_log':
-            $this->sendWebhook('handle_eddlog_update', $params);
-            break;
-        case 'edd_payment':
-            $this->sendWebhook('handle_payment_update', $params);
-            break;
-        }
-    }
-
-    /**
-     * ALL POST TYPES UPDATES
-     * 
-     * @param int $post_id - created customer id
-     *
-     * @return return
-     */
-    function sendDiscountUpdated($meta, $post_id) 
-    {
-        $post_type = get_post_type($post_id);
-        $params = array( 'post_id' => $post_id );
+        $post_type = $postObj->post_type;
+        $params = array( 'post_id' => $postObj->ID );
         // if not any required post type return
         if (!in_array(
             $post_type, 
@@ -295,30 +255,51 @@ class EDD_WebHooks
         if (!in_array(
             $post_type, 
             array(
-                'edd_discount', 
+                //'edd_discount', 
                 'download', 
                 'edd_log', 
-                'edd_payment'
+                //'edd_payment'
             )
         ) 
         ) {
             return;
         }
         switch ($post_type) {
-        case 'edd_discount':
-            $this->sendWebhook('handle_discount_delete', $params);
-            break;
         case 'download':
             $this->sendWebhook('handle_download_delete', $params);
             break;
         case 'edd_log':
             $this->sendWebhook('handle_eddlog_delete', $params);
             break;
-        case 'edd_payment':
-            $this->sendWebhook('handle_payment_delete', $params);
-            break;
         }
     }
+
+    /**
+     * Delete discount hook
+     * 
+     * @param array $data
+     * 
+     * @return return
+     */
+    function eddDeleteDiscount($data) 
+    {
+        $params = array( 'post_id' => $data['discount'] );
+        $this->sendWebhook('handle_discount_delete', $params);
+    }
+
+    /**
+     * Delete Payment hook
+     * 
+     * @param int $payment_id
+     * 
+     * @return return
+     */
+    function eddPaymentDelete($payment_id) 
+    {
+        $params = array( 'post_id' => $payment_id );
+        $this->sendWebhook('handle_payment_delete', $params);
+    }
+
     /**
      * Send web hook to app site
      * 
@@ -377,12 +358,16 @@ add_action('delete_user', array($edd_webhook_obj, 'sendUserDeleted'));
 // post type created
 add_action('wp_insert_post', array($edd_webhook_obj, 'sendPostCreated'), 10, 1);
 // post type updated
-//add_action('post_updated', array($edd_webhook_obj, 'sendPostUpdated'), 10, 1);
-
-add_action('edd_post_update_discount', array($edd_webhook_obj, 'sendDiscountUpdated'), 10, 2);
+add_action('post_updated', array($edd_webhook_obj, 'sendPostUpdated'), 10, 2);
 
 // post type delete
 add_action('before_delete_post', array($edd_webhook_obj, 'sendPostDeleted'));
+
+// delete hook for discount
+add_action( 'edd_delete_discount', array($edd_webhook_obj, 'eddDeleteDiscount') );
+// delete hook for payment
+add_action( 'edd_payment_deleted', array($edd_webhook_obj, 'eddPaymentDelete'), 100 );
+
 // edd logs add
 add_action('edd_post_insert_log', array($edd_webhook_obj, 'sendEddlogDeleted'));
 
@@ -395,5 +380,6 @@ add_action("create_term",  array($edd_webhook_obj, 'sendCreateTerm'), 10, 3);
 add_action("edit_term", array($edd_webhook_obj, 'sendEditTerm'), 10, 3);
 // term deleted
 add_action('delete_term', array($edd_webhook_obj, 'sendDeleteTerm'), 10, 4);
+
 
 ?>
