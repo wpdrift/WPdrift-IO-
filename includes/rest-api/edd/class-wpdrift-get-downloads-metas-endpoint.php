@@ -126,6 +126,8 @@ class EDD_GetDownloads_Metas_Endpoint extends WP_REST_Controller
             $meta_array[$i][$post_meta_key] = $post_meta_value[0];
             $i++;
         }
+        // add thumbnail
+        $meta_array[$i]['thumbnail_url'] = get_the_post_thumbnail_url($post_id, 'thumbnail');
         return $meta_array;
     }
 }
