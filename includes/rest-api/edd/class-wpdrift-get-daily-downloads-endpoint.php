@@ -1,6 +1,6 @@
 <?php
 /**
- * EDD_GetDownloads_Endpoint class
+ * EDD_GetDayDownloads_Endpoint class
  *
  * @category Edd
  * @package  Edd
@@ -12,7 +12,7 @@
 defined('ABSPATH') || exit;
 
 /**
- * EDD GetDownload endpoints.
+ * EDD GetDayDownloads endpoints.
  *
  * @category Edd
  * @package  Edd
@@ -21,7 +21,7 @@ defined('ABSPATH') || exit;
  * @link     NA
  * @since    1.0.0
  */
-class EDD_GetDownloads_Endpoint extends WP_REST_Controller
+class EDD_GetDayDownloads_Endpoint extends WP_REST_Controller
 {
     /**
      * Constructor.
@@ -31,7 +31,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
     public function __construct()
     {
         $this->namespace = 'wpdriftio/v1';
-        $this->rest_base = 'getdownloads';
+        $this->rest_base = 'getdaydownloads';
     }
 
     /**
@@ -116,32 +116,18 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
      */
     public function retrieveEddDownlads($parameters)
     {
-        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") 
-                            ? trim($parameters['per_page']) 
-                            : 1;
-        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "")
-                    ? trim($parameters['offset']) 
-                    : 0;
-        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
-        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
-
         $args = array(
             'post_type'              => 'download',
             'post_status'            => 'any',
-            'posts_per_page'         => $posts_per_page,
+            'posts_per_page'         => -1,
             'orderby'                => 'ID',
             'order'                  => 'ASC',
+            'date_query'             => array(
+                        'after' => date('Y-m-d', strtotime('-1 day')) 
+            ),
+            'fields'                 => 'ids',
         );
-        if ($task == "get_totals") {
-            $downloads = new WP_Query($args);
-            $edd_downloads['found_posts'] = $downloads->found_posts;
-            $edd_downloads['max_num_pages'] = $downloads->max_num_pages;
-        } else if ($task == "get_single") {
-            $edd_downloads = get_post((int) $post_id);
-        } else {
-            $args['offset'] = $offset;
-            $edd_downloads = get_posts($args);
-        }
-        return $edd_downloads;
+        
+        return $edd_downloads = get_posts($args);
     }
 }

@@ -115,38 +115,74 @@ class EDD_GetTerm_Taxonomy_Endpoint extends WP_REST_Controller
     public function retrieveEddTermTaxonomy($parameters)
     {
         global $wpdb;
-        $edd_term_taxonomy = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT * FROM 
-                ".$wpdb->prefix."term_taxonomy 
-                WHERE taxonomy LIKE %s 
-                    OR taxonomy LIKE %s", 'download_category', 'download_tag'
-            )
-        );
-        $terms_tax_arry = array();
-        $i = 0;
-        foreach ($edd_term_taxonomy as $term_tax_value) {
+        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $term_id = (isset($parameters['term_id']) && trim($parameters['term_id']) != "") ? trim($parameters['term_id']) : "";
+        $term_taxonomy = (isset($parameters['taxonomy']) && trim($parameters['taxonomy']) != "") ? trim($parameters['taxonomy']) : "";
+
+        if($task == "get_single" && $term_id != "" && $term_taxonomy != "") {
+            $edd_term_taxonomy = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM 
+                    ".$wpdb->prefix."term_taxonomy 
+                    WHERE taxonomy LIKE %s AND 
+                    term_id = %s", $term_taxonomy, $term_id
+                )
+            );
             // get term name and slug //
             $term_details = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT `name`, `slug` 
                     FROM ".$wpdb->prefix."terms 
-                    WHERE term_id = %d", $term_tax_value->term_id
+                    WHERE term_id = %d", $term_id
                 )
             );
 
-            $terms_tax_arry[$i]['term_taxonomy_id'] 
-                = $term_tax_value->term_taxonomy_id;
-            $terms_tax_arry[$i]['term_id'] = $term_tax_value->term_id;
-            $terms_tax_arry[$i]['name'] = $term_details[0]->name;
-            $terms_tax_arry[$i]['slug'] = $term_details[0]->slug;
-            $terms_tax_arry[$i]['taxonomy'] = $term_tax_value->taxonomy;
-            $terms_tax_arry[$i]['description'] = $term_tax_value->description;
-            $terms_tax_arry[$i]['parent'] = $term_tax_value->parent;
-            $terms_tax_arry[$i]['count'] = $term_tax_value->count;
+            $terms_tax_arry['term_taxonomy_id'] 
+                = $edd_term_taxonomy[0]->term_taxonomy_id;
+            $terms_tax_arry['term_id'] = $edd_term_taxonomy[0]->term_id;
+            $terms_tax_arry['name'] = $term_details[0]->name;
+            $terms_tax_arry['slug'] = $term_details[0]->slug;
+            $terms_tax_arry['taxonomy'] = $edd_term_taxonomy[0]->taxonomy;
+            $terms_tax_arry['description'] = $edd_term_taxonomy[0]->description;
+            $terms_tax_arry['parent'] = $edd_term_taxonomy[0]->parent;
+            $terms_tax_arry['count'] = $edd_term_taxonomy[0]->count;
 
-            $i++;
+            return $terms_tax_arry;
+
+        } else {
+            $edd_term_taxonomy = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT * FROM 
+                    ".$wpdb->prefix."term_taxonomy 
+                    WHERE taxonomy LIKE %s 
+                        OR taxonomy LIKE %s", 'download_category', 'download_tag'
+                )
+            );
+            $terms_tax_arry = array();
+            $i = 0;
+            foreach ($edd_term_taxonomy as $term_tax_value) {
+                // get term name and slug //
+                $term_details = $wpdb->get_results(
+                    $wpdb->prepare(
+                        "SELECT `name`, `slug` 
+                        FROM ".$wpdb->prefix."terms 
+                        WHERE term_id = %d", $term_tax_value->term_id
+                    )
+                );
+
+                $terms_tax_arry[$i]['term_taxonomy_id'] 
+                    = $term_tax_value->term_taxonomy_id;
+                $terms_tax_arry[$i]['term_id'] = $term_tax_value->term_id;
+                $terms_tax_arry[$i]['name'] = $term_details[0]->name;
+                $terms_tax_arry[$i]['slug'] = $term_details[0]->slug;
+                $terms_tax_arry[$i]['taxonomy'] = $term_tax_value->taxonomy;
+                $terms_tax_arry[$i]['description'] = $term_tax_value->description;
+                $terms_tax_arry[$i]['parent'] = $term_tax_value->parent;
+                $terms_tax_arry[$i]['count'] = $term_tax_value->count;
+
+                $i++;
+            }
+            return $terms_tax_arry;
         }
-        return $terms_tax_arry;
     }
 }

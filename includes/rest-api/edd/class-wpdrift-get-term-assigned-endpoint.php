@@ -49,10 +49,10 @@ class EDD_GetTerm_Assigned_Endpoint extends WP_REST_Controller
                 array(
                     'methods'             => WP_REST_Server::READABLE,
                     'callback'            => array( $this, 'getItems' ),
-                    'permission_callback' => array( 
-                                                $this, 
-                                                'getItemsPermissionsCheck' 
-                                            ),
+                    // 'permission_callback' => array( 
+                    //                             $this, 
+                    //                             'getItemsPermissionsCheck' 
+                    //                         ),
                     'args'                => array(),
                 )
             )
@@ -122,6 +122,7 @@ class EDD_GetTerm_Assigned_Endpoint extends WP_REST_Controller
                     ? trim($parameters['offset']) 
                     : 0;
         $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
+        $object_id = (isset($parameters['object_id']) && trim($parameters['object_id']) != "") ? trim($parameters['object_id']) : "";
         $term_id = (isset($parameters['term_id']) && trim($parameters['term_id']) != "") 
                     ? trim($parameters['term_id']) 
                     : 0;
@@ -136,6 +137,14 @@ class EDD_GetTerm_Assigned_Endpoint extends WP_REST_Controller
             $term_assigned['found_posts'] = $found_posts;
             $max_num_pages = ceil($found_posts / $per_page);
             $term_assigned['max_num_pages'] = $max_num_pages;
+        } else if ($task == "get_single") {
+            $term_assigned = $wpdb->get_results(
+                $wpdb->prepare( 
+                    "SELECT * FROM 
+                    ".$wpdb->prefix."term_relationships 
+                    WHERE object_id = %s", $object_id 
+                )
+            );
         } else {
             $term_assigned = $wpdb->get_results(
                 $wpdb->prepare( 

@@ -20,6 +20,30 @@ $recent_edd_downloads_controller = new EDD_GetDownloads_Endpoint();
 $recent_edd_downloads_controller->registerRoutes();
 
 /**
+* Get last daily downloads
+*/
+require_once dirname(WPDRIFT_WORKER_FILE) . 
+'/includes/rest-api/edd/class-wpdrift-get-daily-downloads-endpoint.php';
+$recent_edd_daily_downloads_controller = new EDD_GetDayDownloads_Endpoint();
+$recent_edd_daily_downloads_controller->registerRoutes();
+
+/**
+* Get last daily discounts
+*/
+require_once dirname(WPDRIFT_WORKER_FILE) . 
+'/includes/rest-api/edd/class-wpdrift-get-daily-discounts-endpoint.php';
+$recent_edd_daily_discounts_controller = new EDD_GetDayDiscounts_Endpoint();
+$recent_edd_daily_discounts_controller->registerRoutes();
+
+/**
+* Get last daily payments
+*/
+require_once dirname(WPDRIFT_WORKER_FILE) . 
+'/includes/rest-api/edd/class-wpdrift-get-daily-payments-endpoint.php';
+$recent_edd_daily_payments_controller = new EDD_GetDayPayments_Endpoint();
+$recent_edd_daily_payments_controller->registerRoutes();
+
+/**
  * Register get edd downloads metas end points
  *
  * @var [type]

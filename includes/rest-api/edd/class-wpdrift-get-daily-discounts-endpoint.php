@@ -1,6 +1,6 @@
 <?php
 /**
- * EDD_GetDownloads_Endpoint class
+ * EDD_GetDayDiscounts_Endpoint class
  *
  * @category Edd
  * @package  Edd
@@ -12,7 +12,7 @@
 defined('ABSPATH') || exit;
 
 /**
- * EDD GetDownload endpoints.
+ * EDD Day Discounts endpoints.
  *
  * @category Edd
  * @package  Edd
@@ -21,7 +21,7 @@ defined('ABSPATH') || exit;
  * @link     NA
  * @since    1.0.0
  */
-class EDD_GetDownloads_Endpoint extends WP_REST_Controller
+class EDD_GetDayDiscounts_Endpoint extends WP_REST_Controller
 {
     /**
      * Constructor.
@@ -31,7 +31,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
     public function __construct()
     {
         $this->namespace = 'wpdriftio/v1';
-        $this->rest_base = 'getdownloads';
+        $this->rest_base = 'getdaydiscounts';
     }
 
     /**
@@ -43,8 +43,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
     public function registerRoutes()
     {
         register_rest_route(
-            $this->namespace, 
-            '/' . $this->rest_base, 
+            $this->namespace, '/' . $this->rest_base, 
             array(
                 array(
                     'methods'             => WP_REST_Server::READABLE,
@@ -53,9 +52,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
                                                 $this, 
                                                 'getItemsPermissionsCheck' 
                                             ),
-                    'args'                => array(
-
-                    ),
+                    'args'                => array(),
                 )
             )
         );
@@ -72,7 +69,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
     {
         $parameters = $request->get_params();
         $items = array();
-        $items['edd_downloads'] = $this->retrieveEddDownlads($parameters);
+        $items['edd_discounts'] = $this->retrieveEddDiscounts($parameters);
         $data = array();
         foreach ($items as $key => $item) {
             $itemdata = $this->prepareItemForResponse($item, $request);
@@ -100,7 +97,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
      *
      * @param WP_REST_Request $request Full data about the request.
      *
-     * @return WP_Error|bool
+     * @return access
      */
     public function getItemsPermissionsCheck($request)
     {
@@ -108,40 +105,26 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller
     }
 
     /**
-     * Retrieve EDD Downloads
+     * Retrieve EDD Discounts
      *
-     * @param string $parameters params.
+     * @param string $parameters params
      *
-     * @return edd downloads
+     * @return records
      */
-    public function retrieveEddDownlads($parameters)
+    public function retrieveEddDiscounts($parameters)
     {
-        $posts_per_page = (isset($parameters['per_page']) && trim($parameters['per_page']) != "") 
-                            ? trim($parameters['per_page']) 
-                            : 1;
-        $offset = (isset($parameters['offset']) && trim($parameters['offset']) != "")
-                    ? trim($parameters['offset']) 
-                    : 0;
-        $task = (isset($parameters['task']) && trim($parameters['task']) != "") ? trim($parameters['task']) : "";
-        $post_id = (isset($parameters['id']) && trim($parameters['id']) != "") ? trim($parameters['id']) : "";
-
         $args = array(
-            'post_type'              => 'download',
+            'post_type'              => 'edd_discount',
             'post_status'            => 'any',
-            'posts_per_page'         => $posts_per_page,
+            'posts_per_page'         => -1,
             'orderby'                => 'ID',
             'order'                  => 'ASC',
+            'date_query'             => array(
+                        'after' => date('Y-m-d', strtotime('-1 day')) 
+            ),
+            'fields'                 => 'ids',
         );
-        if ($task == "get_totals") {
-            $downloads = new WP_Query($args);
-            $edd_downloads['found_posts'] = $downloads->found_posts;
-            $edd_downloads['max_num_pages'] = $downloads->max_num_pages;
-        } else if ($task == "get_single") {
-            $edd_downloads = get_post((int) $post_id);
-        } else {
-            $args['offset'] = $offset;
-            $edd_downloads = get_posts($args);
-        }
-        return $edd_downloads;
+        
+        return $edd_discounts = get_posts($args);
     }
 }
