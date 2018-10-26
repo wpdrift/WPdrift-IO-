@@ -44,6 +44,18 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		));
+
+		/**
+		 * check edd plugin status
+		 * @var [type]
+		 */
+		register_rest_route($this->namespace, '/' . $this->rest_base . '/edd-plugin-status', array(
+			array(
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_edd_plugin_status' ),
+				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+			),
+		));
 	}
 
 	/**
@@ -96,6 +108,29 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 		 * @var [type]
 		 */
 		return [ 'version' => WPDRIFT_WORKER_VERSION ];
+	}
+
+	/**
+	 * get the edd plugin status
+	 * @var [type]
+	 */
+	public function get_edd_plugin_status( $request ) {
+		/**
+		 * Detect plugin.
+		 * @var [type]
+		 */
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+		// check for plugin using plugin name
+		if ( ! is_plugin_active( 'easy-digital-downloads/easy-digital-downloads.php' ) ) {
+			return rest_ensure_response( array() );
+		}
+
+		/**
+		 * [return description]
+		 * @var [type]
+		 */
+		return [ 'version' => EDD_VERSION ];
 	}
 
 	/**
