@@ -145,7 +145,7 @@ class WPdrift_Events_Controller extends WP_REST_Controller
 					$key_for_sort = strtotime($recent_event->comment_date);
 					$recent_events[$key_for_sort]['event_type'] = 'comment';
 					$recent_events[$key_for_sort]['event_id'] = $recent_event->comment_ID;
-					$recent_events[$key_for_sort]['user_display_name'] = $recent_event->comment_author;
+					$recent_events[$key_for_sort]['user_display_name'] = $this->get_display_name_by_id($recent_event->user_id);
 					$recent_events[$key_for_sort]['event_date'] = $this->get_event_date($recent_event->comment_date);
 					$recent_events[$key_for_sort]['user_avatar'] = $this->get_user_avatar_by_email($recent_event->comment_author_email);
 					$recent_events[$key_for_sort]['user_id'] = $recent_event->user_id;
