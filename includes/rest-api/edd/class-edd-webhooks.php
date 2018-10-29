@@ -23,7 +23,7 @@ defined('ABSPATH') || exit;
  */
 class EDD_WebHooks
 {
-    public $edd_site = "http://eddlumen.local";
+    public $edd_site = "https://edd.wpdrift.io";
     /**
      * Send customer id to app.wpdrift site upon customer create action
      * 
