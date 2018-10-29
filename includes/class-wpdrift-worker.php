@@ -83,7 +83,7 @@ class WPdrift_Worker {
 		$this->plugin_name = 'wpdrift-worker';
 
 		if ( ! defined( 'WPDRIFT_WORKER_CHECKSUM' ) ) {
-			define( 'WPDRIFT_WORKER_CHECKSUM', '1B5E38652C118CB005E3CE7619F83E09' );
+			define( 'WPDRIFT_WORKER_CHECKSUM', '5A5B70F37AA9042A32425CD81E06D5A9' );
 		}
 
 		/**

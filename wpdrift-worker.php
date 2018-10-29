@@ -89,6 +89,7 @@ if (!function_exists('_custlog')) {
         }
     }
 }
+
 /**
  * Detect EDD plugin. Then add edd webhooks
  */
