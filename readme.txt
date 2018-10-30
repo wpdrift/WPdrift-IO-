@@ -43,7 +43,7 @@ The manual installation method involves downloading the plugin and uploading it 
 
 = Getting started =
 
-* Create an account on WPdrift.io
+* Create an account on https://wpdrift.io
 * Complete the setup wizard to add your first website
 * Enjoy!
 
