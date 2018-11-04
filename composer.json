@@ -3,7 +3,8 @@
         "piwik/device-detector": "^3.10",
         "nesbot/carbon": "1.23.0",
         "illuminate/database": "4.1.30",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "symfony/translation": "2.6.0"
     },
     "autoload": {
         "psr-4": {

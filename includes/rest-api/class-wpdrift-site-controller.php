@@ -29,7 +29,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_items' ),
-				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		) );
 
@@ -41,7 +41,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_plugin_status' ),
-				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		));
 
@@ -53,7 +53,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			array(
 				'methods'             => WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_edd_plugin_status' ),
-				// 'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
 			),
 		));
 	}
@@ -99,7 +99,7 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 		// check for plugin using plugin name
-		if ( ! is_plugin_active( 'wpdrift-worker/wpdrift-worker.php' ) ) {
+		if ( ! is_plugin_active( 'wpdrift-io-worker/wpdrift-worker.php' ) ) {
 			return rest_ensure_response( array() );
 		}
 

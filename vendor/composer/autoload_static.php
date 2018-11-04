@@ -8,15 +8,14 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
 {
     public static $files = array (
         '3b5531f8bb4716e1b6014ad7e734f545' => __DIR__ . '/..' . '/illuminate/support/Illuminate/Support/helpers.php',
-        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '04c6c5c2f7095ccf6c481d3e53e1776f' => __DIR__ . '/..' . '/mustangostang/spyc/Spyc.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Component\\Translation\\' => 30,
         ),
         'P' => 
         array (
@@ -42,10 +41,6 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
         ),
-        'Symfony\\Component\\Translation\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/translation',
-        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
@@ -69,6 +64,13 @@ class ComposerStaticInit77691e56c829d88115dbba70bda6d359
     );
 
     public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'Symfony\\Component\\Translation\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/symfony/translation',
+            ),
+        ),
         'I' => 
         array (
             'Illuminate\\Support' => 

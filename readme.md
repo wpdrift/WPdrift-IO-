@@ -1,6 +1,6 @@
 # WPdrift IO - Worker #
 **Contributors:** [WPdrift](https://profiles.wordpress.org/WPdrift), [upnrunn](https://profiles.wordpress.org/upnrunn), [kishores](https://profiles.wordpress.org/kishores), [bhoot](https://profiles.wordpress.org/bhoot), [bankerrajendra](https://profiles.wordpress.org/bankerrajendra)  
-**Tags:** analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage multiple sites  
+**Tags:** analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage multiple sites, edd, edd analytics, edd filtering, edd google analytics, edd reports, easy digital downloads, ecommerce analytics, ecommerce reports, edd subscriptions, recurring payments  
 **Requires at least:** 4.7  
 **Tested up to:** 4.9  
 **Stable tag:** 1.0.0  
@@ -10,6 +10,8 @@
 Analytics, automation, tools, and much more for WordPress.
 
 ## Description ##
+
+> **Note:** This plugin is only really of use to you if you have a WPdrift IO account. You can set one up for free and enjoy a 14-days trial, but keep in mind that it is a paid service. [**Try for free!**](https://wpdrift.io?ref=wporg)
 
 A single dashboard for your all WordPress sites, helping you manage your WordPress sites more efficiently, understand your data and make more informed decisions.
 
@@ -53,6 +55,9 @@ For more information, [read the documentation](https://wpdrift.com/docs/article-
 
 ### Does WPDriftIO work with WordPress.com sites? ###
 Nope. It works only with self-hosted WordPress sites.
+
+### Do I need a WPdrift IO account to use this plugin? ###
+Yes, you do ([sign up here](https://wpdrift.io?ref=wporg)). It will still work but will really not be of much use to you without one.
 
 ## Screenshots ##
 
