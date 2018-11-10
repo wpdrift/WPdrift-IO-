@@ -1,6 +1,6 @@
 === WPdrift IO - Worker ===
 Contributors: WPdrift, upnrunn, kishores, bhoot, bankerrajendra
-Tags: analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage multiple sites, edd, edd analytics, edd filtering, edd google analytics, edd reports, easy digital downloads, ecommerce analytics, ecommerce reports, edd subscriptions, recurring payments
+Tags: edd, edd analytics, edd filtering, edd google analytics, edd reports, easy digital downloads, ecommerce analytics, ecommerce reports, edd subscriptions, recurring payments, analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage multiple sites
 Requires at least: 4.7
 Tested up to: 4.9
 Stable tag: 1.0.0
@@ -11,7 +11,7 @@ Analytics, automation, tools, and much more for WordPress.
 
 == Description ==
 
-> **Note:** This plugin is only really of use to you if you have a WPdrift IO account. You can set one up for free and enjoy a 14-days trial, but keep in mind that it is a paid service. [**Try for free!**](https://wpdrift.io?ref=wporg)
+> **Note:** It's required to have an account on [**WPdrift IO**](https://wpdrift.io?ref=wporg) to access available features. We are offering a 14-day free trial period for new accounts, you have to subscribe to a plan after the end of the trial period to continue receiving available features.
 
 A single dashboard for your all WordPress sites, helping you manage your WordPress sites more efficiently, understand your data and make more informed decisions.
 
@@ -24,8 +24,6 @@ A single dashboard for your all WordPress sites, helping you manage your WordPre
 = Support =
 
 Use the WordPress.org forums for community support where we try to help all users. If you spot a bug, you can log it (or fix it) on [Github](https://github.com/wpdrift/WPdrift-IO) where we can act upon them more efficiently.
-
-If you want help with a customization, please consider hiring a developer! [https://upnrunn.com/services/](https://upnrunn.com/services/) is a good place to start.
 
 == Installation ==
 
@@ -53,11 +51,11 @@ For more information, [read the documentation](https://wpdrift.com/docs/article-
 
 == Frequently Asked Questions ==
 
-= Does WPDriftIO work with WordPress.com sites? =
-Nope. It works only with self-hosted WordPress sites.
+= Is it required to have an account on WPdrift IO to access available features? =
+Yes. It's required to have an account on [**WPdrift IO**](https://wpdrift.io?ref=wporg) to access available features.
 
-= Do I need a WPdrift IO account to use this plugin? =
-Yes, you do ([sign up here](https://wpdrift.io?ref=wporg)). It will still work but will really not be of much use to you without one.
+= Is it a paid service? =
+Yes. We are offering a 14-day free trial period for new accounts, you have to subscribe to a plan after the end of the trial period to continue receiving available features.
 
 == Screenshots ==
 
