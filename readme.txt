@@ -64,7 +64,6 @@ Yes. We are offering a 14-day free trial period for new accounts, you have to su
 3. Product Listings and filters.
 4. Manage stores.
 5. Store settings.
-6. Manage companies.
 
 == Changelog ==
 

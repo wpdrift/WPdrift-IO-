@@ -22,7 +22,7 @@ if ( isset( $_POST['request-grant'] ) ) {
 	wp_safe_redirect( site_url( add_query_arg( array( 'prompt' => '' ) ) ) );
 }
 
-$client = get_client_by_client_id( $_REQUEST['client_id'] );
+$client = wpdrift_worker_get_client_by_client_id( $_REQUEST['client_id'] );
 ?>
 <style>
 	body {

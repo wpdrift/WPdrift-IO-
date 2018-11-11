@@ -235,7 +235,7 @@ function wpdrift_worker_update_client( $client = null ) {
  *
  * @param $client_id
  */
-function get_client_by_client_id( $client_id ) {
+function wpdrift_worker_get_client_by_client_id( $client_id ) {
 	$query   = new \WP_Query();
 	$clients = $query->query(array(
 		'post_type'   => 'oauth_client',
