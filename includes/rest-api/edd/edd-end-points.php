@@ -42,6 +42,13 @@ require_once dirname(WPDRIFT_WORKER_FILE) .
 '/includes/rest-api/edd/class-wpdrift-get-daily-payments-endpoint.php';
 $recent_edd_daily_payments_controller = new EDD_GetDayPayments_Endpoint();
 $recent_edd_daily_payments_controller->registerRoutes();
+/**
+* Get last daily customers
+*/
+require_once dirname(WPDRIFT_WORKER_FILE) . 
+'/includes/rest-api/edd/class-wpdrift-get-daily-customers-endpoint.php';
+$recent_edd_daily_customers_controller = new EDD_GetDayCustomers_Endpoint();
+$recent_edd_daily_customers_controller->registerRoutes();
 
 /**
  * Register get edd downloads metas end points
