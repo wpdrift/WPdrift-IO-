@@ -118,7 +118,7 @@ class EDD_GetDayCustomers_Endpoint extends WP_REST_Controller
     {
         global $wpdb;
         $prev_date = date('Y-m-d 00:00:00', strtotime(' -1 day'));
-        $current_date = date('Y-m-d 00:00:00');
+        $current_date = date('Y-m-d 23:59:00');
         $edd_customers = $wpdb->get_results( 
                 $wpdb->prepare(
                     "SELECT `id` FROM 
