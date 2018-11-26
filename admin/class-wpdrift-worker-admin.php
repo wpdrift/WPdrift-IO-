@@ -96,7 +96,7 @@ class WPdrift_Worker_Admin {
 
 		?>
 		<div class="notice notice-error">
-			<p><strong>You are at risk!</strong> WPdrift IO - Worker is not genuine. Please contact info@wpdrift.io immediately.</p>
+			<p><strong>You are at risk!</strong> WPdrift IO - Worker is not genuine. Please contact kishore@upnrunn.com immediately.</p>
 		</div>
 		<?php
 	}

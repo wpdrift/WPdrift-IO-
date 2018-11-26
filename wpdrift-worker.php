@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPdrift IO - Worker
  * Plugin URI: http://wpdrift.io/
- * Version: 1.0.0
+ * Version: 1.0.1
  * Description: Analytics, automation, tools, and much more for WordPress.
  * Author: WPdrift
  * Author URI: https://wpdrift.com/
