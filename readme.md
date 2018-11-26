@@ -3,7 +3,7 @@
 **Tags:** edd, edd-analytics, edd-filtering, edd-google-analytics, edd-reports, edd-metrics, easy-digital-downloads, beta, ecommerce-analytics, ecommerce-reports, edd-subscriptions, recurring-payments, analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage-multiple-sites  
 **Requires at least:** 4.7  
 **Tested up to:** 4.9  
-**Stable tag:** 1.0.0  
+**Stable tag:** 1.0.1  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
