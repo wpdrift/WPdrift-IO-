@@ -69,3 +69,11 @@ Yes. We are offering a 14-day free trial period for new accounts, you have to su
 
 ### 1.0.0 ###
 * First stable release.
+
+### 1.0.1 ###
+* Added new endpoint for syncing customer data
+* Resolve the issue with customer time which was not correct to compare date
+
+### 1.0.2 ###
+* Update checksum
+* Add missing class
