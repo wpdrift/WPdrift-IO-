@@ -118,11 +118,6 @@ class WPdrift_Worker {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'vendor/autoload.php';
 
 		/**
-		 * Setup eloquent db connection
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/capsule.php';
-
-		/**
 		 * [require_once description]
 		 * @var [type]
 		 */

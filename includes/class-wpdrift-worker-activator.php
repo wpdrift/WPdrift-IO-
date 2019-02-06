@@ -21,8 +21,6 @@
  * @author     upnrunn <admin@upnrunn.com>
  */
 
-use Illuminate\Database\Capsule\Manager as Capsule;
-
 class WPdrift_IO_Activator {
 
 	/**
