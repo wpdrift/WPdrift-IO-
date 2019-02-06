@@ -119,14 +119,6 @@ class WPdrift_Worker_Api {
 		$users_controller->register_routes();
 
 		/**
-		 * [require_once description]
-		 * @var [type]
-		 */
-		require_once( dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/class-wpdrift-hits-controller.php' );
-		$hits_controller = new WPdrift_Hits_Controller();
-		$hits_controller->register_routes();
-
-		/**
 		 * Register new recent events end points
 		 * @var [type]
 		 */

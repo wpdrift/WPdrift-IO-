@@ -36,7 +36,6 @@ class WPdrift_IO_Activator {
 		self::setup();
 		self::oauth_db();
 		self::oauth_db_upgrade();
-		self::db();
 		self::server_activation( $network_wide );
 	}
 
@@ -272,89 +271,6 @@ class WPdrift_IO_Activator {
 
 		}
 
-	}
-
-	/**
-	 * [db description]
-	 * @return [type] [description]
-	 */
-	public function db() {
-		/**
-		 * [global description]
-		 * @var [type]
-		 */
-		global $wpdb;
-
-		/**
-		 * [$table description]
-		 * @var [type]
-		 */
-		$table = $wpdb->prefix . 'wpdriftio_hits';
-
-		/**
-		 * [if description]
-		 * @var [type]
-		 */
-		if ( ! Capsule::schema()->hasTable( $table ) ) {
-			Capsule::schema()->create( $table, function( $table ) {
-				/**
-				 * [$table->increments description]
-				 * @var [type]
-				 */
-				$table->increments( 'id' );
-				$table->string( 'type' )->nullable();
-
-				/**
-				 * [$table->integer description]
-				 * @var [type]
-				 */
-				$table->integer( 'page_id' )->nullable();
-				$table->integer( 'user_id' )->nullable();
-
-				/**
-				 * [$table->string description]
-				 * @var [type]
-				 */
-				$table->string( 'referer' )->nullable();
-				$table->string( 'host' )->nullable();
-				$table->string( 'domain' )->nullable();
-				$table->string( 'uri' )->nullable();
-				$table->string( 'agent' )->nullable();
-
-				/**
-				 * [$table->string description]
-				 * @var [type]
-				 */
-				$table->string( 'client_type' )->nullable();
-				$table->string( 'client_name' )->nullable();
-				$table->string( 'client_short_name' )->nullable();
-				$table->string( 'client_version' )->nullable();
-				$table->string( 'client_engine' )->nullable();
-
-				/**
-				 * [$table->string description]
-				 * @var [type]
-				 */
-				$table->string( 'os_name' )->nullable();
-				$table->string( 'os_short_name' )->nullable();
-				$table->string( 'os_version' )->nullable();
-				$table->string( 'os_platform' )->nullable();
-
-				/**
-				 * [$table->string description]
-				 * @var [type]
-				 */
-				$table->string( 'device_name' )->nullable();
-
-				/**
-				 * [$table->ipAddress description]
-				 * @var [type]
-				 */
-				$table->string( 'ip' )->nullable();
-				$table->dateTime( 'created_at' );
-				$table->dateTime( 'updated_at' );
-			});
-		}
 	}
 
 	/**

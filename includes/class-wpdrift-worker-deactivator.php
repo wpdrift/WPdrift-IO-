@@ -43,7 +43,6 @@ class WPdrift_IO_Deactivator {
 	 */
 	public static function drop_db_tables() {
 		global $wpdb;
-		Capsule::schema()->dropIfExists( $wpdb->prefix . 'wpdriftio_hits' );
 	}
 
 	/**
