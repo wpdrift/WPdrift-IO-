@@ -71,7 +71,7 @@ class Redis implements AuthorizationCodeInterface,
         $this->cache[$key] = $value;
         $str = json_encode($value);
         if ($expire > 0) {
-            $seconds = $expire - current_time( 'timestamp' );
+            $seconds = $expire - time();
             $ret = $this->redis->setex($key, $seconds, $str);
         } else {
             $ret = $this->redis->set($key, $str);
@@ -209,7 +209,9 @@ class Redis implements AuthorizationCodeInterface,
 
     public function unsetRefreshToken($refresh_token)
     {
-        return $this->expireValue($this->config['refresh_token_key'] . $refresh_token);
+        $result = $this->expireValue($this->config['refresh_token_key'] . $refresh_token);
+
+        return $result > 0;
     }
 
     /* AccessTokenInterface */
@@ -229,7 +231,9 @@ class Redis implements AuthorizationCodeInterface,
 
     public function unsetAccessToken($access_token)
     {
-        return $this->expireValue($this->config['access_token_key'] . $access_token);
+        $result = $this->expireValue($this->config['access_token_key'] . $access_token);
+
+        return $result > 0;
     }
 
     /* ScopeInterface */
