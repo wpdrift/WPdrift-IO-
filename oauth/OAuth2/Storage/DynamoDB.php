@@ -186,10 +186,11 @@ class DynamoDB implements
     {
         $result = $this->client->deleteItem(array(
             'TableName' =>  $this->config['access_token_table'],
-            'Key' => $this->client->formatAttributes(array("access_token" => $access_token))
+            'Key' => $this->client->formatAttributes(array("access_token" => $access_token)),
+            'ReturnValues' => 'ALL_OLD',
         ));
 
-        return true;
+        return null !== $result->get('Attributes');
     }
 
     /* OAuth2\Storage\AuthorizationCodeInterface */
@@ -342,7 +343,13 @@ class DynamoDB implements
     // plaintext passwords are bad!  Override this for your application
     protected function checkPassword($user, $password)
     {
-        return $user['password'] == sha1($password);
+        return $user['password'] == $this->hashPassword($password);
+    }
+
+    // use a secure hashing algorithm when storing passwords. Override this for your application
+    protected function hashPassword($password)
+    {
+        return sha1($password);
     }
 
     public function getUser($username)
@@ -363,7 +370,7 @@ class DynamoDB implements
     public function setUser($username, $password, $first_name = null, $last_name = null)
     {
         // do not store in plaintext
-        $password = sha1($password);
+        $password = $this->hashPassword($password);
 
         $clientData = compact('username', 'password', 'first_name', 'last_name');
         $clientData = array_filter($clientData, 'self::isNotEmpty');

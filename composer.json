@@ -1,12 +1,5 @@
 {
     "require": {
-        "illuminate/database": "v5.2.45",
-        "monolog/monolog": "1.24.0",
-        "piwik/device-detector": "3.11.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "Models\\": "app/models"
-        }
+        "nesbot/carbon": "1.36.2"
     }
 }

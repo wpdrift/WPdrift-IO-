@@ -59,10 +59,6 @@ class WPdrift_Worker_Date_Query extends WP_Date_Query {
 					'registered',
 					'last_updated',
 				),
-				$wpdb->prefix . 'wpdriftio_hits' => array(
-					'created_at',
-					'updated_at',
-				),
 			);
 
 			// If it's a known column name, add the appropriate table prefix.
