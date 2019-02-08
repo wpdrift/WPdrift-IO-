@@ -369,7 +369,7 @@ add_action( 'edd_delete_discount', array($edd_webhook_obj, 'eddDeleteDiscount') 
 add_action( 'edd_payment_deleted', array($edd_webhook_obj, 'eddPaymentDelete'), 100 );
 
 // edd logs add
-add_action('edd_post_insert_log', array($edd_webhook_obj, 'sendEddlogDeleted'));
+// add_action('edd_post_insert_log', array($edd_webhook_obj, 'sendEddlogDeleted'));
 
 // taxonmy assigned
 add_action('set_object_terms', array($edd_webhook_obj, 'sendTermAssigned'), 10, 1);
