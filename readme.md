@@ -2,8 +2,8 @@
 **Contributors:** [WPdrift](https://profiles.wordpress.org/WPdrift), [upnrunn](https://profiles.wordpress.org/upnrunn), [kishores](https://profiles.wordpress.org/kishores), [bhoot](https://profiles.wordpress.org/bhoot), [bankerrajendra](https://profiles.wordpress.org/bankerrajendra)  
 **Tags:** edd, edd-analytics, edd-filtering, edd-google-analytics, edd-reports, edd-metrics, easy-digital-downloads, beta, ecommerce-analytics, ecommerce-reports, edd-subscriptions, recurring-payments, analytics, dashboard, automation, administration, automate, automatic, clone, performance, manage-multiple-sites  
 **Requires at least:** 4.7  
-**Tested up to:** 4.9  
-**Stable tag:** 1.0.2  
+**Tested up to:** 5.0.3  
+**Stable tag:** 1.0.3  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 
@@ -59,11 +59,12 @@ Yes. We are offering a 14-day free trial period for new accounts, you have to su
 
 ## Screenshots ##
 
-1. Dashboard widgets.
-2. Customer Listings and filters.
-3. Product Listings and filters.
-4. Manage stores.
-5. Store settings.
+1. Blog stats.
+2. EDD stats.
+3. Visualization for Blog users.
+4. Visualization for EDD customers.
+5. Notifications and Announcements
+6. Recent events.
 
 ## Changelog ##
 
@@ -77,3 +78,6 @@ Yes. We are offering a 14-day free trial period for new accounts, you have to su
 ### 1.0.2 ###
 * Update checksum
 * Add missing class
+
+### 1.0.3 ###
+* Update OAuth2 Server
