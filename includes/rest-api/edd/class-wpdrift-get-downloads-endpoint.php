@@ -26,6 +26,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 	 * Constructor.
 	 */
 	public function __construct() {
+		$this->post_type = 'download';
 		$this->namespace = 'wpdriftio/v1';
 		$this->rest_base = 'getdownloads';
 	}
@@ -79,6 +80,32 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_ids' ),
 					'permission_callback' => array( $this, 'get_ids_permissions_check' ),
+					'args'                => array(),
+				),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/ids_updated',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_ids_updated' ),
+					'permission_callback' => array( $this, 'get_ids_permissions_check' ),
+					'args'                => array(),
+				),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/counts',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_counts' ),
+					'permission_callback' => array( $this, 'get_counts_permissions_check' ),
 					'args'                => array(),
 				),
 			)
@@ -154,7 +181,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 	 * @return [type]          [description]
 	 */
 	public function get_items_permissions_check( $request ) {
-		return true;
+		return current_user_can( 'list_users' );
 	}
 
 	/**
@@ -173,7 +200,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 	 * @return [type]          [description]
 	 */
 	public function get_item_permissions_check( $request ) {
-		return true;
+		return current_user_can( 'list_users' );
 	}
 
 	/**
@@ -184,7 +211,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 	public function get_ids( $request ) {
 		global $wpdb;
 
-		$page_ids = wp_cache_get( 'all_download_ids', 'posts' );
+		$download_ids = wp_cache_get( 'all_download_ids', 'posts' );
 		if ( ! is_array( $download_ids ) ) {
 			$download_ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'download'" );
 			wp_cache_add( 'all_download_ids', $page_ids, 'posts' );
@@ -194,11 +221,51 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 	}
 
 	/**
+	 * [get_ids_updated description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_ids_updated( $request ) {
+		global $wpdb;
+
+		$date = [];
+		if ( isset( $request['after'] ) ) {
+			$date[] = [
+				'after' => $request['after'],
+			];
+		}
+		$date_query   = new WP_Date_Query( $date, 'post_modified' );
+		$query_where  = "WHERE post_type = 'download'";
+		$query_where .= $date_query->get_sql();
+		$ids_updated  = $wpdb->get_col( "SELECT ID FROM $wpdb->posts $query_where" );
+		return $ids_updated;
+	}
+
+	/**
 	 * [get_ids_permissions_check description]
 	 * @param  [type] $request [description]
 	 * @return [type]          [description]
 	 */
 	public function get_ids_permissions_check( $request ) {
-		return true;
+		return current_user_can( 'list_users' );
+	}
+
+	/**
+	 * [get_counts description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_counts( $request ) {
+		global $wpdb;
+		return $wpdb->get_var( $wpdb->prepare( "SELECT COUNT( * ) FROM {$wpdb->posts} WHERE post_type = %s", $this->post_type ) );
+	}
+
+	/**
+	 * [get_counts_permissions_check description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_counts_permissions_check( $request ) {
+		return current_user_can( 'list_users' );
 	}
 }
