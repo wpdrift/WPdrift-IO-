@@ -210,13 +210,7 @@ class EDD_GetDownloads_Endpoint extends WP_REST_Controller {
 	 */
 	public function get_ids( $request ) {
 		global $wpdb;
-
-		$download_ids = wp_cache_get( 'all_download_ids', 'posts' );
-		if ( ! is_array( $download_ids ) ) {
-			$download_ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'download'" );
-			wp_cache_add( 'all_download_ids', $page_ids, 'posts' );
-		}
-
+		$download_ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'download'" );
 		return $download_ids;
 	}
 
