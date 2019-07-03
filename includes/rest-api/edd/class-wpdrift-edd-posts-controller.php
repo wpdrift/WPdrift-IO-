@@ -25,6 +25,10 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function register_routes() {
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base,
@@ -36,23 +40,60 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 				),
 			)
 		);
-	}
 
-	/**
-	 * Check permissions for the posts.
-	 * @param  [type] $request [description]
-	 * @return [type]          [description]
-	 */
-	public function get_items_permissions_check( $request ) {
 		/**
-		 * [if description]
+		 * [$post_endpoint description]
+		 * @var string
+		 */
+		$post_endpoint = '/' . $this->rest_base . '/(?P<id>[\d]+)';
+
+		/**
+		 * [register_rest_route description]
 		 * @var [type]
 		 */
-		if ( ! current_user_can( 'list_users' ) ) {
-			// return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
-		}
+		register_rest_route(
+			$this->namespace,
+			$post_endpoint,
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => array( $this, 'get_item_permissions_check' ),
+				),
+			)
+		);
 
-		return true;
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/all',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_all' ),
+					'permission_callback' => array( $this, 'get_all_permissions_check' ),
+				),
+			)
+		);
+
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/updated',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_updated' ),
+					'permission_callback' => array( $this, 'get_updated_permissions_check' ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -62,9 +103,137 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 	 */
 	public function get_items( $request ) {
 		global $wpdb;
-
 		$data = [];
 		return rest_ensure_response( $data );
+	}
+
+	/**
+	 * Check permissions for the posts.
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_items_permissions_check( $request ) {
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * [get_item description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_item( $request ) {
+		$id   = is_numeric( $request ) ? $request : (int) $request['id'];
+		$post = get_post( $id );
+
+		if ( empty( $post ) ) {
+			return rest_ensure_response( [] );
+		}
+
+		return rest_ensure_response( $post );
+	}
+
+	/**
+	 * [get_item_permissions_check description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_item_permissions_check( $request ) {
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * [get_all description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_all( $request ) {
+		global $wpdb;
+
+		$args = [
+			'post_type' => 'post',
+		];
+
+		if ( isset( $request['post_type'] ) ) {
+			$args['post_type'] = $request['post_type'];
+		}
+
+		$all = $wpdb->get_col(
+			$wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE post_type = %s", $args['post_type'] )
+		);
+
+		return $all;
+	}
+
+	/**
+	 * [get_all_permissions_check description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_all_permissions_check( $request ) {
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * [get_updated description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_updated( $request ) {
+		global $wpdb;
+
+		$args = [
+			'post_type'       => 'post',
+			'date_parameters' => [],
+		];
+
+		if ( isset( $request['after'] ) ) {
+			$args['date_parameters'][] = [
+				'after' => $request['after'],
+			];
+		}
+
+		if ( isset( $request['post_type'] ) ) {
+			$args['post_type'] = $request['post_type'];
+		}
+
+		$date_query = new WP_Date_Query( $args['date_parameters'], 'post_modified' );
+		$updated    = $wpdb->get_col(
+			$wpdb->prepare(
+				"
+				SELECT ID
+				FROM $wpdb->posts
+				WHERE post_type = %s {$date_query->get_sql()}
+				",
+				$args['post_type']
+			)
+		);
+
+		return $updated;
+	}
+
+	/**
+	 * [get_updated_permissions_check description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_updated_permissions_check( $request ) {
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
+		return true;
 	}
 
 	/**
@@ -72,7 +241,6 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function authorization_status_code() {
-
 		$status = 401;
 
 		if ( is_user_logged_in() ) {
