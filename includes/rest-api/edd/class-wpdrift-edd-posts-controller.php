@@ -69,6 +69,22 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 		 */
 		register_rest_route(
 			$this->namespace,
+			$post_endpoint . '/metadata',
+			array(
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_metadata' ),
+					'permission_callback' => array( $this, 'get_metadata_permissions_check' ),
+				),
+			)
+		);
+
+		/**
+		 * [register_rest_route description]
+		 * @var [type]
+		 */
+		register_rest_route(
+			$this->namespace,
 			'/' . $this->rest_base . '/all',
 			array(
 				array(
@@ -158,7 +174,7 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 		global $wpdb;
 
 		$args = [
-			'post_type' => 'post',
+			'post_type' => 'download',
 		];
 
 		if ( isset( $request['post_type'] ) ) {
@@ -194,15 +210,17 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 		global $wpdb;
 
 		$args = [
-			'post_type'       => 'post',
+			'post_type'       => 'download',
 			'date_parameters' => [],
 		];
 
-		if ( isset( $request['after'] ) ) {
-			$args['date_parameters'][] = [
-				'after' => $request['after'],
-			];
+		if ( ! isset( $request['after'] ) ) {
+			return [];
 		}
+
+		$args['date_parameters'][] = [
+			'after' => $request['after'],
+		];
 
 		if ( isset( $request['post_type'] ) ) {
 			$args['post_type'] = $request['post_type'];
@@ -229,6 +247,30 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 	 * @return [type]          [description]
 	 */
 	public function get_updated_permissions_check( $request ) {
+		if ( ! current_user_can( 'list_users' ) ) {
+			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
+		}
+
+		return true;
+	}
+
+	/**
+	 * [get_metadata description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_metadata( $request ) {
+		$id       = is_numeric( $request ) ? $request : (int) $request['id'];
+		$metadata = get_post_meta( $id );
+		return $metadata;
+	}
+
+	/**
+	 * [get_metadata_permissions_check description]
+	 * @param  [type] $request [description]
+	 * @return [type]          [description]
+	 */
+	public function get_metadata_permissions_check( $request ) {
 		if ( ! current_user_can( 'list_users' ) ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
