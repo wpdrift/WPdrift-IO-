@@ -255,6 +255,8 @@ class WPdrift_Worker {
 		$this->loader->add_filter( 'rest_user_collection_params', $plugin_api, 'rest_user_collection_params' );
 		$this->loader->add_filter( 'rest_user_query', $plugin_api, 'rest_user_query', 10, 2 );
 
+		$this->loader->add_action( 'edd_customer_post_create', $plugin_api, 'customer_post_create' );
+		$this->loader->add_action( 'edd_customer_post_update', $plugin_api, 'customer_post_update', 10, 2 );
 	}
 
 	/**

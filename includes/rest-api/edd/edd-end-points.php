@@ -14,6 +14,10 @@
  * @var [type]
  */
 
+require_once dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-edd-customers-controller.php';
+$wpdrift_edd_customers_controller = new WPdrift_EDD_Customers_Controller();
+$wpdrift_edd_customers_controller->register_routes();
+
 require_once dirname( WPDRIFT_WORKER_FILE ) . '/includes/rest-api/edd/class-wpdrift-edd-posts-controller.php';
 $wpdrift_edd_posts_controller = new WPdrift_EDD_Posts_Controller();
 $wpdrift_edd_posts_controller->register_routes();

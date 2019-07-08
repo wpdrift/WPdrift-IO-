@@ -244,4 +244,38 @@ class WPdrift_Worker_Api {
 		);
 	}
 
+	/**
+	 * [customer_post_create description]
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
+	public function customer_post_create( $id ) {
+		$this->customers_updated( $id );
+	}
+
+	/**
+	 * [customer_post_update description]
+	 * @param  [type] $updated [description]
+	 * @param  [type] $id      [description]
+	 * @return [type]          [description]
+	 */
+	public function customer_post_update( $updated, $id ) {
+		$this->customers_updated( $id );
+	}
+
+	/**
+	 * [customers_updated description]
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
+	public function customers_updated( $id ) {
+		$updated           = [];
+		$customers_updated = get_option( 'edd_customers_updated' );
+		if ( ! empty( $customers_updated ) ) {
+			$updated = array_merge( $updated, $customers_updated );
+		}
+
+		$updated = array_merge( $updated, [ $id ] );
+		update_option( 'edd_customers_updated', array_unique( $updated ) );
+	}
 }
