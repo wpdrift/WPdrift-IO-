@@ -260,8 +260,9 @@ class WPdrift_EDD_Posts_Controller extends WP_REST_Controller {
 	 * @return [type]          [description]
 	 */
 	public function get_metadata( $request ) {
-		$id       = is_numeric( $request ) ? $request : (int) $request['id'];
-		$metadata = get_post_meta( $id );
+		$post_id                    = is_numeric( $request ) ? $request : (int) $request['id'];
+		$metadata                   = get_post_meta( $post_id );
+		$metadata['_thumbnail_url'] = get_the_post_thumbnail_url( $post_id, 'thumbnail' );
 		return $metadata;
 	}
 
