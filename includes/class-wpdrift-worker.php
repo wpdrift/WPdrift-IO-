@@ -90,6 +90,7 @@ class WPdrift_Worker {
 		 * [$this->load_dependencies description]
 		 * @var [type]
 		 */
+		$this->define_constants();
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -104,6 +105,14 @@ class WPdrift_Worker {
 
 		add_filter( 'determine_current_user', array( $this, '_wpdrift_worker_authenicate_bypass' ), 9999 );
 
+	}
+
+	/**
+	 * Define Constants.
+	 */
+	protected function define_constants() {
+		$this->define( 'WPDRIFT_WORKER_ABSPATH', dirname( __DIR__ ) . '/' );
+		$this->define( 'WPDRIFT_WORKER_PLUGIN_FILE', WPDRIFT_WORKER_ABSPATH . 'wpdrift-worker.php' );
 	}
 
 	/**
