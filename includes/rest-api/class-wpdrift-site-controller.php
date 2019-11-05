@@ -154,10 +154,6 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			return true;
 		}
 
-		/**
-		 * [if description]
-		 * @var [type]
-		 */
 		if ( ! in_array( $_SERVER['REMOTE_ADDR'], [ '67.205.168.206', '167.99.167.87' ] ) ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
