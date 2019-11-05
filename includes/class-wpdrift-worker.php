@@ -371,6 +371,18 @@ class WPdrift_Worker {
 		return $this->version;
 	}
 
+	/**
+	 * Define constant if not already set.
+	 *
+	 * @param string      $name  Constant name.
+	 * @param string|bool $value Constant value.
+	 */
+	protected function define( $name, $value ) {
+		if ( ! defined( $name ) ) {
+			define( $name, $value );
+		}
+	}
+
 }
 
 function _wpdw() {
