@@ -25,37 +25,49 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function register_routes() {
-		register_rest_route( $this->namespace, '/' . $this->rest_base, array(
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base,
 			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-			),
-		) );
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_items' ),
+					'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				),
+			)
+		);
 
 		/**
 		 * [register_rest_route description]
 		 * @var [type]
 		 */
-		register_rest_route($this->namespace, '/' . $this->rest_base . '/plugin-status', array(
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/plugin-status',
 			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_plugin_status' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-			),
-		));
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_plugin_status' ),
+					'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				),
+			)
+		);
 
 		/**
 		 * check edd plugin status
 		 * @var [type]
 		 */
-		register_rest_route($this->namespace, '/' . $this->rest_base . '/edd-plugin-status', array(
+		register_rest_route(
+			$this->namespace,
+			'/' . $this->rest_base . '/edd-plugin-status',
 			array(
-				'methods'             => WP_REST_Server::READABLE,
-				'callback'            => array( $this, 'get_edd_plugin_status' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-			),
-		));
+				array(
+					'methods'             => WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_edd_plugin_status' ),
+					'permission_callback' => array( $this, 'get_items_permissions_check' ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -138,11 +150,15 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 	 * @param WP_REST_Request $request Current request.
 	 */
 	public function get_items_permissions_check( $request ) {
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			return true;
+		}
+
 		/**
 		 * [if description]
 		 * @var [type]
 		 */
-		if ( ! in_array( $_SERVER['REMOTE_ADDR'], [ '159.89.224.161', '167.99.167.87' ] ) ) {
+		if ( ! in_array( $_SERVER['REMOTE_ADDR'], [ '67.205.168.206', '167.99.167.87' ] ) ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
 
