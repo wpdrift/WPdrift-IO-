@@ -28,45 +28,31 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base,
-			array(
-				array(
-					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_items' ),
-					'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				),
-			)
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_items' ),
+				'permission_callback' => array( $this, 'get_items_permissions_check' ),
+			]
 		);
 
-		/**
-		 * [register_rest_route description]
-		 * @var [type]
-		 */
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/plugin-status',
-			array(
-				array(
-					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_plugin_status' ),
-					'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				),
-			)
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_plugin_status' ),
+				'permission_callback' => array( $this, 'get_plugin_status_permissions_check' ),
+			]
 		);
 
-		/**
-		 * check edd plugin status
-		 * @var [type]
-		 */
 		register_rest_route(
 			$this->namespace,
 			'/' . $this->rest_base . '/edd-plugin-status',
-			array(
-				array(
-					'methods'             => WP_REST_Server::READABLE,
-					'callback'            => array( $this, 'get_edd_plugin_status' ),
-					'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				),
-			)
+			[
+				'methods'             => WP_REST_Server::READABLE,
+				'callback'            => array( $this, 'get_edd_plugin_status' ),
+				'permission_callback' => array( $this, 'get_plugin_status_permissions_check' ),
+			]
 		);
 	}
 
@@ -104,10 +90,6 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 	 * @var [type]
 	 */
 	public function get_plugin_status( $request ) {
-		/**
-		 * Detect plugin.
-		 * @var [type]
-		 */
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 		// check for plugin using plugin name
@@ -115,22 +97,14 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			return rest_ensure_response( array() );
 		}
 
-		/**
-		 * [return description]
-		 * @var [type]
-		 */
 		return [ 'version' => WPDRIFT_WORKER_VERSION ];
 	}
 
 	/**
-	 * get the edd plugin status
+	 * Get the edd plugin status.
 	 * @var [type]
 	 */
 	public function get_edd_plugin_status( $request ) {
-		/**
-		 * Detect plugin.
-		 * @var [type]
-		 */
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 		// check for plugin using plugin name
@@ -138,10 +112,6 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			return rest_ensure_response( array() );
 		}
 
-		/**
-		 * [return description]
-		 * @var [type]
-		 */
 		return [ 'version' => EDD_VERSION ];
 	}
 
@@ -154,10 +124,18 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 			return true;
 		}
 
-		if ( ! in_array( $_SERVER['REMOTE_ADDR'], [ '67.205.168.206', '167.99.167.87' ] ) ) {
+		if ( ! in_array( $_SERVER['REMOTE_ADDR'], [ '67.205.168.206', '167.99.167.87' ], true ) ) {
 			return new WP_Error( 'rest_forbidden', esc_html__( 'You cannot view the resource.' ), array( 'status' => $this->authorization_status_code() ) );
 		}
 
+		return true;
+	}
+
+	/**
+	 * [get_plugin_status_permissions_check description]
+	 * @return [type] [description]
+	 */
+	public function get_plugin_status_permissions_check() {
 		return true;
 	}
 
@@ -166,7 +144,6 @@ class WPdrift_Site_Controller extends WP_REST_Controller {
 	 * @return [type] [description]
 	 */
 	public function authorization_status_code() {
-
 		$status = 401;
 
 		if ( is_user_logged_in() ) {
